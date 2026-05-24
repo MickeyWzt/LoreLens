@@ -10,7 +10,51 @@ async function startServer() {
   // Increase payload limit for base64 images
   app.use(express.json({ limit: '50mb' }));
 
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || process.env.GEMINI_API_KEY });
+  const apiKey = "AIzaSyCWXmCnp9xETwL7bAQ4VtHpyMH3x5F6IXA" || process.env.GEMINI_API_KEY || process.env.API_KEY || "";
+
+  const ai = new GoogleGenAI({
+    apiKey: apiKey,
+    httpOptions: {
+      headers: {
+        'User-Agent': 'aistudio-build',
+      }
+    }
+  });
+
+  const handleGeminiError = (res: any, error: any, defaultMsg: string) => {
+    const errText = error?.message || (typeof error === 'object' ? JSON.stringify(error) : String(error));
+    console.error(`Gemini Error [${defaultMsg}]:`, errText);
+    
+    if (
+      errText.includes("API_KEY_INVALID") || 
+      errText.includes("API key not valid") || 
+      errText.includes("INVALID_ARGUMENT") ||
+      errText.includes("invalid api key")
+    ) {
+      return res.status(400).json({
+        error: "Invalid API Key",
+        details: "Your Gemini API Key is invalid or has expired. Please verify your API Key is correctly entered in the **Settings > Secrets** panel in AI Studio."
+      });
+    }
+
+    if (
+      errText.includes("RESOURCE_EXHAUSTED") ||
+      errText.includes("quota") ||
+      errText.includes("Rate limit") ||
+      errText.includes("429")
+    ) {
+      return res.status(429).json({
+        error: "Rate Limit Exceeded (429)",
+        details: "You have exceeded your Gemini API quota/rate limits. If you are on the free tier, please wait a minute before trying again or request a paid API key via AI Studio settings."
+      });
+    }
+    
+    return res.status(500).json({
+      error: defaultMsg,
+      details: error?.message || String(error)
+    });
+  };
+
   const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY;
 
   // --- UNSPLASH API ROUTE ---
@@ -77,9 +121,11 @@ async function startServer() {
             }
         } : undefined;
 
+        console.log(`Attempting generateContent. useMaps=${useMaps}, model=gemini-3.5-flash`);
+
         // @ts-ignore
         return await ai.models.generateContent({
-          model: "gemini-2.5-flash", 
+          model: "gemini-3.5-flash", 
           contents: {
             parts: [
               { inlineData: { mimeType: "image/jpeg", data: cleanBase64 } },
@@ -119,16 +165,32 @@ async function startServer() {
 
       let aiResponse;
       try {
-          if (!location) throw new Error("No location");
+          if (!location) throw new Error("No location provided");
           aiResponse = await attemptDecipher(true);
-      } catch (primaryError) {
+      } catch (primaryError: any) {
+          const errText = primaryError?.message || (typeof primaryError === 'object' ? JSON.stringify(primaryError) : String(primaryError));
+          if (
+              errText.includes("RESOURCE_EXHAUSTED") || 
+              errText.includes("quota") || 
+              errText.includes("API key not valid") || 
+              errText.includes("API_KEY_INVALID") ||
+              errText.includes("INVALID_ARGUMENT") ||
+              errText.includes("429")
+          ) {
+              throw primaryError; // Rethrow immediately to let handleGeminiError handle it
+          }
+          console.warn("Maps attempt failed, retrying without maps. Error:", errText.substring(0, 150) + "...");
           aiResponse = await attemptDecipher(false);
       }
 
-      res.json({ response: aiResponse });
-    } catch (e) {
-      console.error(e);
-      res.status(500).json({ error: "Failed to decipher" });
+      res.json({
+        response: {
+          text: aiResponse.text,
+          candidates: aiResponse.candidates
+        }
+      });
+    } catch (e: any) {
+      handleGeminiError(res, e, "Failed to decipher");
     }
   });
 
@@ -137,7 +199,7 @@ async function startServer() {
     try {
       const { text } = req.body;
       const aiResponse = await ai.models.generateContent({
-        model: "gemini-2.5-flash-preview-tts",
+        model: "gemini-3.1-flash-tts-preview",
         contents: [{ parts: [{ text }] }],
         config: {
           // @ts-ignore
@@ -149,10 +211,14 @@ async function startServer() {
           },
         },
       });
-      res.json({ response: aiResponse });
-    } catch (e) {
-      console.error(e);
-      res.status(500).json({ error: "Failed to generate speech" });
+      res.json({
+        response: {
+          text: aiResponse.text,
+          candidates: aiResponse.candidates
+        }
+      });
+    } catch (e: any) {
+      handleGeminiError(res, e, "Failed to generate speech");
     }
   });
 
@@ -160,8 +226,8 @@ async function startServer() {
   app.post("/api/gemini/recap", async (req, res) => {
       try {
           const { itemDescriptions, langName } = req.body;
-          const aiResponse = await ai.models.generateContent({
-            model: "gemini-3-flash-preview",
+        const aiResponse = await ai.models.generateContent({
+            model: "gemini-3.5-flash",
             contents: {
                 parts: [{
                     text: `You are a philosopher and cultural analyst looking at a traveler's discoveries in Beijing.
@@ -191,10 +257,14 @@ async function startServer() {
                 responseMimeType: "application/json"
             }
         });
-        res.json({ response: aiResponse });
-      } catch (e) {
-          console.error(e);
-          res.status(500).json({ error: "Failed to recap" });
+        res.json({
+          response: {
+            text: aiResponse.text,
+            candidates: aiResponse.candidates
+          }
+        });
+      } catch (e: any) {
+          handleGeminiError(res, e, "Failed to recap");
       }
   });
 

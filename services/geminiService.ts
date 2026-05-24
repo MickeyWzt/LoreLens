@@ -61,12 +61,15 @@ export const decipherImage = async (
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ base64Image, location, targetLanguage })
       });
-      if (!res.ok) throw new Error("Server error");
+      if (!res.ok) {
+          const body = await res.json().catch(() => ({}));
+          throw new Error(body.details || body.error || `Server error (${res.status})`);
+      }
       const data = await res.json();
       return parseDecipherResponse(data.response);
-  } catch (finalError) {
+  } catch (finalError: any) {
       console.error("Gemini Analysis Failed:", finalError);
-      throw new Error("Could not interpret the image. Please try again.");
+      throw new Error(finalError.message || "Could not interpret the image. Please try again.");
   }
 };
 
@@ -77,7 +80,10 @@ export const generateSpeech = async (text: string): Promise<string> => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text })
     });
-    if (!res.ok) throw new Error("Server error");
+    if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.details || body.error || `Server error (${res.status})`);
+    }
     const data = await res.json();
     const response = data.response;
 
@@ -107,7 +113,10 @@ export const generateDailyRecap = async (items: HistoryItem[], language: AppLang
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ itemDescriptions, langName })
       });
-      if (!res.ok) throw new Error("Server error");
+      if (!res.ok) {
+          const body = await res.json().catch(() => ({}));
+          throw new Error(body.details || body.error || `Server error (${res.status})`);
+      }
 
       const data = await res.json();
       const response = data.response;

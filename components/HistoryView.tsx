@@ -131,14 +131,43 @@ const AxisMap = ({ items, onSelect, isDark }: { items: HistoryItem[], onSelect: 
 export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onShowNotification }) => {
   const { t } = useTranslation();
   const { theme, language } = useSettingsStore();
-  const { history } = useHistoryStore();
+  const { history, setHistory } = useHistoryStore();
   const isDark = theme === 'dark';
+
+  // Deletion and checkbox states
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   // Recap State
   const [showRecap, setShowRecap] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [recapData, setRecapData] = useState<DailyRecapResult | null>(null);
   const [todayItems, setTodayItems] = useState<HistoryItem[]>([]);
+
+  const toggleSelectAll = () => {
+    if (selectedIds.length === history.length) {
+      setSelectedIds([]);
+    } else {
+      setSelectedIds(history.map(item => item.id));
+    }
+  };
+
+  const toggleSelectItem = (id: string) => {
+    setSelectedIds(prev => 
+      prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+    );
+  };
+
+  const handleDeleteSelected = () => {
+    if (selectedIds.length === 0) return;
+    
+    const newHistory = history.filter(item => !selectedIds.includes(item.id));
+    setHistory(newHistory);
+    
+    onShowNotification?.(language === 'zh' ? `已删除 ${selectedIds.length} 条记录` : `Deleted ${selectedIds.length} records`);
+    setSelectedIds([]);
+    setIsEditMode(false);
+  };
 
   const handleRecapClick = async () => {
     // Filter for items from "today"
@@ -182,21 +211,73 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
         
         {/* Header */}
         <div className={`pt-12 px-6 pb-6 flex items-center justify-between border-b backdrop-blur-md sticky top-0 z-10 ${headerBgClass}`}>
-            <h1 className="text-3xl font-thin tracking-wider animate-fade-in-up">{t('history.title')}</h1>
-            <div className="flex gap-3">
-                <button 
-                    onClick={handleRecapClick}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-full transition-transform active:scale-95 border ${isDark ? 'bg-indigo-500/10 text-indigo-300 border-indigo-500/30' : 'bg-indigo-50 text-indigo-700 border-indigo-200'}`}
-                >
-                    <IconJournal className="w-4 h-4" />
-                    <span className="text-sm font-medium">{t('history.recapButton')}</span>
-                </button>
-                <button 
-                    onClick={onClose} 
-                    className={`p-2 rounded-full active:scale-90 transition-transform duration-200 ${iconBtnClass}`}
-                >
-                    <IconChevronDown className="w-6 h-6" />
-                </button>
+            {isEditMode ? (
+                <div className="flex items-center gap-2">
+                    <span className="text-xl font-light tracking-wide animate-fade-in">
+                        {language === 'zh' ? `已选择 ${selectedIds.length} 项` : `${selectedIds.length} Selected`}
+                    </span>
+                </div>
+            ) : (
+                <h1 className="text-3xl font-thin tracking-wider animate-fade-in-up">{t('history.title')}</h1>
+            )}
+            
+            <div className="flex items-center gap-2">
+                {isEditMode ? (
+                    <>
+                        <button 
+                            onClick={toggleSelectAll}
+                            className={`px-3 py-1.5 rounded-full text-xs font-mono tracking-wider transition-all active:scale-95 border ${
+                                selectedIds.length === history.length && history.length > 0
+                                    ? (isDark ? 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30' : 'bg-indigo-100 text-indigo-700 border-indigo-200')
+                                    : (isDark ? 'bg-white/5 border-white/10 hover:bg-white/10' : 'bg-white border-gray-200 hover:bg-gray-50')
+                            }`}
+                        >
+                            {selectedIds.length === history.length && history.length > 0 ? t('history.deselectAll') : t('history.selectAll')}
+                        </button>
+                        <button 
+                            onClick={() => {
+                                setIsEditMode(false);
+                                setSelectedIds([]);
+                            }}
+                            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all active:scale-95 border ${
+                                isDark ? 'bg-white/5 border-white/10 hover:bg-white/10' : 'bg-white border-gray-200 hover:bg-gray-100'
+                            }`}
+                        >
+                            {t('history.cancel')}
+                        </button>
+                    </>
+                ) : (
+                    <>
+                        {history.length > 0 && (
+                            <>
+                                <button 
+                                    onClick={handleRecapClick}
+                                    className={`flex items-center gap-2 px-4 py-2 rounded-full transition-transform active:scale-95 border ${isDark ? 'bg-indigo-500/10 text-indigo-300 border-indigo-500/30' : 'bg-indigo-50 text-indigo-700 border-indigo-200'}`}
+                                >
+                                    <IconJournal className="w-4 h-4" />
+                                    <span className="text-sm font-medium">{t('history.recapButton')}</span>
+                                </button>
+                                <button 
+                                    onClick={() => {
+                                        setIsEditMode(true);
+                                        setSelectedIds([]);
+                                    }}
+                                    className={`px-4 py-2 rounded-full text-sm font-medium transition-transform active:scale-95 border ${
+                                        isDark ? 'bg-white/10 border-white/10 hover:bg-white/20' : 'bg-white border-gray-200 hover:bg-gray-100'
+                                    }`}
+                                >
+                                    {t('history.manage')}
+                                </button>
+                            </>
+                        )}
+                        <button 
+                            onClick={onClose} 
+                            className={`p-2 rounded-full active:scale-90 transition-transform duration-200 ${iconBtnClass}`}
+                        >
+                            <IconChevronDown className="w-6 h-6" />
+                        </button>
+                    </>
+                )}
             </div>
         </div>
 
@@ -208,38 +289,95 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
                     <p className="text-sm mt-2 opacity-60">{t('history.emptySub')}</p>
                 </div>
             ) : (
-                history.map((item, index) => (
-                    <div 
-                        key={item.id}
-                        onClick={() => onSelect(item)}
-                        className={`flex gap-4 p-4 rounded-2xl border transition-all cursor-pointer animate-fade-in-up ${itemBgClass}`}
-                        style={{ animationDelay: `${index * 100}ms` }}
-                    >
-                        {/* Thumbnail */}
-                        <div className={`w-20 h-20 rounded-xl shrink-0 overflow-hidden relative shadow-inner ${isDark ? 'bg-gray-800' : 'bg-gray-200'}`}>
-                             {item.thumbnail ? (
-                                 <img src={item.thumbnail} alt={item.title} className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
-                             ) : (
-                                <div className="absolute inset-0 flex items-center justify-center text-gray-500 font-serif text-2xl opacity-30">
-                                    {item.title.charAt(0)}
+                history.map((item, index) => {
+                    const isSelected = selectedIds.includes(item.id);
+                    return (
+                        <div 
+                            key={item.id}
+                            onClick={() => {
+                                if (isEditMode) {
+                                    toggleSelectItem(item.id);
+                                } else {
+                                    onSelect(item);
+                                }
+                            }}
+                            className={`flex gap-4 p-4 rounded-2xl border transition-all cursor-pointer animate-fade-in-up ${itemBgClass} ${
+                                isEditMode && isSelected 
+                                    ? (isDark ? 'border-indigo-500/50 bg-indigo-500/5' : 'border-indigo-300 bg-indigo-50/40') 
+                                    : ''
+                            }`}
+                            style={{ animationDelay: `${index * 100}ms` }}
+                        >
+                            {/* Checkbox (only in Edit Mode) */}
+                            {isEditMode && (
+                                <div className="flex items-center justify-center shrink-0 pe-1 animate-fade-in">
+                                    <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${
+                                        isSelected 
+                                            ? 'bg-indigo-500 border-indigo-500 text-white animate-scale-in' 
+                                            : (isDark ? 'border-white/20 bg-white/5' : 'border-gray-300 bg-white')
+                                    }`}>
+                                        {isSelected && (
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-3.5 h-3.5">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                                            </svg>
+                                        )}
+                                    </div>
                                 </div>
-                             )}
+                            )}
+
+                            {/* Thumbnail */}
+                            <div className={`w-20 h-20 rounded-xl shrink-0 overflow-hidden relative shadow-inner ${isDark ? 'bg-gray-800' : 'bg-gray-200'}`}>
+                                 {item.thumbnail ? (
+                                     <img src={item.thumbnail} alt={item.title} className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
+                                 ) : (
+                                    <div className="absolute inset-0 flex items-center justify-center text-gray-500 font-serif text-2xl opacity-30">
+                                        {item.title.charAt(0)}
+                                    </div>
+                                 )}
+                            </div>
+                            
+                            <div className="flex-1 min-w-0 flex flex-col justify-center py-1">
+                                <h3 className={`text-lg font-normal truncate mb-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>{item.title}</h3>
+                                <p className={`text-sm mb-2 font-medium line-clamp-1 opacity-90 ${accentTextClass}`}>
+                                    {item.mirrorInsight}
+                                </p>
+                                 <p className={`text-xs font-mono uppercase tracking-wider opacity-60 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                                    {new Date(item.timestamp).toLocaleDateString(language, { month: 'short', day: 'numeric' })} • Beijing
+                                </p>
+                            </div>
                         </div>
-                        
-                        <div className="flex-1 min-w-0 flex flex-col justify-center py-1">
-                            <h3 className={`text-lg font-normal truncate mb-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>{item.title}</h3>
-                            <p className={`text-sm mb-2 font-medium line-clamp-1 opacity-90 ${accentTextClass}`}>
-                                {item.mirrorInsight}
-                            </p>
-                             <p className={`text-xs font-mono uppercase tracking-wider opacity-60 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                                {new Date(item.timestamp).toLocaleDateString(language, { month: 'short', day: 'numeric' })} • Beijing
-                            </p>
-                        </div>
-                    </div>
-                ))
+                    );
+                })
             )}
             <div className="h-24"></div>
         </div>
+
+        {/* Bulk Delete Sticky Bar at Bottom */}
+        {isEditMode && (
+            <div className={`border-t p-4 flex justify-between items-center z-20 backdrop-blur-md sticky bottom-0 left-0 right-0 ${
+                isDark ? 'bg-black/95 border-white/10 text-white' : 'bg-white/95 border-gray-200 text-gray-900'
+            } animate-fade-in-up`}>
+                <div className="text-sm">
+                    <span className={subTextClass}>
+                        {language === 'zh' ? `已选择 ${selectedIds.length} 项` : `${selectedIds.length} items selected`}
+                    </span>
+                </div>
+                <button
+                    onClick={handleDeleteSelected}
+                    disabled={selectedIds.length === 0}
+                    className={`flex items-center justify-center gap-2 px-6 py-2.5 rounded-full text-sm font-medium transition-transform active:scale-95 ${
+                        selectedIds.length === 0
+                            ? 'opacity-40 cursor-not-allowed bg-red-500/10 text-red-500/50 border border-red-500/10'
+                            : 'bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-600/20 active:scale-95'
+                    }`}
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                    </svg>
+                    <span>{t('history.deleteSelected')}</span>
+                </button>
+            </div>
+        )}
 
         {/* Daily Recap Modal / Overlay */}
         {showRecap && (

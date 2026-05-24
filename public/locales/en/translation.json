@@ -42,7 +42,12 @@
     "writing": "Calculating resonance...",
     "noItemsToday": "No discoveries found for today.",
     "curiosityScore": "Resonance Score",
-    "mood": "Mood"
+    "mood": "Mood",
+    "manage": "Edit",
+    "deleteSelected": "Delete Selected",
+    "cancel": "Cancel",
+    "selectAll": "Select All",
+    "deselectAll": "Deselect All"
   },
   "map": {
     "title": "Discovery Map",

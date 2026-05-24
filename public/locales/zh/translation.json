@@ -42,7 +42,12 @@
     "writing": "正在计算文化共鸣...",
     "noItemsToday": "今天还没有新的发现哦。",
     "curiosityScore": "共鸣指数",
-    "mood": "今日心情"
+    "mood": "今日心情",
+    "manage": "编辑",
+    "deleteSelected": "删除已选",
+    "cancel": "取消",
+    "selectAll": "全选",
+    "deselectAll": "取消全选"
   },
   "map": {
     "title": "发现地图",

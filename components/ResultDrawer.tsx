@@ -105,7 +105,9 @@ export const ResultDrawer: React.FC<ResultDrawerProps> = ({
              audioRef.current.pause();
              setIsPlaying(false);
          } else {
-             audioRef.current.play();
+             audioRef.current.play().catch(err => {
+                 if (err.name !== 'AbortError') console.error("Play error:", err);
+             });
              setIsPlaying(true);
          }
       }
@@ -113,7 +115,9 @@ export const ResultDrawer: React.FC<ResultDrawerProps> = ({
     }
 
     if (audioUrl && audioRef.current) {
-       audioRef.current.play();
+       audioRef.current.play().catch(err => {
+           if (err.name !== 'AbortError') console.error("Play error:", err);
+       });
        setIsPlaying(true);
        return;
     }
@@ -140,7 +144,7 @@ export const ResultDrawer: React.FC<ResultDrawerProps> = ({
               });
               
               navigator.mediaSession.setActionHandler('play', () => {
-                  audioRef.current?.play();
+                  audioRef.current?.play().catch(() => {});
                   setIsPlaying(true);
               });
               navigator.mediaSession.setActionHandler('pause', () => {
@@ -153,7 +157,9 @@ export const ResultDrawer: React.FC<ResultDrawerProps> = ({
               setIsPlaying(true);
               setIsLoadingAudio(false);
           }).catch(err => {
-              console.error("Playback failed", err);
+              if (err.name !== 'AbortError') {
+                  console.error("Playback failed", err);
+              }
               setIsLoadingAudio(false);
           });
       }
