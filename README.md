@@ -36,6 +36,7 @@ Markdown# 🗺️ LoreLens (formerly Beijing Culture AI City Tour)
           ├──► [位置路由与上下文生成器] ──► 匹配 Local Lore DB (向量数据库)
           │
           └──► [大模型编排层 (Gemini/GPT API)] ──► Prompt 注入与流式故事生成
+
 🛠️ 技术栈 (Tech Stack)模块 (Layer)技术选型 (Technologies)说明 (Description)FrontendJava / Kotlin / Android SDK丝滑的移动端交互与传感器数据采集BackendPython / FastAPI高并发、低延迟的 AI 编排与流式传输 (Streaming)AI ModelsGoogle Gemini API / OpenAI API核心文本理解、结构化 Prompt 生成与多模态视觉DatabaseVector DB (FAISS/Milvus) + SQLite沉浸式本地文史知识库检索与用户非线性足迹存储🚀 快速开始 (Quick Start)1. 克隆仓库Bashgit clone [https://github.com/Mickey-Wang-hub/LoreLens.git](https://github.com/Mickey-Wang-hub/LoreLens.git)
 cd LoreLens
 2. 后端配置与运行进入后端目录，配置环境变量并启动服务：Bashcd backend
