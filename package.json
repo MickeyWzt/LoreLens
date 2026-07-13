@@ -1,15 +1,23 @@
 {
   "name": "lorelens",
   "private": true,
-  "version": "0.0.0",
+  "version": "7.14.0",
   "type": "module",
   "scripts": {
     "dev": "tsx server.ts",
     "build": "vite build && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
-    "start": "node dist/server.cjs"
+    "start": "node dist/server.cjs",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
-    "@google/genai": "^2.6.0",
+    "@fontsource/inter": "^5.2.8",
+    "@fontsource/jetbrains-mono": "^5.2.8",
+    "@google/genai": "^2.11.0",
+    "dotenv": "^17.4.2",
+    "express-rate-limit": "^8.5.2",
+    "helmet": "^8.3.0",
     "i18next": "^26.2.0",
     "i18next-browser-languagedetector": "^8.2.1",
     "i18next-http-backend": "^4.0.0",
@@ -19,21 +27,29 @@
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-i18next": "^17.0.8",
+    "zod": "^4.4.3",
     "zustand": "^5.0.13"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/express": "^5.0.6",
     "@types/leaflet.markercluster": "^1.5.6",
     "@types/node": "^22.14.0",
+    "@types/supertest": "^7.2.0",
     "@vitejs/plugin-react": "^5.0.0",
     "esbuild": "^0.28.0",
     "express": "^5.2.1",
+    "jsdom": "^29.1.1",
+    "supertest": "^7.2.2",
     "tailwindcss": "^4.3.0",
     "tsx": "^4.22.3",
     "typescript": "~5.8.2",
     "vite": "^6.2.0",
     "vite-plugin-pwa": "^1.3.0",
+    "vitest": "^4.1.10",
     "workbox-window": "^7.4.1"
   }
 }

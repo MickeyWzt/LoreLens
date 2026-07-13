@@ -1,13 +1,13 @@
+export type {
+  AnalysisRecordV2,
+  ApiError,
+  DailyRecapResult,
+  DecipherResult,
+  LocationSnapshot,
+  LoreLensExportV2,
+} from './domain/model';
 
-
-export interface DecipherResult {
-  title: string;
-  essence: string;
-  mirrorInsight: string;
-  philosophy: string;
-  quickAction: string;
-  mapUri?: string; // URL from Google Maps grounding
-}
+import type { DecipherResult } from './domain/model';
 
 export interface HistoryItem extends DecipherResult {
   id: string;
@@ -17,15 +17,6 @@ export interface HistoryItem extends DecipherResult {
     lat: number;
     lng: number;
   };
-}
-
-export interface DailyRecapResult {
-  journal: string; // The poetic summary
-  score: number; // The Resonance Score (0-100)
-  mood: string; // Single word mood
-  tags: string[];
-  philosophicalTake: string; // e.g., "You focus on stillness..."
-  archetype: string; // e.g., "The Socratic Observer"
 }
 
 export enum ViewState {
