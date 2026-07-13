@@ -14,6 +14,7 @@ export type ScanEvent =
   | { type: 'CAPTURE'; image: string }
   | { type: 'START_ANALYSIS'; image: string }
   | { type: 'ANALYSIS_SUCCESS'; result: DecipherResult }
+  | { type: 'SHOW_RESULT'; image?: string; result: DecipherResult }
   | { type: 'ANALYSIS_FAILURE'; error: string }
   | { type: 'QUEUE_OFFLINE' }
   | { type: 'RESET' };
@@ -30,6 +31,8 @@ export function scanReducer(state: ScanState, event: ScanEvent): ScanState {
       return { stage: 'analyzing', image: event.image };
     case 'ANALYSIS_SUCCESS':
       return { stage: 'result', image: state.image, result: event.result };
+    case 'SHOW_RESULT':
+      return { stage: 'result', image: event.image, result: event.result };
     case 'ANALYSIS_FAILURE':
       return { stage: 'error', image: state.image, error: event.error };
     case 'QUEUE_OFFLINE':

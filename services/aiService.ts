@@ -4,6 +4,7 @@ import type {
   DailyRecapResult,
   DecipherResult,
   HistoryItem,
+  LocationSnapshot,
 } from '../types';
 
 export class ApiClientError extends Error {
@@ -34,14 +35,14 @@ async function apiRequest<T>(url: string, init: RequestInit): Promise<T> {
 
 export function decipherImage(
   base64Image: string,
-  location?: { lat: number; lng: number },
+  location?: LocationSnapshot,
   language: AppLanguage = 'en',
   signal?: AbortSignal,
 ): Promise<DecipherResult> {
   return apiRequest('/api/ai/decipher', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ base64Image, location, language }),
+    body: JSON.stringify({ base64Image, location, locationLabel: location?.label, language }),
     signal,
   });
 }

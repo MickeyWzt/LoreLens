@@ -21,7 +21,7 @@ export const ResultDrawer: React.FC<ResultDrawerProps> = ({
     onShowNotification
 }) => {
   const { t } = useTranslation();
-  const { theme, highResAudio: showAudioPlayer, language } = useSettingsStore();
+  const { theme, readAloudEnabled: showAudioPlayer, language } = useSettingsStore();
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoadingAudio, setIsLoadingAudio] = useState(false);
   const stopAudio = () => {

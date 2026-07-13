@@ -4,7 +4,7 @@ import { AppTheme, AppFontSize, AppLanguage, AppAccentColor } from '../types';
 
 interface SettingsState {
   saveToGallery: boolean;
-  highResAudio: boolean;
+  readAloudEnabled: boolean;
   theme: AppTheme;
   fontSize: AppFontSize;
   language: AppLanguage;
@@ -12,7 +12,7 @@ interface SettingsState {
   reduceMotion: boolean;
   
   setSaveToGallery: (val: boolean) => void;
-  setHighResAudio: (val: boolean) => void;
+  setReadAloudEnabled: (val: boolean) => void;
   setTheme: (theme: AppTheme) => void;
   setFontSize: (size: AppFontSize) => void;
   setLanguage: (lang: AppLanguage) => void;
@@ -24,7 +24,7 @@ export const useSettingsStore = create<SettingsState>()(
   persist(
     (set) => ({
       saveToGallery: false,
-      highResAudio: false,
+      readAloudEnabled: false,
       theme: 'dark',
       fontSize: 'medium',
       language: 'en',
@@ -32,7 +32,7 @@ export const useSettingsStore = create<SettingsState>()(
       reduceMotion: false,
       
       setSaveToGallery: (saveToGallery) => set({ saveToGallery }),
-      setHighResAudio: (highResAudio) => set({ highResAudio }),
+      setReadAloudEnabled: (readAloudEnabled) => set({ readAloudEnabled }),
       setTheme: (theme) => set({ theme }),
       setFontSize: (fontSize) => set({ fontSize }),
       setLanguage: (language) => set({ language }),
@@ -41,6 +41,15 @@ export const useSettingsStore = create<SettingsState>()(
     }),
     {
       name: 'context_lens_settings_zustand', // Storage name
+      version: 2,
+      migrate: (persistedState: unknown) => {
+        const old = (persistedState || {}) as Record<string, unknown>;
+        return {
+          ...old,
+          readAloudEnabled: Boolean(old.readAloudEnabled ?? old.highResAudio ?? false),
+          highResAudio: undefined,
+        } as unknown as SettingsState;
+      },
     }
   )
 );

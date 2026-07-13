@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { HistoryItem, DailyRecapResult } from '../types';
 import { IconChevronDown, IconJournal } from './Icons';
-import { generateDailyRecap } from '../services/aiService';
+import { decipherImage, generateDailyRecap } from '../services/aiService';
+import type { ApiError, AnalysisRecordV2 } from '../types';
 import { useSettingsStore } from '../store/useSettingsStore';
 import { useHistoryStore } from '../store/useHistoryStore';
 import { getAccentStyles } from '../utils/accent';
@@ -154,7 +155,7 @@ const AxisMap = ({ items, onSelect, isDark }: { items: HistoryItem[], onSelect: 
 export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onShowNotification }) => {
   const { t } = useTranslation();
   const { theme, language, accentColor, reduceMotion } = useSettingsStore();
-  const { history, setHistory } = useHistoryStore();
+  const { history, records, setHistory, updateRecord } = useHistoryStore();
   const isDark = theme === 'dark';
 
   // Deletion and checkbox states
@@ -166,6 +167,35 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
   const [isGenerating, setIsGenerating] = useState(false);
   const [recapData, setRecapData] = useState<DailyRecapResult | null>(null);
   const [todayItems, setTodayItems] = useState<HistoryItem[]>([]);
+  const actionableRecords = records.filter((record) => record.status !== 'complete');
+
+  const retryRecord = async (record: AnalysisRecordV2) => {
+    if (!record.image || !navigator.onLine) {
+      onShowNotification?.(t('errors.offlineRetry'));
+      return;
+    }
+    try {
+      const result = await decipherImage(record.image, record.location, record.language);
+      updateRecord(record.id, {
+        status: 'complete',
+        result,
+        error: undefined,
+        updatedAt: Date.now(),
+      });
+      onShowNotification?.(t('history.retrySuccess'));
+    } catch (error) {
+      const details: ApiError = error && typeof error === 'object' && 'details' in error
+        ? (error as { details: ApiError }).details
+        : {
+            code: 'ANALYSIS_FAILED',
+            message: error instanceof Error ? error.message : t('errors.analysisFailed'),
+            retryable: true,
+            requestId: 'client',
+          };
+      updateRecord(record.id, { status: 'failed', error: details, updatedAt: Date.now() });
+      onShowNotification?.(details.message);
+    }
+  };
 
   const toggleSelectAll = () => {
     if (selectedIds.length === history.length) {
@@ -310,7 +340,25 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
 
         {/* List Content */}
         <div className="flex-1 overflow-y-auto p-4 space-y-3">
-            {history.length === 0 ? (
+            {actionableRecords.map((record) => (
+                <div key={record.id} className={`flex gap-4 p-4 rounded-2xl border ${itemBgClass}`}>
+                    <div className="w-20 h-20 rounded-xl shrink-0 overflow-hidden bg-gray-800">
+                        {record.thumbnail && <img src={record.thumbnail} alt="" className="w-full h-full object-cover" />}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                        <p className="font-medium">{record.status === 'pending' ? t('history.pending') : t('history.failed')}</p>
+                        <p className={`text-xs mt-1 ${subTextClass}`}>{record.error?.message || t('history.pendingHint')}</p>
+                        <button
+                            type="button"
+                            onClick={() => void retryRecord(record)}
+                            className={`mt-3 px-4 py-2 rounded-full text-sm border ${accent.lightBg} ${accent.text} ${accent.border}`}
+                        >
+                            {t('common.retry')}
+                        </button>
+                    </div>
+                </div>
+            ))}
+            {history.length === 0 && actionableRecords.length === 0 ? (
                 <div className={`flex flex-col items-center justify-center h-64 ${subTextClass} animate-fade-in-up delay-200`}>
                     <p>{t('history.empty')}</p>
                     <p className="text-sm mt-2 opacity-60">{t('history.emptySub')}</p>
@@ -318,6 +366,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
             ) : (
                 history.map((item, index) => {
                     const isSelected = selectedIds.includes(item.id);
+                    const sourceRecord = records.find((record) => record.id === item.id);
                     return (
                         <div 
                             key={item.id}
@@ -369,7 +418,8 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
                                     {item.mirrorInsight}
                                 </p>
                                  <p className={`text-xs font-mono uppercase tracking-wider opacity-60 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-                                    {new Date(item.timestamp).toLocaleDateString(language, { month: 'short', day: 'numeric' })} • Beijing
+                                    {new Date(item.timestamp).toLocaleDateString(language, { month: 'short', day: 'numeric' })}
+                                    {sourceRecord?.location?.label ? ` • ${sourceRecord.location.label}` : ''}
                                 </p>
                             </div>
                         </div>

@@ -1,8 +1,12 @@
 
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useReducer } from 'react';
 import { decipherImage } from './services/aiService';
-import { DecipherResult, HistoryItem, ViewState } from './types';
+import { HistoryItem, ViewState, type ApiError, type AnalysisRecordV2 } from './types';
 import { triggerHaptic, compressHistoryImage } from './utils';
+import { createPendingRecord } from './domain/records';
+import { initialScanState, scanReducer } from './domain/scanState';
+import { useAppContextStore } from './store/useAppContextStore';
+import { useTranslation } from 'react-i18next';
 import { ResultDrawer } from './components/ResultDrawer';
 import { HistoryView } from './components/HistoryView';
 import { SettingsView } from './components/SettingsView';
@@ -14,23 +18,26 @@ import { useSettingsStore } from './store/useSettingsStore';
 import { useHistoryStore } from './store/useHistoryStore';
 
 const App: React.FC = () => {
+  const { t } = useTranslation();
   // State
   const [viewState, setViewState] = useState<ViewState>(ViewState.CAMERA);
-  const [isHomeOpen, setIsHomeOpen] = useState(true); // Default to Home View
-  
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [isCropping, setIsCropping] = useState(false); // New State for Crop Mode
-  const [currentResult, setCurrentResult] = useState<DecipherResult | null>(null);
+  const [scan, dispatchScan] = useReducer(scanReducer, initialScanState);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [capturedImage, setCapturedImage] = useState<string | null>(null);
+  const isHomeOpen = scan.stage === 'home';
+  const isAnalyzing = scan.stage === 'analyzing';
+  const isCropping = scan.stage === 'crop';
+  const capturedImage = scan.image || null;
+  const currentResult = scan.result || null;
   
   // Camera Optimization State
   const streamRef = useRef<MediaStream | null>(null);
+  const analysisAbortRef = useRef<AbortController | null>(null);
   const [isCameraReady, setIsCameraReady] = useState(false);
 
   // Stores
-  const { theme, language, fontSize, saveToGallery, highResAudio } = useSettingsStore();
-  const { history, setHistory, loadHistory } = useHistoryStore();
+  const { theme, language, fontSize, saveToGallery } = useSettingsStore();
+  const { history, addRecord, loadHistory } = useHistoryStore();
+  const ensureLocation = useAppContextStore((state) => state.ensureLocation);
   
   // Notification State
   const [notification, setNotification] = useState<string | null>(null);
@@ -49,6 +56,10 @@ const App: React.FC = () => {
   useEffect(() => {
     loadHistory();
   }, [loadHistory]);
+
+  useEffect(() => {
+    if (viewState !== ViewState.CAMERA) analysisAbortRef.current?.abort();
+  }, [viewState]);
 
   // Sync language with i18next
   useEffect(() => {
@@ -132,38 +143,6 @@ const App: React.FC = () => {
   }, [isHomeOpen, viewState, capturedImage]);
 
 
-  // Helper to get location
-  const getCurrentLocation = (): Promise<{lat: number, lng: number} | undefined> => {
-      return new Promise((resolve) => {
-          const fallbackLocation = { lat: 39.9042, lng: 116.4074 }; // Default to Beijing
-          
-          if (!navigator.geolocation) {
-              showNotification("Geolocation not supported, using default");
-              resolve(fallbackLocation);
-              return;
-          }
-          
-          navigator.geolocation.getCurrentPosition(
-              (position) => resolve({
-                  lat: position.coords.latitude,
-                  lng: position.coords.longitude
-              }),
-              (err) => {
-                  console.warn("Geolocation error", err);
-                  if (err.code === 1) { // PERMISSION_DENIED
-                      showNotification("Location denied, using default (Beijing)");
-                  } else if (err.code === 3) { // TIMEOUT
-                      showNotification("Location timeout, using default");
-                  } else {
-                      showNotification("Location unavailable, using default");
-                  }
-                  resolve(fallbackLocation);
-              },
-              { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-          );
-      });
-  };
-
   // Handle Capture
   const handleCapture = useCallback(async () => {
      triggerHaptic(50);
@@ -195,8 +174,7 @@ const App: React.FC = () => {
      ctx.drawImage(video, 0, 0, width, height);
      const base64Image = canvas.toDataURL('image/jpeg', 0.85);
      
-     setCapturedImage(base64Image);
-     setIsCropping(true); // Trigger Crop View
+     dispatchScan({ type: 'CAPTURE', image: base64Image });
   }, []);
 
   // Handle File Upload
@@ -206,8 +184,7 @@ const App: React.FC = () => {
       const reader = new FileReader();
       reader.onloadend = () => {
         if (typeof reader.result === 'string') {
-           setCapturedImage(reader.result);
-           setIsCropping(true); // Trigger Crop View
+           dispatchScan({ type: 'CAPTURE', image: reader.result });
         }
       };
       reader.readAsDataURL(file);
@@ -219,8 +196,7 @@ const App: React.FC = () => {
   // Called after Crop is confirmed
   const handleCropConfirm = async (croppedBase64: string) => {
       triggerHaptic([50, 50]);
-      setIsCropping(false);
-      setCapturedImage(croppedBase64); // Update displayed image to the cropped version
+      dispatchScan({ type: 'START_ANALYSIS', image: croppedBase64 });
       
       if (saveToGallery) {
           try {
@@ -236,68 +212,115 @@ const App: React.FC = () => {
           }
       }
 
-      processImage(croppedBase64);
+      void processImage(croppedBase64);
   };
 
   const processImage = async (base64: string) => {
-    setIsAnalyzing(true);
-    
+    analysisAbortRef.current?.abort();
+    const controller = new AbortController();
+    analysisAbortRef.current = controller;
+    const createdAt = Date.now();
+    const id = crypto.randomUUID();
+    dispatchScan({ type: 'START_ANALYSIS', image: base64 });
+
     try {
-        // Get Location
-        const location = await getCurrentLocation();
-        
-        // Pass language to service
-        const result = await decipherImage(base64, location, language);
-        setCurrentResult(result);
-        setIsDrawerOpen(true);
-        
-        const compressedThumbnail = await compressHistoryImage(base64);
+        const [location, thumbnail, storedImage] = await Promise.all([
+          ensureLocation(language),
+          compressHistoryImage(base64, 400, 0.6),
+          compressHistoryImage(base64, 1600, 0.76),
+        ]);
+        if (controller.signal.aborted) return;
 
-        const newItem: HistoryItem = {
-            ...result,
-            id: Date.now().toString(),
-            timestamp: Date.now(),
-            thumbnail: compressedThumbnail,
-            location: location
+        if (!navigator.onLine) {
+          addRecord(createPendingRecord({
+            id,
+            image: storedImage,
+            thumbnail,
+            language,
+            location,
+            createdAt,
+          }));
+          dispatchScan({ type: 'QUEUE_OFFLINE' });
+          showNotification('Saved for later. Retry when you are online.');
+          return;
+        }
+
+        const result = await decipherImage(base64, location, language, controller.signal);
+        if (controller.signal.aborted) return;
+        const record: AnalysisRecordV2 = {
+          schemaVersion: 2,
+          id,
+          status: 'complete',
+          image: storedImage,
+          thumbnail,
+          language,
+          location,
+          result,
+          createdAt,
+          updatedAt: Date.now(),
         };
-        setHistory(prev => [newItem, ...prev]);
-
+        addRecord(record);
+        dispatchScan({ type: 'ANALYSIS_SUCCESS', result });
+        setIsDrawerOpen(true);
     } catch (error) {
-        console.error(error);
-        showNotification("Analysis failed. Try again.");
-    } finally {
-        setIsAnalyzing(false);
+        if (controller.signal.aborted) return;
+        const details = error && typeof error === 'object' && 'details' in error
+          ? (error as { details: ApiError }).details
+          : {
+              code: 'ANALYSIS_FAILED',
+              message: error instanceof Error ? error.message : 'Analysis failed.',
+              retryable: true,
+              requestId: 'client',
+            };
+        const failedRecord: AnalysisRecordV2 = {
+          schemaVersion: 2,
+          id,
+          status: 'failed',
+          image: await compressHistoryImage(base64, 1600, 0.76),
+          thumbnail: await compressHistoryImage(base64),
+          language,
+          error: details,
+          createdAt,
+          updatedAt: Date.now(),
+        };
+        addRecord(failedRecord);
+        dispatchScan({ type: 'ANALYSIS_FAILURE', error: details.message });
+        showNotification(details.message);
     }
   };
 
   const resetCamera = () => {
+    analysisAbortRef.current?.abort();
     setIsDrawerOpen(false);
-    setIsCropping(false);
-    setTimeout(() => {
-        setCapturedImage(null);
-        setCurrentResult(null);
-    }, 300);
+    dispatchScan({ type: 'OPEN_CAMERA' });
   };
 
   const handleHistorySelect = (item: HistoryItem) => {
       setViewState(ViewState.CAMERA);
-      setIsHomeOpen(false); // Close home to see detail
-      setCapturedImage(item.thumbnail || null);
-      setCurrentResult(item);
+      analysisAbortRef.current?.abort();
+      dispatchScan({ type: 'SHOW_RESULT', image: item.thumbnail, result: item });
       setIsDrawerOpen(true);
   };
 
   // Handlers for Home View transitions
-  const startScan = () => setIsHomeOpen(false);
+  const startScan = () => dispatchScan({ type: 'OPEN_CAMERA' });
   const openHistory = () => setViewState(ViewState.HISTORY);
   const openSettings = () => setViewState(ViewState.SETTINGS);
   const backToHome = () => {
       resetCamera();
-      setIsHomeOpen(true);
+      dispatchScan({ type: 'RESET' });
   };
 
   return (
     <div className={`relative w-full h-screen overflow-hidden font-sans transition-colors duration-500 ${theme === 'dark' ? 'bg-black text-white' : 'bg-gray-50 text-gray-900'}`}>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        aria-label={t('scan.choosePhoto')}
+        className="sr-only"
+        onChange={handleFileUpload}
+      />
       
       {/* Toast Notification */}
       <div className={`fixed top-8 inset-x-0 flex justify-center z-[100] transition-all duration-300 transform ${notification ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'}`}>
@@ -356,6 +379,38 @@ const App: React.FC = () => {
             </div>
         )}
 
+        {(scan.stage === 'error' || scan.stage === 'pending') && capturedImage && (
+            <div className="absolute inset-0 z-50 flex items-end bg-black/55 p-6 pb-[max(2rem,env(safe-area-inset-bottom))] backdrop-blur-sm">
+                <div className="w-full rounded-3xl border border-white/15 bg-black/80 p-6 text-white shadow-2xl">
+                    <h2 className="text-xl font-medium">
+                        {scan.stage === 'pending' ? t('scan.savedForLater') : t('scan.analysisFailed')}
+                    </h2>
+                    <p className="mt-2 text-sm leading-relaxed text-white/65">
+                        {scan.error || (scan.stage === 'pending' ? t('scan.pendingHint') : t('scan.failureHint'))}
+                    </p>
+                    <div className="mt-5 grid grid-cols-2 gap-3">
+                        <button
+                            type="button"
+                            onClick={() => void processImage(capturedImage)}
+                            className="rounded-full bg-indigo-600 px-4 py-3 font-medium"
+                        >
+                            {t('common.retry')}
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => fileInputRef.current?.click()}
+                            className="rounded-full border border-white/20 px-4 py-3 font-medium"
+                        >
+                            {t('scan.choosePhoto')}
+                        </button>
+                    </div>
+                    <button type="button" onClick={backToHome} className="mt-4 w-full text-sm text-white/55">
+                        {t('scan.later')}
+                    </button>
+                </div>
+            </div>
+        )}
+
         {/* Live Camera Interface (Only when Home is closed and not analyzing/cropping) */}
         {!isHomeOpen && !isAnalyzing && !isDrawerOpen && !isCropping && capturedImage === null && (
             <>
@@ -387,14 +442,6 @@ const App: React.FC = () => {
 
                     <div className="relative group">
                          {/* Removed capture="environment" to allow Gallery selection on mobile */}
-                         <input 
-                            ref={fileInputRef}
-                            type="file" 
-                            accept="image/*" 
-                            className="hidden"
-                            onChange={handleFileUpload}
-                         />
-
                         {/* Capture Button */}
                         <button 
                             onClick={() => {
@@ -505,7 +552,8 @@ const App: React.FC = () => {
           <SettingsView 
             onBack={() => {
                 setViewState(ViewState.CAMERA);
-                setIsHomeOpen(true);
+                analysisAbortRef.current?.abort();
+                dispatchScan({ type: 'RESET' });
             }} 
           />
       )}

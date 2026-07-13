@@ -1,10 +1,11 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AppTheme, AppFontSize, AppLanguage, AppAccentColor } from '../types';
 import { useSettingsStore } from '../store/useSettingsStore';
 import { useHistoryStore } from '../store/useHistoryStore';
 import { getAccentStyles } from '../utils/accent';
+import { exportRecords } from '../domain/records';
 
 interface SettingsViewProps {
   onBack: () => void;
@@ -17,14 +18,16 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
     fontSize, setFontSize, 
     language, setLanguage, 
     saveToGallery, setSaveToGallery, 
-    highResAudio, setHighResAudio,
+    readAloudEnabled, setReadAloudEnabled,
     accentColor, setAccentColor,
     reduceMotion, setReduceMotion
   } = useSettingsStore();
-  const { history, clearHistory } = useHistoryStore();
-  const historyCount = history.length;
+  const { records, clearHistory, importJson } = useHistoryStore();
+  const historyCount = records.length;
   
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [dataMessage, setDataMessage] = useState('');
+  const importInputRef = useRef<HTMLInputElement>(null);
   const isDark = theme === 'dark';
   const accent = getAccentStyles(accentColor, isDark);
 
@@ -42,6 +45,31 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
           setConfirmDelete(false);
       } else {
           setConfirmDelete(true);
+      }
+  };
+
+  const handleExport = () => {
+      const json = exportRecords(records, {
+          theme, fontSize, language, saveToGallery, readAloudEnabled, accentColor, reduceMotion,
+      });
+      const url = URL.createObjectURL(new Blob([json], { type: 'application/json' }));
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = `lorelens-backup-${new Date().toISOString().slice(0, 10)}.json`;
+      anchor.click();
+      URL.revokeObjectURL(url);
+      setDataMessage(t('settings.exported'));
+  };
+
+  const handleImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      event.target.value = '';
+      if (!file) return;
+      try {
+          const count = await importJson(await file.text());
+          setDataMessage(t('settings.imported', { count }));
+      } catch {
+          setDataMessage(t('settings.importInvalid'));
       }
   };
 
@@ -67,7 +95,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
     <div className={`absolute inset-0 z-50 flex flex-col h-full animate-fade-in ${bgClass} ${textClass}`}>
       {/* Header - Fixed */}
       <div className="flex items-center p-6 pb-4 shrink-0">
-        <button onClick={onBack} className={`p-2 -ms-2 opacity-80 hover:opacity-100 transition-opacity ${accent.text}`}>
+        <button aria-label={t('common.back')} onClick={onBack} className={`p-2 -ms-2 opacity-80 hover:opacity-100 transition-opacity ${accent.text}`}>
           <svg className="w-6 h-64" fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ height: '24px', width: '24px' }}>
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
@@ -192,9 +220,12 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
                 <h2 className={`text-sm font-bold uppercase tracking-wider ${subTextClass}`}>{t('settings.preferences')}</h2>
                 
                 {/* Save Photos to Gallery */}
-                <div 
+                <button
+                    type="button"
+                    role="switch"
+                    aria-checked={saveToGallery}
                     onClick={() => setSaveToGallery(!saveToGallery)}
-                    className={`flex items-center justify-between py-4 border-b cursor-pointer transition-colors ${borderClass} ${isDark ? 'active:bg-gray-900' : 'active:bg-gray-100'}`}
+                    className={`w-full flex items-center justify-between py-4 border-b cursor-pointer transition-colors ${borderClass} ${isDark ? 'active:bg-gray-900' : 'active:bg-gray-100'}`}
                 >
                     <span className="text-lg font-light">{t('settings.saveGallery')}</span>
                     <div 
@@ -202,28 +233,34 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
                     >
                         <div className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow transition-all duration-200 ${saveToGallery ? 'start-[calc(100%-1.25rem)]' : 'start-1'}`}></div>
                     </div>
-                </div>
+                </button>
 
                 {/* High-Res Audio */}
-                <div 
-                    onClick={() => setHighResAudio(!highResAudio)}
-                    className={`flex items-center justify-between py-4 border-b cursor-pointer transition-colors ${borderClass} ${isDark ? 'active:bg-gray-900' : 'active:bg-gray-100'}`}
+                <button
+                    type="button"
+                    role="switch"
+                    aria-checked={readAloudEnabled}
+                    onClick={() => setReadAloudEnabled(!readAloudEnabled)}
+                    className={`w-full flex items-center justify-between py-4 border-b cursor-pointer text-start transition-colors ${borderClass} ${isDark ? 'active:bg-gray-900' : 'active:bg-gray-100'}`}
                 >
                     <div className="flex flex-col">
-                        <span className="text-lg font-light">{t('settings.highResAudio')}</span>
+                        <span className="text-lg font-light">{t('settings.readAloud')}</span>
                         <span className={`text-xs ${subTextClass}`}>{t('settings.highResDesc')}</span>
                     </div>
                     <div 
-                        className={`w-12 h-6 rounded-full relative transition-colors duration-200 ${highResAudio ? accent.bg : isDark ? 'bg-gray-700' : 'bg-gray-300'}`}
+                    className={`w-12 h-6 rounded-full relative transition-colors duration-200 ${readAloudEnabled ? accent.bg : isDark ? 'bg-gray-700' : 'bg-gray-300'}`}
                     >
-                        <div className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow transition-all duration-200 ${highResAudio ? 'start-[calc(100%-1.25rem)]' : 'start-1'}`}></div>
+                        <div className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow transition-all duration-200 ${readAloudEnabled ? 'start-[calc(100%-1.25rem)]' : 'start-1'}`}></div>
                     </div>
-                </div>
+                </button>
 
                 {/* Reduce Motion Toggle */}
-                <div 
+                <button
+                    type="button"
+                    role="switch"
+                    aria-checked={reduceMotion}
                     onClick={() => setReduceMotion(!reduceMotion)}
-                    className={`flex items-center justify-between py-4 border-b cursor-pointer transition-colors ${borderClass} ${isDark ? 'active:bg-gray-900' : 'active:bg-gray-100'}`}
+                    className={`w-full flex items-center justify-between py-4 border-b cursor-pointer text-start transition-colors ${borderClass} ${isDark ? 'active:bg-gray-900' : 'active:bg-gray-100'}`}
                 >
                     <div className="flex flex-col pe-4">
                         <span className="text-lg font-light">{t('settings.reduceMotion')}</span>
@@ -234,12 +271,35 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
                     >
                         <div className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow transition-all duration-200 ${reduceMotion ? 'start-[calc(100%-1.25rem)]' : 'start-1'}`}></div>
                     </div>
-                </div>
+                </button>
             </div>
 
             {/* Data Section */}
             <div className="space-y-4">
             <h2 className={`text-sm font-bold uppercase tracking-wider ${subTextClass}`}>{t('settings.data')}</h2>
+            <div className="grid grid-cols-2 gap-3">
+                <button
+                    type="button"
+                    onClick={handleExport}
+                    className={`rounded-xl border py-3 font-medium ${borderClass} ${isDark ? 'bg-white/5' : 'bg-white'}`}
+                >
+                    {t('settings.exportData')}
+                </button>
+                <button
+                    type="button"
+                    onClick={() => importInputRef.current?.click()}
+                    className={`rounded-xl border py-3 font-medium ${borderClass} ${isDark ? 'bg-white/5' : 'bg-white'}`}
+                >
+                    {t('settings.importData')}
+                </button>
+                <input
+                    ref={importInputRef}
+                    type="file"
+                    accept="application/json,.json"
+                    onChange={(event) => void handleImport(event)}
+                    className="hidden"
+                />
+            </div>
             <button 
                 onClick={handleClearClick}
                 disabled={historyCount === 0}
@@ -257,6 +317,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
             {historyCount > 0 && (
                 <p className={`text-center text-xs ${subTextClass}`}>{historyCount} {t('settings.itemsInStorage')}</p>
             )}
+            {dataMessage && <p role="status" className={`text-center text-xs ${subTextClass}`}>{dataMessage}</p>}
             </div>
 
             <div className={`mt-auto pt-10 text-center text-sm ${subTextClass}`}>

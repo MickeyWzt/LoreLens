@@ -5,10 +5,10 @@ import 'leaflet.markercluster';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import { useTranslation } from 'react-i18next';
-import { HistoryItem } from '../types';
 import { IconChevronDown } from './Icons';
 import { useSettingsStore } from '../store/useSettingsStore';
 import { useHistoryStore } from '../store/useHistoryStore';
+import { useAppContextStore } from '../store/useAppContextStore';
 
 interface MapViewProps {
   onClose: () => void;
@@ -17,7 +17,8 @@ interface MapViewProps {
 export const MapView: React.FC<MapViewProps> = ({ onClose }) => {
   const { t } = useTranslation();
   const { theme, language } = useSettingsStore();
-  const { history } = useHistoryStore();
+  const { records } = useHistoryStore();
+  const currentLocation = useAppContextStore((state) => state.location);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
   const isDark = theme === 'dark';
@@ -27,17 +28,25 @@ export const MapView: React.FC<MapViewProps> = ({ onClose }) => {
     if (mapInstanceRef.current) return;
 
     // Filter items with location
-    const locations = history.filter(item => item.location);
-    const defaultCenter: [number, number] = locations.length > 0 
-        ? [locations[0].location!.lat, locations[0].location!.lng] 
-        : [39.9042, 116.4074]; // Default to Beijing
+    const locations = records.filter((record) => (
+      record.status === 'complete'
+      && record.result
+      && record.location?.lat !== undefined
+      && record.location.lng !== undefined
+    ));
+    const hasCurrentLocation = currentLocation?.lat !== undefined && currentLocation.lng !== undefined;
+    const defaultCenter: [number, number] = hasCurrentLocation
+      ? [currentLocation.lat!, currentLocation.lng!]
+      : locations.length > 0
+        ? [locations[0].location!.lat!, locations[0].location!.lng!]
+        : [20, 0];
 
     // Initialize Map
     const map = L.map(mapContainerRef.current, {
         center: defaultCenter,
-        zoom: 13,
+        zoom: hasCurrentLocation || locations.length > 0 ? 12 : 2,
         zoomControl: false,
-        attributionControl: false
+        attributionControl: true
     });
 
     // Dark/Light Tiles
@@ -48,6 +57,7 @@ export const MapView: React.FC<MapViewProps> = ({ onClose }) => {
     L.tileLayer(tileUrl, {
         maxZoom: 19,
         subdomains: 'abcd',
+        attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
     }).addTo(map);
 
     // Custom Icon with escaped/sanitized thumbnail parameter
@@ -91,14 +101,14 @@ export const MapView: React.FC<MapViewProps> = ({ onClose }) => {
 
     // Add Markers safely
     locations.forEach(item => {
-        if (item.location) {
+        if (item.location?.lat !== undefined && item.location.lng !== undefined && item.result) {
             const marker = L.marker([item.location.lat, item.location.lng], {
                 icon: createIcon(item.thumbnail)
             });
 
-            const titleEscaped = escapeHtml(item.title);
-            const essenceEscaped = escapeHtml(item.essence);
-            const mapUriEscaped = item.mapUri ? escapeHtml(item.mapUri) : '';
+            const titleEscaped = escapeHtml(item.result.title);
+            const essenceEscaped = escapeHtml(item.result.essence);
+            const mapUriEscaped = item.result.mapUri ? escapeHtml(item.result.mapUri) : '';
             const isSafeUri = !mapUriEscaped || mapUriEscaped.startsWith('http://') || mapUriEscaped.startsWith('https://');
 
             const popupContent = `
@@ -115,6 +125,16 @@ export const MapView: React.FC<MapViewProps> = ({ onClose }) => {
     
     map.addLayer(markers);
 
+    if (hasCurrentLocation) {
+      L.circleMarker([currentLocation.lat!, currentLocation.lng!], {
+        radius: 8,
+        color: '#fff',
+        weight: 3,
+        fillColor: '#6366f1',
+        fillOpacity: 1,
+      }).addTo(map).bindTooltip(t('map.currentLocation'));
+    }
+
     // Fit bounds if multiple locations
     if (locations.length > 1) {
         map.fitBounds(markers.getBounds(), { padding: [50, 50], maxZoom: 15 });
@@ -128,7 +148,11 @@ export const MapView: React.FC<MapViewProps> = ({ onClose }) => {
             mapInstanceRef.current = null;
         }
     };
-  }, [theme, language]); // Re-init if theme or language changes
+  }, [currentLocation, language, records, theme, t]);
+
+  const hasMapData = records.some((record) => (
+    record.location?.lat !== undefined && record.location.lng !== undefined
+  )) || (currentLocation?.lat !== undefined && currentLocation.lng !== undefined);
 
   return (
     <div className="absolute inset-0 z-30 bg-black animate-fade-in flex flex-col">
@@ -144,6 +168,11 @@ export const MapView: React.FC<MapViewProps> = ({ onClose }) => {
         </div>
         
         <div ref={mapContainerRef} className="w-full h-full" />
+        {!hasMapData && (
+          <div className="pointer-events-none absolute inset-x-6 bottom-10 z-[1000] rounded-2xl border border-white/10 bg-black/70 p-4 text-center text-sm text-white backdrop-blur-xl">
+            {t('map.empty')}
+          </div>
+        )}
     </div>
   );
 };

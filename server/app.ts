@@ -13,6 +13,7 @@ import {
 } from '../domain/model';
 import { isRetryableProviderError } from './ai/errors';
 import type { BackgroundResult } from './background/service';
+import type { LocationService } from './location/service';
 
 const decipherRequestSchema = z.object({
   base64Image: z.string().startsWith('data:image/').max(10 * 1024 * 1024),
@@ -35,10 +36,12 @@ interface ApiDependencies {
     getBackground(query: string, timeBucket: string): Promise<BackgroundResult | null>;
     trackDownload(downloadLocation: string): Promise<void>;
   };
+  location?: LocationService;
   capabilities: {
     vision: boolean;
     text: boolean;
     background: boolean;
+    ipLocation?: boolean;
   };
 }
 
@@ -141,6 +144,31 @@ export function createApiApp(dependencies: ApiDependencies) {
     }
     await dependencies.background.trackDownload(parsed.data.downloadLocation);
     response.status(204).end();
+  }));
+
+  app.get('/api/location/reverse', asyncRoute(async (request, response) => {
+    const lat = Number(request.query.lat);
+    const lng = Number(request.query.lng);
+    const language = typeof request.query.language === 'string' ? request.query.language : 'en';
+    if (!dependencies.location || !Number.isFinite(lat) || !Number.isFinite(lng)) {
+      sendError(response, 400, 'VALIDATION_ERROR', 'Valid coordinates are required.', false);
+      return;
+    }
+    const result = await dependencies.location.reverse(lat, lng, language);
+    response.json({ data: result, requestId: response.locals.requestId });
+  }));
+
+  app.get('/api/location/ip', asyncRoute(async (_request, response) => {
+    if (!dependencies.location || !dependencies.capabilities.ipLocation) {
+      response.status(204).end();
+      return;
+    }
+    const result = await dependencies.location.locateIp();
+    if (!result) {
+      response.status(204).end();
+      return;
+    }
+    response.json({ data: result, requestId: response.locals.requestId });
   }));
 
   app.use((error: unknown, _request: Request, response: Response, _next: NextFunction) => {
