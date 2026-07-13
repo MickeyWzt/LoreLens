@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { HistoryItem, DailyRecapResult } from '../types';
 import { IconChevronDown, IconJournal } from './Icons';
-import { generateDailyRecap } from '../services/geminiService';
+import { generateDailyRecap } from '../services/aiService';
 import { useSettingsStore } from '../store/useSettingsStore';
 import { useHistoryStore } from '../store/useHistoryStore';
 import { getAccentStyles } from '../utils/accent';

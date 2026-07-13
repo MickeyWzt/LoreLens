@@ -260,8 +260,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
             </div>
 
             <div className={`mt-auto pt-10 text-center text-sm ${subTextClass}`}>
-                <p>Context Lens v1.5.0</p>
-                <p>Powered by Gemini 2.0 Flash</p>
+                <p>LoreLens v7.14</p>
+                <p>{t('settings.aiDescription')}</p>
             </div>
         </div>
       </div>

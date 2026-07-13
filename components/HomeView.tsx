@@ -14,7 +14,7 @@ interface HomeViewProps {
   onOpenSettings: () => void;
 }
 
-const APP_NAME = 'Context Lens';
+const APP_NAME = 'LoreLens';
 
 // Safe Fallback Assets
 const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=800&q=80"; // Atmospheric cozy street light view
@@ -277,26 +277,30 @@ export const HomeView: React.FC<HomeViewProps> = ({
               }
           }
 
-          const response = await fetch(`/api/unsplash?query=${encodeURIComponent(query)}`);
-          if (response.status === 403 || response.status === 429) {
-             console.warn("Unsplash API Rate Limit Exceeded");
-             return false;
-          }
-
+          const timeBucket = getTimeContext().timeQuery;
+          const response = await fetch(`/api/background?query=${encodeURIComponent(query)}&timeBucket=${encodeURIComponent(timeBucket)}`);
+          if (response.status === 204 || response.status === 403 || response.status === 429) return false;
           if (!response.ok) return false;
 
           const data = await response.json();
-          if (data && Array.isArray(data.results) && data.results.length > 0) {
+          const background = data?.data;
+          const results = background?.imageUrl ? [{
+              urls: { regular: background.imageUrl, full: background.imageUrl },
+              links: { download_location: background.downloadLocation },
+              user: {
+                  name: background.photographer,
+                  links: { html: background.photographerUrl }
+              }
+          }] : [];
+          if (results.length > 0) {
               localStorage.setItem(CACHE_KEY, JSON.stringify({
-                  results: data.results,
+                  results,
                   timestamp: Date.now()
               }));
 
-              return applyRandomPhoto(data.results);
+              return applyRandomPhoto(results);
           }
-      } catch (error) {
-          console.warn("Unsplash API failed", error);
-      }
+      } catch {}
 
       return false;
   };
@@ -309,10 +313,10 @@ export const HomeView: React.FC<HomeViewProps> = ({
       try {
           // Trigger download statistic tracking only on explicit save!
           if (photoDownloadLocation) {
-              fetch('/api/unsplash/download', {
+              fetch('/api/background/download', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ url: photoDownloadLocation })
+                  body: JSON.stringify({ downloadLocation: photoDownloadLocation })
               }).catch(() => {});
           }
 

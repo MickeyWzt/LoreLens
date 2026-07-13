@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { decipherImage } from './services/geminiService';
+import { decipherImage } from './services/aiService';
 import { DecipherResult, HistoryItem, ViewState } from './types';
 import { triggerHaptic, compressHistoryImage } from './utils';
 import { ResultDrawer } from './components/ResultDrawer';

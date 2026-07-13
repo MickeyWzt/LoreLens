@@ -1,10 +1,10 @@
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DecipherResult } from '../types';
 import { triggerHaptic } from '../utils';
 import { IconChevronDown, IconShare, IconSpeaker } from './Icons';
-import { generateSpeech } from '../services/geminiService';
+import { cancelSpeech, speakText } from '../services/speechService';
 import { useSettingsStore } from '../store/useSettingsStore';
 
 interface ResultDrawerProps {
@@ -13,55 +13,6 @@ interface ResultDrawerProps {
   onClose: () => void;
   onShowNotification?: (msg: string) => void;
 }
-
-// Helper: Decode Base64 to Uint8Array
-const base64ToUint8Array = (base64: string) => {
-  const binaryString = atob(base64);
-  const len = binaryString.length;
-  const bytes = new Uint8Array(len);
-  for (let i = 0; i < len; i++) {
-    bytes[i] = binaryString.charCodeAt(i);
-  }
-  return bytes;
-};
-
-// Helper: Convert PCM Data to WAV Blob
-const createWavBlob = (data: Uint8Array, sampleRate: number): Blob => {
-  const numChannels = 1;
-  const byteRate = sampleRate * numChannels * 2;
-  const blockAlign = numChannels * 2;
-  const dataInt16 = new Int16Array(data.buffer);
-  const buffer = new ArrayBuffer(44 + dataInt16.length * 2);
-  const view = new DataView(buffer);
-
-  const writeString = (offset: number, string: string) => {
-    for (let i = 0; i < string.length; i++) {
-        view.setUint8(offset + i, string.charCodeAt(i));
-    }
-  };
-
-  writeString(0, 'RIFF');
-  view.setUint32(4, 36 + dataInt16.length * 2, true);
-  writeString(8, 'WAVE');
-  writeString(12, 'fmt ');
-  view.setUint32(16, 16, true);
-  view.setUint16(20, 1, true); // PCM
-  view.setUint16(22, numChannels, true);
-  view.setUint32(24, sampleRate, true);
-  view.setUint32(28, byteRate, true);
-  view.setUint16(32, blockAlign, true);
-  view.setUint16(34, 16, true);
-  writeString(36, 'data');
-  view.setUint32(40, dataInt16.length * 2, true);
-
-  let offset = 44;
-  for (let i = 0; i < dataInt16.length; i++) {
-      view.setInt16(offset, dataInt16[i], true);
-      offset += 2;
-  }
-
-  return new Blob([view], { type: 'audio/wav' });
-};
 
 export const ResultDrawer: React.FC<ResultDrawerProps> = ({ 
     result, 
@@ -73,14 +24,8 @@ export const ResultDrawer: React.FC<ResultDrawerProps> = ({
   const { theme, highResAudio: showAudioPlayer, language } = useSettingsStore();
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoadingAudio, setIsLoadingAudio] = useState(false);
-  const [audioUrl, setAudioUrl] = useState<string | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-
   const stopAudio = () => {
-    if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
-    }
+    cancelSpeech();
     setIsPlaying(false);
     setIsLoadingAudio(false);
   };
@@ -88,10 +33,6 @@ export const ResultDrawer: React.FC<ResultDrawerProps> = ({
   useEffect(() => {
     if (!isOpen) {
       stopAudio();
-      if (audioUrl) {
-          URL.revokeObjectURL(audioUrl);
-          setAudioUrl(null);
-      }
     } else {
       triggerHaptic(50);
     }
@@ -100,80 +41,29 @@ export const ResultDrawer: React.FC<ResultDrawerProps> = ({
   const handlePlayAudio = async () => {
     if (!result) return;
     if (isPlaying || isLoadingAudio) {
-      if (audioRef.current) {
-         if (isPlaying) {
-             audioRef.current.pause();
-             setIsPlaying(false);
-         } else {
-             audioRef.current.play().catch(err => {
-                 if (err.name !== 'AbortError') console.error("Play error:", err);
-             });
-             setIsPlaying(true);
-         }
-      }
+      stopAudio();
       return;
-    }
-
-    if (audioUrl && audioRef.current) {
-       audioRef.current.play().catch(err => {
-           if (err.name !== 'AbortError') console.error("Play error:", err);
-       });
-       setIsPlaying(true);
-       return;
     }
 
     setIsLoadingAudio(true);
     try {
       const text = `${result.title}. ${result.essence}. ${t('result.mirror')}: ${result.mirrorInsight}.`;
-      const base64Audio = await generateSpeech(text);
-      const audioBytes = base64ToUint8Array(base64Audio);
-      const wavBlob = createWavBlob(audioBytes, 24000);
-      const blobUrl = URL.createObjectURL(wavBlob);
-      setAudioUrl(blobUrl);
-
-      if (audioRef.current) {
-          audioRef.current.src = blobUrl;
-          
-          if ('mediaSession' in navigator) {
-              navigator.mediaSession.metadata = new MediaMetadata({
-                  title: result.title,
-                  artist: "Context Lens",
-                  artwork: [
-                      { src: '/icon.svg', sizes: '512x512', type: 'image/svg+xml' }
-                  ]
-              });
-              
-              navigator.mediaSession.setActionHandler('play', () => {
-                  audioRef.current?.play().catch(() => {});
-                  setIsPlaying(true);
-              });
-              navigator.mediaSession.setActionHandler('pause', () => {
-                  audioRef.current?.pause();
-                  setIsPlaying(false);
-              });
-          }
-
-          audioRef.current.play().then(() => {
-              setIsPlaying(true);
-              setIsLoadingAudio(false);
-          }).catch(err => {
-              if (err.name !== 'AbortError') {
-                  console.error("Playback failed", err);
-              }
-              setIsLoadingAudio(false);
-          });
-      }
+      setIsPlaying(true);
+      setIsLoadingAudio(false);
+      await speakText(text, language);
     } catch (error) {
-      console.error("Failed to play audio:", error);
+      onShowNotification?.(error instanceof Error ? error.message : t('result.shareError'));
+    } finally {
+      setIsPlaying(false);
       setIsLoadingAudio(false);
     }
   };
 
   const handleShare = async () => {
     if (!result) return;
-    const text = `${result.title}\n\n${result.essence}\n\n"${result.mirrorInsight}"\n\n- via Context Lens`;
+    const text = `${result.title}\n\n${result.essence}\n\n"${result.mirrorInsight}"\n\n- via LoreLens`;
     const url = result.mapUri || window.location.href;
-    const shareData = { title: `Context Lens: ${result.title}`, text: text, url: url };
+    const shareData = { title: `LoreLens: ${result.title}`, text: text, url: url };
 
     if (navigator.share) {
         try {
@@ -233,13 +123,6 @@ export const ResultDrawer: React.FC<ResultDrawerProps> = ({
             {isDark && (
                 <div className="absolute top-0 start-1/2 rtl:translate-x-1/2 -translate-x-1/2 w-3/4 h-32 bg-indigo-500/10 blur-[60px] pointer-events-none" />
             )}
-
-            <audio 
-                ref={audioRef} 
-                src={audioUrl || undefined} 
-                onEnded={() => setIsPlaying(false)} 
-                className="hidden" 
-            />
 
             <div className="p-8 pb-16 space-y-8 relative">
                 
