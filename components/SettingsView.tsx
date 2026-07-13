@@ -92,7 +92,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
   ];
 
   return (
-    <div className={`absolute inset-0 z-50 flex flex-col h-full animate-fade-in ${bgClass} ${textClass}`}>
+    <div role="region" aria-label={t('settings.title')} className={`absolute inset-0 z-50 flex flex-col h-full animate-fade-in ${bgClass} ${textClass}`}>
       {/* Header - Fixed */}
       <div className="flex items-center p-6 pb-4 shrink-0">
         <button aria-label={t('common.back')} onClick={onBack} className={`p-2 -ms-2 opacity-80 hover:opacity-100 transition-opacity ${accent.text}`}>
@@ -235,7 +235,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
                     </div>
                 </button>
 
-                {/* High-Res Audio */}
+                {/* Browser read aloud */}
                 <button
                     type="button"
                     role="switch"

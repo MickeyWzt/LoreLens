@@ -1,57 +1,53 @@
 {
-  "greeting": {
-    "morning": "おはようございます",
-    "afternoon": "こんにちは",
-    "evening": "こんばんは"
-  },
+  "common": { "back": "戻る", "retry": "再試行", "save": "保存", "saved": "保存しました" },
+  "greeting": { "morning": "おはようございます", "afternoon": "こんにちは", "evening": "こんばんは" },
   "home": {
-    "localInsight": "ローカルインサイト",
-    "scan": "スキャンして解読",
-    "photoBy": "写真:",
-    "on": "提供:"
+    "localInsight": "旅のヒント", "scan": "スキャンして読み解く", "photoBy": "撮影", "on": "提供",
+    "subtitle": "その場所を記憶に残す、小さなディテールにカメラを向けてください。",
+    "totalDiscoveries": "発見", "today": "今日",
+    "insight": "歩みを緩めると、街は小さな選択の積み重ねから読めるようになります。"
+  },
+  "location": {
+    "locating": "位置を確認中…", "unavailable": "位置情報を利用できません", "unavailableShort": "利用不可",
+    "approximate": "おおよその位置", "precise": "正確な位置"
   },
   "settings": {
-    "title": "設定",
-    "language": "言語",
-    "appearance": "外観",
-    "preferences": "設定",
-    "data": "データ",
-    "midnight": "ミッドナイト",
-    "porcelain": "ポーセリン",
-    "saveGallery": "写真をギャラリーに保存",
-    "highResAudio": "高音質オーディオ",
-    "highResDesc": "結果で「読み上げ」を有効にする",
-    "clearHistory": "履歴を消去",
-    "confirmClear": "もう一度タップして確認",
-    "itemsInStorage": "件のアイテム"
+    "title": "設定", "language": "言語", "appearance": "外観", "preferences": "環境設定", "data": "データ",
+    "midnight": "ミッドナイト", "porcelain": "ポーセリン", "accentColor": "アクセントカラー", "indigo": "インディゴ", "teal": "ティール", "amber": "アンバー", "violet": "バイオレット",
+    "reduceMotion": "動きを減らす", "reduceMotionDesc": "画面遷移とアニメーションを簡略化します",
+    "saveGallery": "切り抜きをギャラリーに保存", "readAloud": "読み上げを有効にする", "highResDesc": "結果画面にブラウザーの読み上げボタンを表示します",
+    "clearHistory": "履歴を消去", "confirmClear": "もう一度タップして確認", "itemsInStorage": "件を保存中",
+    "exportData": "書き出す", "importData": "読み込む", "exported": "バックアップを書き出しました", "imported": "{{count}} 件を読み込みました", "importInvalid": "このバックアップは無効です",
+    "aiDescription": "Qwen 画像解析 · DeepSeek 要約 · Gemini は任意の予備"
   },
   "result": {
-    "essence": "本質",
-    "mirror": "比較洞察",
-    "philosophy": "哲学的背景",
-    "action": "試してみよう",
-    "share": "クリップボードにコピーしました",
-    "shareError": "共有できません"
+    "essence": "本質", "mirror": "文化の鏡", "philosophy": "背景の思想", "action": "試してみる",
+    "share": "クリップボードにコピーしました", "shareError": "共有できません"
   },
   "history": {
-    "title": "発見したこと",
-    "empty": "まだ発見はありません",
-    "emptySub": "何か撮ってみましょう！",
-    "recapButton": "共鳴レビュー",
-    "dailyJournal": "時間の軸",
-    "writing": "共鳴を計算中...",
-    "noItemsToday": "今日の発見はまだありません。",
-    "curiosityScore": "共鳴スコア",
-    "mood": "気分"
+    "title": "発見の記録", "empty": "まだ発見がありません", "emptySub": "気になるものを撮影してみましょう",
+    "recapButton": "共鳴レビュー", "dailyJournal": "時間の軸", "writing": "共鳴を計算中…", "noItemsToday": "今日の発見はありません",
+    "curiosityScore": "共鳴スコア", "mood": "ムード", "manage": "編集", "deleteSelected": "選択項目を削除", "cancel": "キャンセル",
+    "selectAll": "すべて選択", "deselectAll": "選択を解除", "pending": "あとで解析するため保存済み", "failed": "解析に失敗しました",
+    "pendingHint": "再試行するまで画像はこの端末にのみ保存されます", "retrySuccess": "解析が完了しました",
+    "deleted": "{{count}} 件を削除しました", "selected": "{{count}} 件を選択中", "journalFailed": "旅行記を作成できませんでした"
   },
   "map": {
-    "title": "発見マップ",
-    "openMaps": "Google Mapsで開く"
+    "title": "発見マップ", "openMaps": "地図で開く", "currentLocation": "現在地",
+    "empty": "位置データがありません。世界全体を表示しています。"
   },
   "crop": {
-     "title": "選択範囲",
-     "hint": "枠をドラッグして対象を囲む",
-     "analyze": "分析する",
-     "retake": "撮り直す"
-  }
+    "title": "範囲を選択", "hint": "枠または四隅をドラッグしてください", "analyze": "選択範囲を解析", "retake": "撮り直す",
+    "useFullImage": "全体を使用", "sourceAlt": "切り抜く写真", "resizeHandle": "選択範囲のサイズを変更"
+  },
+  "scan": {
+    "savedForLater": "あとで解析するため保存しました", "analysisFailed": "解析を完了できませんでした", "pendingHint": "接続後、準備ができたら手動で再試行してください。",
+    "failureHint": "再試行するか、別の写真を選んでください。", "choosePhoto": "写真を選ぶ", "later": "あとで行う", "deciphering": "解析中"
+  },
+  "errors": {
+    "invalidImage": "この画像を開けません", "cameraDenied": "カメラの許可が拒否されました", "cameraUnavailable": "カメラを利用できません",
+    "cameraHelp": "ブラウザーでカメラを許可するか、写真を選んでください。", "offlineRetry": "オフラインです。接続後に再試行してください。",
+    "analysisFailed": "解析に失敗しました", "serviceNotConfigured": "AI サービスが設定されていません", "rateLimited": "サービスが混み合っています。少し待って再試行してください。"
+  },
+  "aria": { "close": "閉じる", "share": "共有", "readAloud": "読み上げ", "capture": "撮影", "upload": "写真を選ぶ", "openMap": "地図を開く", "openHistory": "履歴を開く" }
 }

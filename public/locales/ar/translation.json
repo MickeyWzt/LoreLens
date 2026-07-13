@@ -1,57 +1,53 @@
 {
-  "greeting": {
-    "morning": "صباح الخير",
-    "afternoon": "مساء الخير",
-    "evening": "مساء الخير"
-  },
+  "common": { "back": "رجوع", "retry": "إعادة المحاولة", "save": "حفظ", "saved": "تم الحفظ" },
+  "greeting": { "morning": "صباح الخير", "afternoon": "مساء الخير", "evening": "مساء الخير" },
   "home": {
-    "localInsight": "رؤية محلية",
-    "scan": "امسح لفك التشفير",
-    "photoBy": "صورة بواسطة",
-    "on": "على"
+    "localInsight": "فكرة للسفر", "scan": "امسح لاكتشاف الحكاية", "photoBy": "تصوير", "on": "على",
+    "subtitle": "وجّه الكاميرا إلى التفاصيل التي تجعل المكان جديراً بالتذكّر.",
+    "totalDiscoveries": "الاكتشافات", "today": "اليوم",
+    "insight": "تصبح المدينة مقروءة عندما تتمهّل بما يكفي لملاحظة أصغر اختياراتها."
+  },
+  "location": {
+    "locating": "جارٍ تحديد موقعك…", "unavailable": "الموقع غير متاح", "unavailableShort": "غير متاح",
+    "approximate": "موقع تقريبي", "precise": "موقع دقيق"
   },
   "settings": {
-    "title": "الإعدادات",
-    "language": "اللغة",
-    "appearance": "المظهر",
-    "preferences": "التفضيلات",
-    "data": "البيانات",
-    "midnight": "منتصف الليل",
-    "porcelain": "خزف",
-    "saveGallery": "حفظ الصور في المعرض",
-    "highResAudio": "صوت عالي الدقة",
-    "highResDesc": "تفعيل زر \"اقرأ بصوت عالٍ\"",
-    "clearHistory": "مسح السجل",
-    "confirmClear": "انقر مرة أخرى للتأكيد",
-    "itemsInStorage": "عناصر في التخزين"
+    "title": "الإعدادات", "language": "اللغة", "appearance": "المظهر", "preferences": "التفضيلات", "data": "البيانات",
+    "midnight": "منتصف الليل", "porcelain": "الخزف", "accentColor": "لون التمييز", "indigo": "نيلي", "teal": "فيروزي", "amber": "كهرماني", "violet": "بنفسجي",
+    "reduceMotion": "تقليل الحركة", "reduceMotionDesc": "تبسيط الانتقالات والرسوم المتحركة",
+    "saveGallery": "حفظ الصور المقصوصة في المعرض", "readAloud": "تفعيل القراءة بصوت عالٍ", "highResDesc": "إظهار زر قراءة المتصفح في النتائج",
+    "clearHistory": "مسح السجل", "confirmClear": "اضغط مرة أخرى للتأكيد", "itemsInStorage": "عنصر محفوظ",
+    "exportData": "تصدير", "importData": "استيراد", "exported": "تم تصدير النسخة الاحتياطية", "imported": "تم استيراد {{count}} سجلاً", "importInvalid": "هذه النسخة غير صالحة",
+    "aiDescription": "رؤية Qwen · نص DeepSeek · Gemini احتياطي اختياري"
   },
   "result": {
-    "essence": "الجوهر",
-    "mirror": "رؤية معكوسة",
-    "philosophy": "الفلسفة",
-    "action": "جرب هذا",
-    "share": "تم النسخ إلى الحافظة",
-    "shareError": "تعذر المشاركة"
+    "essence": "الخلاصة", "mirror": "مرآة ثقافية", "philosophy": "الفلسفة", "action": "جرّب هذا",
+    "share": "تم النسخ إلى الحافظة", "shareError": "تعذّرت المشاركة"
   },
   "history": {
-    "title": "اكتشافاتي",
-    "empty": "لا توجد اكتشافات بعد.",
-    "emptySub": "التقط شيئًا ما!",
-    "recapButton": "مراجعة الرنين",
-    "dailyJournal": "خريطة المحور",
-    "writing": "جارٍ حساب الرنين...",
-    "noItemsToday": "لم يتم العثور على اكتشافات اليوم.",
-    "curiosityScore": "درجة الرنين",
-    "mood": "المزاج"
+    "title": "اكتشافاتي", "empty": "لا توجد اكتشافات بعد", "emptySub": "التقط تفصيلاً يلفت انتباهك",
+    "recapButton": "مراجعة الصدى", "dailyJournal": "محور الرحلة", "writing": "جارٍ حساب الصدى…", "noItemsToday": "لا توجد اكتشافات اليوم",
+    "curiosityScore": "درجة الصدى", "mood": "المزاج", "manage": "تعديل", "deleteSelected": "حذف المحدد", "cancel": "إلغاء",
+    "selectAll": "تحديد الكل", "deselectAll": "إلغاء التحديد", "pending": "محفوظ لوقت لاحق", "failed": "فشل التحليل",
+    "pendingHint": "تبقى الصورة على هذا الجهاز حتى تعيد المحاولة", "retrySuccess": "اكتمل التحليل",
+    "deleted": "تم حذف {{count}} سجلاً", "selected": "تم تحديد {{count}}", "journalFailed": "تعذّر إنشاء اليوميات"
   },
   "map": {
-    "title": "خريطة الاكتشافات",
-    "openMaps": "افتح في خرائط جوجل"
+    "title": "خريطة الاكتشافات", "openMaps": "فتح في الخرائط", "currentLocation": "الموقع الحالي",
+    "empty": "لا توجد بيانات موقع بعد. تعرض الخريطة منظراً عالمياً."
   },
   "crop": {
-    "title": "تحديد التركيز",
-    "hint": "اسحب الزوايا لتأطير الكائن",
-    "analyze": "تحليل التحديد",
-    "retake": "إعادة الالتقاط"
-  }
+    "title": "تحديد موضع التركيز", "hint": "اسحب الإطار أو زواياه", "analyze": "تحليل التحديد", "retake": "إعادة التصوير",
+    "useFullImage": "استخدام الكاملة", "sourceAlt": "صورة للقص", "resizeHandle": "تغيير حجم التحديد"
+  },
+  "scan": {
+    "savedForLater": "محفوظ لوقت لاحق", "analysisFailed": "تعذّر إكمال التحليل", "pendingHint": "اتصل بالشبكة ثم أعد المحاولة عندما تكون جاهزاً.",
+    "failureHint": "أعد المحاولة أو اختر صورة أخرى.", "choosePhoto": "اختيار صورة", "later": "لاحقاً", "deciphering": "جارٍ الاكتشاف"
+  },
+  "errors": {
+    "invalidImage": "تعذّر فتح هذه الصورة", "cameraDenied": "تم رفض إذن الكاميرا", "cameraUnavailable": "الكاميرا غير متاحة",
+    "cameraHelp": "اسمح باستخدام الكاميرا في المتصفح أو اختر صورة.", "offlineRetry": "أنت غير متصل. أعد المحاولة بعد الاتصال.",
+    "analysisFailed": "فشل التحليل", "serviceNotConfigured": "خدمة الذكاء الاصطناعي غير مهيأة", "rateLimited": "الخدمة مشغولة. حاول بعد قليل."
+  },
+  "aria": { "close": "إغلاق", "share": "مشاركة", "readAloud": "قراءة بصوت عالٍ", "capture": "التقاط صورة", "upload": "اختيار صورة", "openMap": "فتح الخريطة", "openHistory": "فتح السجل" }
 }

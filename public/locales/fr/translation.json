@@ -1,57 +1,53 @@
 {
-  "greeting": {
-    "morning": "Bonjour",
-    "afternoon": "Bonne après-midi",
-    "evening": "Bonsoir"
-  },
+  "common": { "back": "Retour", "retry": "Réessayer", "save": "Enregistrer", "saved": "Enregistré" },
+  "greeting": { "morning": "Bonjour", "afternoon": "Bon après-midi", "evening": "Bonsoir" },
   "home": {
-    "localInsight": "Aperçu Local",
-    "scan": "Scanner",
-    "photoBy": "Photo par",
-    "on": "sur"
+    "localInsight": "Piste de voyage", "scan": "Scanner et déchiffrer", "photoBy": "Photo de", "on": "sur",
+    "subtitle": "Dirigez l’appareil vers les détails qui rendent un lieu mémorable.",
+    "totalDiscoveries": "Découvertes", "today": "Aujourd’hui",
+    "insight": "Une ville devient lisible lorsque l’on ralentit assez pour remarquer ses plus petits choix."
+  },
+  "location": {
+    "locating": "Recherche de votre position…", "unavailable": "Position indisponible", "unavailableShort": "Indisponible",
+    "approximate": "Position approximative", "precise": "Position précise"
   },
   "settings": {
-    "title": "Paramètres",
-    "language": "Langue",
-    "appearance": "Apparence",
-    "preferences": "Préférences",
-    "data": "Données",
-    "midnight": "Minuit",
-    "porcelain": "Porcelaine",
-    "saveGallery": "Enregistrer les photos",
-    "highResAudio": "Audio Haute Rés",
-    "highResDesc": "Activer la lecture à voix haute",
-    "clearHistory": "Effacer l'historique",
-    "confirmClear": "Appuyez à nouveau pour confirmer",
-    "itemsInStorage": "éléments stockés"
+    "title": "Réglages", "language": "Langue", "appearance": "Apparence", "preferences": "Préférences", "data": "Données",
+    "midnight": "Minuit", "porcelain": "Porcelaine", "accentColor": "Couleur d’accent", "indigo": "Indigo", "teal": "Sarcelle", "amber": "Ambre", "violet": "Violet",
+    "reduceMotion": "Réduire les animations", "reduceMotionDesc": "Simplifie les transitions et les animations",
+    "saveGallery": "Enregistrer les recadrages", "readAloud": "Activer la lecture à voix haute", "highResDesc": "Affiche le bouton de lecture du navigateur dans les résultats",
+    "clearHistory": "Effacer l’historique", "confirmClear": "Touchez encore pour confirmer", "itemsInStorage": "éléments enregistrés",
+    "exportData": "Exporter", "importData": "Importer", "exported": "Sauvegarde exportée", "imported": "{{count}} éléments importés", "importInvalid": "Cette sauvegarde est invalide",
+    "aiDescription": "Vision Qwen · texte DeepSeek · Gemini en secours optionnel"
   },
   "result": {
-    "essence": "L'Essence",
-    "mirror": "Miroir Culturel",
-    "philosophy": "Philosophie",
-    "action": "Essayez ceci",
-    "share": "Copié dans le presse-papiers",
-    "shareError": "Impossible de partager"
+    "essence": "L’essentiel", "mirror": "Regard croisé", "philosophy": "Philosophie", "action": "À essayer",
+    "share": "Copié dans le presse-papiers", "shareError": "Impossible de partager"
   },
   "history": {
-    "title": "Mes Découvertes",
-    "empty": "Aucune découverte.",
-    "emptySub": "Allez capturer quelque chose !",
-    "recapButton": "Résonance",
-    "dailyJournal": "L'Axe du Temps",
-    "writing": "Calcul de la résonance...",
-    "noItemsToday": "Aucune découverte aujourd'hui.",
-    "curiosityScore": "Score de Résonance",
-    "mood": "Humeur"
+    "title": "Mes découvertes", "empty": "Aucune découverte", "emptySub": "Capturez un détail qui attire votre regard",
+    "recapButton": "Bilan de résonance", "dailyJournal": "L’axe du voyage", "writing": "Calcul de la résonance…", "noItemsToday": "Aucune découverte aujourd’hui",
+    "curiosityScore": "Score de résonance", "mood": "Humeur", "manage": "Modifier", "deleteSelected": "Supprimer la sélection", "cancel": "Annuler",
+    "selectAll": "Tout sélectionner", "deselectAll": "Tout désélectionner", "pending": "Enregistré pour plus tard", "failed": "Échec de l’analyse",
+    "pendingHint": "L’image reste sur cet appareil jusqu’à votre nouvelle tentative", "retrySuccess": "Analyse terminée",
+    "deleted": "{{count}} éléments supprimés", "selected": "{{count}} sélectionnés", "journalFailed": "Impossible de créer le journal"
   },
   "map": {
-    "title": "Carte des Découvertes",
-    "openMaps": "Ouvrir dans Google Maps"
+    "title": "Carte des découvertes", "openMaps": "Ouvrir dans Plans", "currentLocation": "Position actuelle",
+    "empty": "Aucune donnée de position. La carte affiche une vue mondiale."
   },
   "crop": {
-     "title": "Sélection",
-     "hint": "Encadrez l'objet",
-     "analyze": "Analyser",
-     "retake": "Reprendre"
-  }
+    "title": "Choisir le cadrage", "hint": "Faites glisser le cadre ou ses angles", "analyze": "Analyser la sélection", "retake": "Reprendre",
+    "useFullImage": "Tout utiliser", "sourceAlt": "Photo à recadrer", "resizeHandle": "Redimensionner la sélection"
+  },
+  "scan": {
+    "savedForLater": "Enregistré pour plus tard", "analysisFailed": "L’analyse n’a pas abouti", "pendingHint": "Reconnectez-vous puis relancez l’analyse quand vous le souhaitez.",
+    "failureHint": "Réessayez ou choisissez une autre photo.", "choosePhoto": "Choisir une photo", "later": "Faire plus tard", "deciphering": "Déchiffrage"
+  },
+  "errors": {
+    "invalidImage": "Impossible d’ouvrir cette image", "cameraDenied": "L’accès à l’appareil photo a été refusé", "cameraUnavailable": "L’appareil photo est indisponible",
+    "cameraHelp": "Autorisez l’appareil photo dans le navigateur ou choisissez une photo.", "offlineRetry": "Vous êtes hors ligne. Réessayez après reconnexion.",
+    "analysisFailed": "Échec de l’analyse", "serviceNotConfigured": "Le service d’IA n’est pas configuré", "rateLimited": "Le service est occupé. Réessayez bientôt."
+  },
+  "aria": { "close": "Fermer", "share": "Partager", "readAloud": "Lire à voix haute", "capture": "Prendre une photo", "upload": "Choisir une photo", "openMap": "Ouvrir la carte", "openHistory": "Ouvrir l’historique" }
 }

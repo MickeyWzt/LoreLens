@@ -1,69 +1,53 @@
 {
-  "greeting": {
-    "morning": "Good morning",
-    "afternoon": "Good afternoon",
-    "evening": "Good evening"
-  },
+  "common": { "back": "Back", "retry": "Retry", "save": "Save", "saved": "Saved" },
+  "greeting": { "morning": "Good morning", "afternoon": "Good afternoon", "evening": "Good evening" },
   "home": {
-    "localInsight": "Local Insight",
-    "scan": "Scan to Decipher",
-    "photoBy": "Photo by",
-    "on": "on"
+    "localInsight": "Travel prompt", "scan": "Scan to decipher", "photoBy": "Photo by", "on": "on",
+    "subtitle": "Point your camera at the details that make a place worth remembering.",
+    "totalDiscoveries": "Discoveries", "today": "Today",
+    "insight": "A city becomes legible when you slow down enough to notice its smallest choices."
+  },
+  "location": {
+    "locating": "Finding your location…", "unavailable": "Location unavailable", "unavailableShort": "Unavailable",
+    "approximate": "Approximate location", "precise": "Precise location"
   },
   "settings": {
-    "title": "Settings",
-    "language": "Language",
-    "appearance": "Appearance",
-    "preferences": "Preferences",
-    "data": "Data",
-    "midnight": "Midnight",
-    "porcelain": "Porcelain",
-    "accentColor": "Accent Color",
-    "indigo": "Indigo",
-    "teal": "Teal",
-    "amber": "Amber",
-    "violet": "Violet",
-    "reduceMotion": "Reduce Motion",
-    "reduceMotionDesc": "Simplify page transitions and interactive animations",
-    "saveGallery": "Save Photos to Gallery",
-    "highResAudio": "High-Res Audio",
-    "highResDesc": "Enable \"Read Aloud\" button in results",
-    "clearHistory": "Clear History",
-    "confirmClear": "Tap again to Confirm",
-    "itemsInStorage": "items in storage"
+    "title": "Settings", "language": "Language", "appearance": "Appearance", "preferences": "Preferences", "data": "Data",
+    "midnight": "Midnight", "porcelain": "Porcelain", "accentColor": "Accent color", "indigo": "Indigo", "teal": "Teal", "amber": "Amber", "violet": "Violet",
+    "reduceMotion": "Reduce motion", "reduceMotionDesc": "Simplify transitions and animations",
+    "saveGallery": "Save crops to gallery", "readAloud": "Enable read aloud", "highResDesc": "Show a browser read-aloud button in results",
+    "clearHistory": "Clear history", "confirmClear": "Tap again to confirm", "itemsInStorage": "items in storage",
+    "exportData": "Export", "importData": "Import", "exported": "Backup exported", "imported": "Imported {{count}} records", "importInvalid": "This backup is invalid",
+    "aiDescription": "Qwen vision · DeepSeek text · optional Gemini fallback"
   },
   "result": {
-    "essence": "The Essence",
-    "mirror": "Mirror Insight",
-    "philosophy": "Philosophy",
-    "action": "Try this",
-    "share": "Copied to clipboard",
-    "shareError": "Unable to share"
+    "essence": "The essence", "mirror": "Mirror insight", "philosophy": "Philosophy", "action": "Try this",
+    "share": "Copied to clipboard", "shareError": "Unable to share"
   },
   "history": {
-    "title": "My Discoveries",
-    "empty": "No discoveries yet.",
-    "emptySub": "Go capture something!",
-    "recapButton": "Resonance Review",
-    "dailyJournal": "The Axis Map",
-    "writing": "Calculating resonance...",
-    "noItemsToday": "No discoveries found for today.",
-    "curiosityScore": "Resonance Score",
-    "mood": "Mood",
-    "manage": "Edit",
-    "deleteSelected": "Delete Selected",
-    "cancel": "Cancel",
-    "selectAll": "Select All",
-    "deselectAll": "Deselect All"
+    "title": "My discoveries", "empty": "No discoveries yet", "emptySub": "Capture something that catches your eye",
+    "recapButton": "Resonance review", "dailyJournal": "The axis map", "writing": "Calculating resonance…", "noItemsToday": "No discoveries today",
+    "curiosityScore": "Resonance score", "mood": "Mood", "manage": "Edit", "deleteSelected": "Delete selected", "cancel": "Cancel",
+    "selectAll": "Select all", "deselectAll": "Deselect all", "pending": "Saved for later", "failed": "Analysis failed",
+    "pendingHint": "Your image stays on this device until you retry", "retrySuccess": "Analysis completed",
+    "deleted": "Deleted {{count}} records", "selected": "{{count}} selected", "journalFailed": "The journal could not be created"
   },
   "map": {
-    "title": "Discovery Map",
-    "openMaps": "Open in Google Maps"
+    "title": "Discovery map", "openMaps": "Open in maps", "currentLocation": "Current location",
+    "empty": "No location data yet. The map is showing a global view."
   },
   "crop": {
-    "title": "Focus Selection",
-    "hint": "Drag corners to frame the object",
-    "analyze": "Analyze Selection",
-    "retake": "Retake"
-  }
+    "title": "Focus selection", "hint": "Drag the frame or its corners", "analyze": "Analyze selection", "retake": "Retake",
+    "useFullImage": "Use full", "sourceAlt": "Photo to crop", "resizeHandle": "Resize selection"
+  },
+  "scan": {
+    "savedForLater": "Saved for later", "analysisFailed": "Analysis could not finish", "pendingHint": "Reconnect, then retry when you are ready.",
+    "failureHint": "Try again or choose a different photo.", "choosePhoto": "Choose photo", "later": "Do this later", "deciphering": "Deciphering"
+  },
+  "errors": {
+    "invalidImage": "This image could not be opened", "cameraDenied": "Camera permission was denied", "cameraUnavailable": "Camera is unavailable",
+    "cameraHelp": "Allow camera access in your browser, or choose a photo instead.", "offlineRetry": "You are offline. Retry after reconnecting.",
+    "analysisFailed": "Analysis failed", "serviceNotConfigured": "The AI service is not configured", "rateLimited": "The service is busy. Try again shortly."
+  },
+  "aria": { "close": "Close", "share": "Share", "readAloud": "Read aloud", "capture": "Take photo", "upload": "Choose photo", "openMap": "Open map", "openHistory": "Open history" }
 }

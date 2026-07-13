@@ -19,9 +19,11 @@ i18n
     }
   });
 
-i18n.on('languageChanged', (lng) => {
+export const syncDocumentLanguage = (lng: string) => {
   document.documentElement.dir = (lng === 'ar' || lng === 'he') ? 'rtl' : 'ltr';
   document.documentElement.lang = lng;
-});
+};
+
+i18n.on('languageChanged', syncDocumentLanguage);
 
 export default i18n;

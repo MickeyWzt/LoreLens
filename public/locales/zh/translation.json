@@ -1,69 +1,53 @@
 {
-  "greeting": {
-    "morning": "早上好",
-    "afternoon": "下午好",
-    "evening": "晚上好"
-  },
+  "common": { "back": "返回", "retry": "重试", "save": "保存", "saved": "已保存" },
+  "greeting": { "morning": "早上好", "afternoon": "下午好", "evening": "晚上好" },
   "home": {
-    "localInsight": "本地洞察",
-    "scan": "扫描解读",
-    "photoBy": "摄影师",
-    "on": "来自"
+    "localInsight": "旅行提示", "scan": "扫描解读", "photoBy": "摄影", "on": "来自",
+    "subtitle": "把镜头对准那些让一座城市值得被记住的细节。",
+    "totalDiscoveries": "发现", "today": "今日",
+    "insight": "当你愿意放慢脚步，一座城市会从最细微的选择中变得清晰。"
+  },
+  "location": {
+    "locating": "正在获取位置…", "unavailable": "位置不可用", "unavailableShort": "不可用",
+    "approximate": "大致位置", "precise": "精确位置"
   },
   "settings": {
-    "title": "设置",
-    "language": "语言",
-    "appearance": "外观",
-    "preferences": "偏好",
-    "data": "数据",
-    "midnight": "深邃黑",
-    "porcelain": "陶瓷白",
-    "accentColor": "主题点色",
-    "indigo": "靛蓝",
-    "teal": "青玉",
-    "amber": "琥珀",
-    "violet": "紫罗兰",
-    "reduceMotion": "减少动效",
-    "reduceMotionDesc": "为动效敏感用户简化界面过渡与过渡动画",
-    "saveGallery": "保存照片到相册",
-    "highResAudio": "高清语音朗读",
-    "highResDesc": "在结果页启用“朗读”按钮",
-    "clearHistory": "清除历史记录",
-    "confirmClear": "再次点击确认",
-    "itemsInStorage": "个项目已存储"
+    "title": "设置", "language": "语言", "appearance": "外观", "preferences": "偏好", "data": "数据",
+    "midnight": "深夜黑", "porcelain": "瓷白", "accentColor": "强调色", "indigo": "靛蓝", "teal": "青绿", "amber": "琥珀", "violet": "紫罗兰",
+    "reduceMotion": "减少动态效果", "reduceMotionDesc": "简化页面过渡和动画",
+    "saveGallery": "将裁剪照片保存到相册", "readAloud": "启用朗读", "highResDesc": "在结果页显示浏览器朗读按钮",
+    "clearHistory": "清除历史记录", "confirmClear": "再次点击确认", "itemsInStorage": "条记录已存储",
+    "exportData": "导出", "importData": "导入", "exported": "备份已导出", "imported": "已导入 {{count}} 条记录", "importInvalid": "备份文件无效",
+    "aiDescription": "通义千问识图 · DeepSeek 总结 · Gemini 可选备用"
   },
   "result": {
-    "essence": "本质",
-    "mirror": "镜像洞察",
-    "philosophy": "文化逻辑",
-    "action": "试一试",
-    "share": "已复制到剪贴板",
-    "shareError": "分享失败"
+    "essence": "本质", "mirror": "镜像洞察", "philosophy": "文化逻辑", "action": "试一试",
+    "share": "已复制到剪贴板", "shareError": "无法分享"
   },
   "history": {
-    "title": "我的发现",
-    "empty": "暂无发现",
-    "emptySub": "去探索一下吧！",
-    "recapButton": "共鸣回顾",
-    "dailyJournal": "时空轴线",
-    "writing": "正在计算文化共鸣...",
-    "noItemsToday": "今天还没有新的发现哦。",
-    "curiosityScore": "共鸣指数",
-    "mood": "今日心情",
-    "manage": "编辑",
-    "deleteSelected": "删除已选",
-    "cancel": "取消",
-    "selectAll": "全选",
-    "deselectAll": "取消全选"
+    "title": "我的发现", "empty": "还没有发现", "emptySub": "去记录一个吸引你的细节吧",
+    "recapButton": "共鸣回顾", "dailyJournal": "时空轴线", "writing": "正在计算共鸣…", "noItemsToday": "今天还没有新发现",
+    "curiosityScore": "共鸣指数", "mood": "心情", "manage": "编辑", "deleteSelected": "删除所选", "cancel": "取消",
+    "selectAll": "全选", "deselectAll": "取消全选", "pending": "已保存，稍后解读", "failed": "解读失败",
+    "pendingHint": "在你主动重试前，照片只保存在本机", "retrySuccess": "解读已完成",
+    "deleted": "已删除 {{count}} 条记录", "selected": "已选择 {{count}} 项", "journalFailed": "无法生成旅行回顾"
   },
   "map": {
-    "title": "发现地图",
-    "openMaps": "在 Google Maps 打开"
+    "title": "发现地图", "openMaps": "在地图中打开", "currentLocation": "当前位置",
+    "empty": "暂时没有位置数据，地图正显示全球视图。"
   },
   "crop": {
-    "title": "框选目标",
-    "hint": "拖动边框以聚焦物体",
-    "analyze": "开始解读",
-    "retake": "重拍"
-  }
+    "title": "选择焦点", "hint": "拖动选框或四角调整范围", "analyze": "解读选区", "retake": "重拍",
+    "useFullImage": "使用整图", "sourceAlt": "待裁剪照片", "resizeHandle": "调整选区大小"
+  },
+  "scan": {
+    "savedForLater": "已保存，稍后解读", "analysisFailed": "解读未能完成", "pendingHint": "联网后由你主动重试，照片不会自动上传。",
+    "failureHint": "可以重试，或选择另一张照片。", "choosePhoto": "选择照片", "later": "稍后处理", "deciphering": "正在解读"
+  },
+  "errors": {
+    "invalidImage": "无法打开这张图片", "cameraDenied": "相机权限已被拒绝", "cameraUnavailable": "相机不可用",
+    "cameraHelp": "请在浏览器中允许相机权限，或改为选择照片。", "offlineRetry": "当前离线，请联网后重试。",
+    "analysisFailed": "解读失败", "serviceNotConfigured": "AI 服务尚未配置", "rateLimited": "服务繁忙，请稍后重试。"
+  },
+  "aria": { "close": "关闭", "share": "分享", "readAloud": "朗读", "capture": "拍照", "upload": "选择照片", "openMap": "打开地图", "openHistory": "打开历史" }
 }

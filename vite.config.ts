@@ -51,7 +51,7 @@ export default defineConfig(({ mode }) => {
           manifest: {
             name: 'LoreLens',
             short_name: 'LoreLens',
-            description: 'A cross-cultural interpreter for travelers in Beijing.',
+            description: 'A cross-cultural interpreter for travelers worldwide.',
             theme_color: '#000000',
             background_color: '#000000',
             display: 'standalone',

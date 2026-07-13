@@ -1,57 +1,53 @@
 {
-  "greeting": {
-    "morning": "Buenos días",
-    "afternoon": "Buenas tardes",
-    "evening": "Buenas noches"
-  },
+  "common": { "back": "Volver", "retry": "Reintentar", "save": "Guardar", "saved": "Guardado" },
+  "greeting": { "morning": "Buenos días", "afternoon": "Buenas tardes", "evening": "Buenas noches" },
   "home": {
-    "localInsight": "Visión Local",
-    "scan": "Escanear",
-    "photoBy": "Foto de",
-    "on": "en"
+    "localInsight": "Idea para el viaje", "scan": "Escanear e interpretar", "photoBy": "Foto de", "on": "en",
+    "subtitle": "Apunta la cámara a los detalles que hacen que un lugar merezca ser recordado.",
+    "totalDiscoveries": "Descubrimientos", "today": "Hoy",
+    "insight": "Una ciudad se vuelve legible cuando bajas el ritmo y observas sus decisiones más pequeñas."
+  },
+  "location": {
+    "locating": "Buscando tu ubicación…", "unavailable": "Ubicación no disponible", "unavailableShort": "No disponible",
+    "approximate": "Ubicación aproximada", "precise": "Ubicación precisa"
   },
   "settings": {
-    "title": "Ajustes",
-    "language": "Idioma",
-    "appearance": "Apariencia",
-    "preferences": "Preferencias",
-    "data": "Datos",
-    "midnight": "Medianoche",
-    "porcelain": "Porcelana",
-    "saveGallery": "Guardar fotos",
-    "highResAudio": "Audio Alta Res",
-    "highResDesc": "Activar \"Leer en voz alta\"",
-    "clearHistory": "Borrar historial",
-    "confirmClear": "Toca de nuevo para confirmar",
-    "itemsInStorage": "elementos guardados"
+    "title": "Ajustes", "language": "Idioma", "appearance": "Apariencia", "preferences": "Preferencias", "data": "Datos",
+    "midnight": "Medianoche", "porcelain": "Porcelana", "accentColor": "Color de acento", "indigo": "Índigo", "teal": "Verde azulado", "amber": "Ámbar", "violet": "Violeta",
+    "reduceMotion": "Reducir movimiento", "reduceMotionDesc": "Simplifica transiciones y animaciones",
+    "saveGallery": "Guardar recortes en la galería", "readAloud": "Activar lectura en voz alta", "highResDesc": "Muestra el botón de lectura del navegador en los resultados",
+    "clearHistory": "Borrar historial", "confirmClear": "Toca de nuevo para confirmar", "itemsInStorage": "elementos guardados",
+    "exportData": "Exportar", "importData": "Importar", "exported": "Copia exportada", "imported": "Se importaron {{count}} registros", "importInvalid": "La copia no es válida",
+    "aiDescription": "Visión Qwen · texto DeepSeek · Gemini opcional como reserva"
   },
   "result": {
-    "essence": "La Esencia",
-    "mirror": "Espejo Cultural",
-    "philosophy": "Filosofía",
-    "action": "Prueba esto",
-    "share": "Copiado al portapapeles",
-    "shareError": "No se pudo compartir"
+    "essence": "La esencia", "mirror": "Reflejo cultural", "philosophy": "Filosofía", "action": "Prueba esto",
+    "share": "Copiado al portapapeles", "shareError": "No se pudo compartir"
   },
   "history": {
-    "title": "Mis Descubrimientos",
-    "empty": "Sin descubrimientos.",
-    "emptySub": "¡Ve a capturar algo!",
-    "recapButton": "Resonancia",
-    "dailyJournal": "El Eje",
-    "writing": "Calculando resonancia...",
-    "noItemsToday": "No hay descubrimientos hoy.",
-    "curiosityScore": "Puntaje de Resonancia",
-    "mood": "Estado de ánimo"
+    "title": "Mis descubrimientos", "empty": "Aún no hay descubrimientos", "emptySub": "Captura algo que llame tu atención",
+    "recapButton": "Revisión de resonancia", "dailyJournal": "El eje del viaje", "writing": "Calculando la resonancia…", "noItemsToday": "No hay descubrimientos hoy",
+    "curiosityScore": "Puntuación de resonancia", "mood": "Ánimo", "manage": "Editar", "deleteSelected": "Eliminar selección", "cancel": "Cancelar",
+    "selectAll": "Seleccionar todo", "deselectAll": "Deseleccionar todo", "pending": "Guardado para más tarde", "failed": "Falló el análisis",
+    "pendingHint": "La imagen permanece en este dispositivo hasta que reintentes", "retrySuccess": "Análisis completado",
+    "deleted": "Se eliminaron {{count}} registros", "selected": "{{count}} seleccionados", "journalFailed": "No se pudo crear el diario"
   },
   "map": {
-    "title": "Mapa de Hallazgos",
-    "openMaps": "Abrir en Google Maps"
+    "title": "Mapa de descubrimientos", "openMaps": "Abrir en mapas", "currentLocation": "Ubicación actual",
+    "empty": "Aún no hay datos de ubicación. Se muestra una vista global."
   },
   "crop": {
-    "title": "Selección",
-    "hint": "Arrastra para encuadrar",
-    "analyze": "Analizar",
-    "retake": "Retomar"
-  }
+    "title": "Elegir enfoque", "hint": "Arrastra el marco o sus esquinas", "analyze": "Analizar selección", "retake": "Repetir",
+    "useFullImage": "Usar completa", "sourceAlt": "Foto para recortar", "resizeHandle": "Cambiar tamaño de la selección"
+  },
+  "scan": {
+    "savedForLater": "Guardado para más tarde", "analysisFailed": "No se pudo completar el análisis", "pendingHint": "Vuelve a conectarte y reintenta cuando quieras.",
+    "failureHint": "Reintenta o elige otra foto.", "choosePhoto": "Elegir foto", "later": "Hacerlo más tarde", "deciphering": "Interpretando"
+  },
+  "errors": {
+    "invalidImage": "No se pudo abrir esta imagen", "cameraDenied": "Se denegó el permiso de la cámara", "cameraUnavailable": "La cámara no está disponible",
+    "cameraHelp": "Permite la cámara en el navegador o elige una foto.", "offlineRetry": "No tienes conexión. Reintenta al volver a conectarte.",
+    "analysisFailed": "Falló el análisis", "serviceNotConfigured": "El servicio de IA no está configurado", "rateLimited": "El servicio está ocupado. Reintenta en breve."
+  },
+  "aria": { "close": "Cerrar", "share": "Compartir", "readAloud": "Leer en voz alta", "capture": "Tomar foto", "upload": "Elegir foto", "openMap": "Abrir mapa", "openHistory": "Abrir historial" }
 }

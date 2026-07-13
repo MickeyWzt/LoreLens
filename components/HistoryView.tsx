@@ -5,6 +5,7 @@ import { HistoryItem, DailyRecapResult } from '../types';
 import { IconChevronDown, IconJournal } from './Icons';
 import { decipherImage, generateDailyRecap } from '../services/aiService';
 import type { ApiError, AnalysisRecordV2 } from '../types';
+import { localizeApiError } from '../services/errorMessages';
 import { useSettingsStore } from '../store/useSettingsStore';
 import { useHistoryStore } from '../store/useHistoryStore';
 import { getAccentStyles } from '../utils/accent';
@@ -134,7 +135,7 @@ const AxisMap = ({ items, onSelect, isDark }: { items: HistoryItem[], onSelect: 
                             >
                                 <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0 border border-white/10">
                                     {item.thumbnail ? (
-                                        <img src={item.thumbnail} alt="thumb" className="w-full h-full object-cover" />
+                                        <img src={item.thumbnail} alt={item.title} className="w-full h-full object-cover" />
                                     ) : (
                                         <div className="w-full h-full bg-gray-700"></div>
                                     )}
@@ -193,7 +194,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
             requestId: 'client',
           };
       updateRecord(record.id, { status: 'failed', error: details, updatedAt: Date.now() });
-      onShowNotification?.(details.message);
+      onShowNotification?.(localizeApiError(details, t));
     }
   };
 
@@ -217,7 +218,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
     const newHistory = history.filter(item => !selectedIds.includes(item.id));
     setHistory(newHistory);
     
-    onShowNotification?.(language === 'zh' ? `已删除 ${selectedIds.length} 条记录` : `Deleted ${selectedIds.length} records`);
+    onShowNotification?.(t('history.deleted', { count: selectedIds.length }));
     setSelectedIds([]);
     setIsEditMode(false);
   };
@@ -244,7 +245,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
         const result = await generateDailyRecap(items, language);
         setRecapData(result);
     } catch (error) {
-        onShowNotification?.("Failed to create journal.");
+        onShowNotification?.(t('history.journalFailed'));
         setShowRecap(false);
     } finally {
         setIsGenerating(false);
@@ -264,14 +265,14 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
   const iconBtnClass = isDark ? 'bg-white/10 hover:bg-white/20' : 'bg-gray-100 hover:bg-gray-200 text-gray-600';
 
   return (
-    <div className={`absolute inset-0 z-30 flex flex-col ${bgClass}`}>
+    <div role="region" aria-label={t('history.title')} className={`absolute inset-0 z-30 flex flex-col ${bgClass}`}>
         
         {/* Header */}
         <div className={`pt-12 px-6 pb-6 flex items-center justify-between border-b backdrop-blur-md sticky top-0 z-10 ${headerBgClass}`}>
             {isEditMode ? (
                 <div className="flex items-center gap-2">
                     <span className={`text-xl font-light tracking-wide ${animFadeIn}`}>
-                        {language === 'zh' ? `已选择 ${selectedIds.length} 项` : `${selectedIds.length} Selected`}
+                        {t('history.selected', { count: selectedIds.length })}
                     </span>
                 </div>
             ) : (
@@ -328,6 +329,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
                             </>
                         )}
                         <button 
+                            aria-label={t('aria.close')}
                             onClick={onClose} 
                             className={`p-2 rounded-full active:scale-90 transition-transform duration-200 ${iconBtnClass}`}
                         >
@@ -436,7 +438,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
             } animate-fade-in-up`}>
                 <div className="text-sm">
                     <span className={subTextClass}>
-                        {language === 'zh' ? `已选择 ${selectedIds.length} 项` : `${selectedIds.length} items selected`}
+                        {t('history.selected', { count: selectedIds.length })}
                     </span>
                 </div>
                 <button
@@ -464,6 +466,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
                  
                  {/* Close Button - Fixed relative to viewport so it is always accessible */}
                  <button 
+                    aria-label={t('aria.close')}
                     onClick={() => setShowRecap(false)}
                     className="fixed top-6 end-6 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 active:scale-90 z-[60] border border-white/5 backdrop-blur-md"
                  >

@@ -7,6 +7,9 @@ import { createPendingRecord } from './domain/records';
 import { initialScanState, scanReducer } from './domain/scanState';
 import { useAppContextStore } from './store/useAppContextStore';
 import { useTranslation } from 'react-i18next';
+import { normalizeImageFile } from './utils/image';
+import i18n from './i18n';
+import { localizeApiError } from './services/errorMessages';
 import { ResultDrawer } from './components/ResultDrawer';
 import { HistoryView } from './components/HistoryView';
 import { SettingsView } from './components/SettingsView';
@@ -33,9 +36,10 @@ const App: React.FC = () => {
   const streamRef = useRef<MediaStream | null>(null);
   const analysisAbortRef = useRef<AbortController | null>(null);
   const [isCameraReady, setIsCameraReady] = useState(false);
+  const [cameraError, setCameraError] = useState<'denied' | 'unavailable' | null>(null);
 
   // Stores
-  const { theme, language, fontSize, saveToGallery } = useSettingsStore();
+  const { theme, language, fontSize, saveToGallery, reduceMotion } = useSettingsStore();
   const { history, addRecord, loadHistory } = useHistoryStore();
   const ensureLocation = useAppContextStore((state) => state.ensureLocation);
   
@@ -63,11 +67,7 @@ const App: React.FC = () => {
 
   // Sync language with i18next
   useEffect(() => {
-      import('i18next').then(({ default: i18n }) => {
-          if (i18n.language !== language) {
-              i18n.changeLanguage(language);
-          }
-      });
+      if (i18n.language !== language) void i18n.changeLanguage(language);
   }, [language]);
 
   // Apply Font Size
@@ -80,6 +80,10 @@ const App: React.FC = () => {
       document.documentElement.style.fontSize = sizeMap[fontSize];
   }, [fontSize]);
 
+  useEffect(() => {
+    document.documentElement.classList.toggle('reduce-motion', reduceMotion);
+  }, [reduceMotion]);
+
   // Optimized Camera Lifecycle Management
   // Only activate camera when NOT in Home View (to save battery/heat)
   useEffect(() => {
@@ -91,6 +95,7 @@ const App: React.FC = () => {
             // Start Camera
             if (!streamRef.current) {
                 try {
+                    setCameraError(null);
                     const stream = await navigator.mediaDevices.getUserMedia({ 
                         video: { 
                             facingMode: 'environment',
@@ -109,8 +114,9 @@ const App: React.FC = () => {
                         };
                     }
                 } catch (err) {
-                    console.warn("Camera access denied or unavailable", err);
-                    showNotification("Camera access required");
+                    const denied = err instanceof DOMException && err.name === 'NotAllowedError';
+                    setCameraError(denied ? 'denied' : 'unavailable');
+                    showNotification(t(denied ? 'errors.cameraDenied' : 'errors.cameraUnavailable'));
                 }
             } else {
                 // If stream exists but was potentially paused (though we stop it usually)
@@ -140,7 +146,7 @@ const App: React.FC = () => {
            streamRef.current.getTracks().forEach(track => track.stop());
        }
     };
-  }, [isHomeOpen, viewState, capturedImage]);
+  }, [capturedImage, isHomeOpen, t, viewState]);
 
 
   // Handle Capture
@@ -178,18 +184,15 @@ const App: React.FC = () => {
   }, []);
 
   // Handle File Upload
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    e.target.value = '';
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        if (typeof reader.result === 'string') {
-           dispatchScan({ type: 'CAPTURE', image: reader.result });
-        }
-      };
-      reader.readAsDataURL(file);
-      // Reset input value so the same file can be selected again if needed
-      e.target.value = '';
+      try {
+        dispatchScan({ type: 'CAPTURE', image: await normalizeImageFile(file) });
+      } catch {
+        showNotification(t('errors.invalidImage'));
+      }
     }
   };
 
@@ -206,7 +209,7 @@ const App: React.FC = () => {
               document.body.appendChild(link);
               link.click();
               document.body.removeChild(link);
-              showNotification("Saved to Gallery");
+              showNotification(t('common.saved'));
           } catch (e) {
               console.error("Failed to save image", e);
           }
@@ -241,7 +244,7 @@ const App: React.FC = () => {
             createdAt,
           }));
           dispatchScan({ type: 'QUEUE_OFFLINE' });
-          showNotification('Saved for later. Retry when you are online.');
+          showNotification(t('scan.savedForLater'));
           return;
         }
 
@@ -284,8 +287,9 @@ const App: React.FC = () => {
           updatedAt: Date.now(),
         };
         addRecord(failedRecord);
-        dispatchScan({ type: 'ANALYSIS_FAILURE', error: details.message });
-        showNotification(details.message);
+        const localizedMessage = localizeApiError(details, t);
+        dispatchScan({ type: 'ANALYSIS_FAILURE', error: localizedMessage });
+        showNotification(localizedMessage);
     }
   };
 
@@ -323,7 +327,7 @@ const App: React.FC = () => {
       />
       
       {/* Toast Notification */}
-      <div className={`fixed top-8 inset-x-0 flex justify-center z-[100] transition-all duration-300 transform ${notification ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'}`}>
+      <div role="status" aria-live="polite" className={`fixed top-8 inset-x-0 flex justify-center z-[100] transition-all duration-300 transform ${notification ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'}`}>
           <div className={`backdrop-blur-xl px-6 py-3 rounded-full border shadow-2xl text-sm font-medium tracking-wide flex items-center gap-2 ${theme === 'dark' ? 'bg-white/10 text-white border-white/20' : 'bg-black/80 text-white border-black/10'}`}>
               <span className="w-2 h-2 rounded-full bg-green-400"></span>
               {notification}
@@ -374,7 +378,7 @@ const App: React.FC = () => {
                         <IconSparkles className="w-8 h-8 text-indigo-300 animate-pulse" />
                     </div>
                     
-                    <p className="mt-6 text-indigo-100 font-light tracking-[0.3em] text-xs animate-pulse uppercase">Deciphering</p>
+                    <p className="mt-6 text-indigo-100 font-light tracking-[0.3em] text-xs animate-pulse uppercase">{t('scan.deciphering')}</p>
                 </div>
             </div>
         )}
@@ -416,6 +420,7 @@ const App: React.FC = () => {
             <>
                 <div className="absolute top-0 inset-x-0 p-6 flex justify-between items-start z-10 pt-10 pb-20">
                      <button 
+                        aria-label={t('aria.close')}
                         onClick={backToHome} 
                         className="text-white/90 hover:text-white transition-all active:scale-90 p-2 rounded-full bg-black/40 backdrop-blur-sm border border-white/10"
                     >
@@ -424,6 +429,7 @@ const App: React.FC = () => {
                      
                      {/* Map Button (Moved to Top Right) */}
                      <button 
+                        aria-label={t('aria.openMap')}
                         onClick={() => setViewState(ViewState.MAP)}
                         className="p-4 rounded-full glass-panel text-white hover:bg-white/20 transition-all active:scale-90"
                     >
@@ -434,6 +440,7 @@ const App: React.FC = () => {
                 <div className="absolute bottom-0 inset-x-0 pb-12 pt-32 flex justify-between items-center px-10 z-10 bg-gradient-to-t from-black/90 via-black/40 to-transparent">
                     {/* Gallery / Upload Button (New) */}
                     <button 
+                        aria-label={t('aria.upload')}
                         onClick={() => fileInputRef.current?.click()}
                         className="p-4 rounded-full glass-panel text-white hover:bg-white/20 transition-all active:scale-90"
                     >
@@ -444,6 +451,7 @@ const App: React.FC = () => {
                          {/* Removed capture="environment" to allow Gallery selection on mobile */}
                         {/* Capture Button */}
                         <button 
+                            aria-label={isCameraReady ? t('aria.capture') : t('aria.upload')}
                             onClick={() => {
                                 if (isCameraReady) {
                                     handleCapture();
@@ -459,6 +467,7 @@ const App: React.FC = () => {
                     
                     {/* History Button (Moved to Bottom Right) */}
                     <button 
+                        aria-label={t('aria.openHistory')}
                         onClick={() => setViewState(ViewState.HISTORY)}
                         className="p-4 rounded-full glass-panel text-white hover:bg-white/20 transition-all active:scale-90"
                     >
@@ -468,6 +477,16 @@ const App: React.FC = () => {
 
                 {/* Reticle / Focus Frame */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                     {cameraError && (
+                       <div className="pointer-events-auto mx-8 max-w-sm rounded-3xl border border-white/15 bg-black/75 p-6 text-center text-white backdrop-blur-xl">
+                         <h2 className="text-lg font-medium">{t(cameraError === 'denied' ? 'errors.cameraDenied' : 'errors.cameraUnavailable')}</h2>
+                         <p className="mt-2 text-sm text-white/65">{t('errors.cameraHelp')}</p>
+                         <button type="button" onClick={() => fileInputRef.current?.click()} className="mt-4 rounded-full bg-white px-5 py-3 font-medium text-black">
+                           {t('scan.choosePhoto')}
+                         </button>
+                       </div>
+                     )}
+                     {!cameraError && (
                      <div className="w-64 h-64 border border-white/30 rounded-[2rem] opacity-60 flex flex-col justify-between p-4">
                         <div className="flex justify-between">
                             <div className="w-4 h-4 border-t-2 border-l-2 border-white"></div>
@@ -478,6 +497,7 @@ const App: React.FC = () => {
                             <div className="w-4 h-4 border-b-2 border-r-2 border-white"></div>
                         </div>
                      </div>
+                     )}
                 </div>
             </>
         )}
@@ -486,6 +506,7 @@ const App: React.FC = () => {
             <>
                 <div className="absolute top-12 start-6 z-50 animate-fade-in-up">
                     <button 
+                        aria-label={t('aria.close')}
                         onClick={resetCamera}
                         className="p-3 rounded-full bg-black/50 backdrop-blur-md text-white border border-white/10 shadow-lg active:scale-90 transition-transform"
                     >
@@ -499,6 +520,7 @@ const App: React.FC = () => {
                 {capturedImage && !isDrawerOpen && !isAnalyzing && (
                     <div className="absolute bottom-10 inset-x-0 flex justify-center z-30 animate-fade-in-up">
                         <button 
+                            aria-label={t('result.essence')}
                             onClick={() => setIsDrawerOpen(true)}
                             className="bg-black/40 backdrop-blur-md border border-white/20 text-white rounded-full p-4 shadow-lg active:scale-90 transition-transform hover:bg-black/60 animate-bounce"
                         >

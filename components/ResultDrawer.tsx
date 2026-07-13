@@ -100,6 +100,10 @@ export const ResultDrawer: React.FC<ResultDrawerProps> = ({
 
   return (
     <div 
+      role="dialog"
+      aria-modal={isOpen}
+      aria-hidden={!isOpen}
+      aria-labelledby="lorelens-result-title"
       className={`fixed inset-x-0 bottom-0 z-40 transform transition-transform duration-[600ms] cubic-bezier(0.19, 1, 0.22, 1) ${
         isOpen ? 'translate-y-0' : 'translate-y-[110%]'
       }`}
@@ -110,6 +114,7 @@ export const ResultDrawer: React.FC<ResultDrawerProps> = ({
             className={`absolute -top-14 inset-x-0 flex justify-center transition-opacity duration-300 ${isOpen ? 'opacity-100 delay-300' : 'opacity-0'}`}
         >
             <button 
+                aria-label={t('aria.close')}
                 onClick={onClose}
                 className="glass-panel rounded-full p-2.5 text-white active:scale-90 transition-transform duration-200"
             >
@@ -128,12 +133,13 @@ export const ResultDrawer: React.FC<ResultDrawerProps> = ({
                 
                 {/* Header: Title & Actions */}
                 <div className="flex justify-between items-start animate-fade-in-up delay-100">
-                    <h2 className={`text-4xl font-extralight tracking-tight pe-4 leading-tight ${textMain}`}>
+                    <h2 id="lorelens-result-title" className={`text-4xl font-extralight tracking-tight pe-4 leading-tight ${textMain}`}>
                         {result.title}
                     </h2>
                     <div className="flex gap-3 shrink-0 mt-1">
                         {showAudioPlayer && (
                             <button 
+                                aria-label={t('aria.readAloud')}
                                 onClick={handlePlayAudio}
                                 disabled={isLoadingAudio}
                                 className={`p-2.5 rounded-full transition-all duration-300 active:scale-90 ${
@@ -150,6 +156,7 @@ export const ResultDrawer: React.FC<ResultDrawerProps> = ({
                             </button>
                         )}
                         <button 
+                            aria-label={t('aria.share')}
                             onClick={handleShare}
                             className={`transition-all duration-200 p-2.5 rounded-full active:scale-90 ${iconBtn}`}
                         >

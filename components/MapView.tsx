@@ -1,6 +1,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
@@ -155,11 +156,12 @@ export const MapView: React.FC<MapViewProps> = ({ onClose }) => {
   )) || (currentLocation?.lat !== undefined && currentLocation.lng !== undefined);
 
   return (
-    <div className="absolute inset-0 z-30 bg-black animate-fade-in flex flex-col">
+    <div role="region" aria-label={t('map.title')} className="absolute inset-0 z-30 bg-black animate-fade-in flex flex-col">
         {/* Header - Z-index increased to 2000 to sit above Leaflet controls */}
         <div className={`pt-12 px-6 pb-4 flex items-center justify-between z-[2000] ${isDark ? 'bg-black/60' : 'bg-white/80'} backdrop-blur-md absolute top-0 inset-x-0`}>
             <h1 className={`text-2xl font-light tracking-wide ${isDark ? 'text-white' : 'text-gray-900'}`}>{t('map.title')}</h1>
             <button 
+                aria-label={t('aria.close')}
                 onClick={onClose} 
                 className={`p-2 rounded-full ${isDark ? 'bg-white/10 hover:bg-white/20 text-white' : 'bg-black/5 hover:bg-black/10 text-gray-900'}`}
             >
