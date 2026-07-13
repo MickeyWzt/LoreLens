@@ -1,0 +1,57 @@
+{
+  "greeting": {
+    "morning": "Buenos días",
+    "afternoon": "Buenas tardes",
+    "evening": "Buenas noches"
+  },
+  "home": {
+    "localInsight": "Visión Local",
+    "scan": "Escanear",
+    "photoBy": "Foto de",
+    "on": "en"
+  },
+  "settings": {
+    "title": "Ajustes",
+    "language": "Idioma",
+    "appearance": "Apariencia",
+    "preferences": "Preferencias",
+    "data": "Datos",
+    "midnight": "Medianoche",
+    "porcelain": "Porcelana",
+    "saveGallery": "Guardar fotos",
+    "highResAudio": "Audio Alta Res",
+    "highResDesc": "Activar \"Leer en voz alta\"",
+    "clearHistory": "Borrar historial",
+    "confirmClear": "Toca de nuevo para confirmar",
+    "itemsInStorage": "elementos guardados"
+  },
+  "result": {
+    "essence": "La Esencia",
+    "mirror": "Espejo Cultural",
+    "philosophy": "Filosofía",
+    "action": "Prueba esto",
+    "share": "Copiado al portapapeles",
+    "shareError": "No se pudo compartir"
+  },
+  "history": {
+    "title": "Mis Descubrimientos",
+    "empty": "Sin descubrimientos.",
+    "emptySub": "¡Ve a capturar algo!",
+    "recapButton": "Resonancia",
+    "dailyJournal": "El Eje",
+    "writing": "Calculando resonancia...",
+    "noItemsToday": "No hay descubrimientos hoy.",
+    "curiosityScore": "Puntaje de Resonancia",
+    "mood": "Estado de ánimo"
+  },
+  "map": {
+    "title": "Mapa de Hallazgos",
+    "openMaps": "Abrir en Google Maps"
+  },
+  "crop": {
+    "title": "Selección",
+    "hint": "Arrastra para encuadrar",
+    "analyze": "Analizar",
+    "retake": "Retomar"
+  }
+}

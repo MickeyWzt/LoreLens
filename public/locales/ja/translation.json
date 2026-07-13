@@ -1,0 +1,57 @@
+{
+  "greeting": {
+    "morning": "おはようございます",
+    "afternoon": "こんにちは",
+    "evening": "こんばんは"
+  },
+  "home": {
+    "localInsight": "ローカルインサイト",
+    "scan": "スキャンして解読",
+    "photoBy": "写真:",
+    "on": "提供:"
+  },
+  "settings": {
+    "title": "設定",
+    "language": "言語",
+    "appearance": "外観",
+    "preferences": "設定",
+    "data": "データ",
+    "midnight": "ミッドナイト",
+    "porcelain": "ポーセリン",
+    "saveGallery": "写真をギャラリーに保存",
+    "highResAudio": "高音質オーディオ",
+    "highResDesc": "結果で「読み上げ」を有効にする",
+    "clearHistory": "履歴を消去",
+    "confirmClear": "もう一度タップして確認",
+    "itemsInStorage": "件のアイテム"
+  },
+  "result": {
+    "essence": "本質",
+    "mirror": "比較洞察",
+    "philosophy": "哲学的背景",
+    "action": "試してみよう",
+    "share": "クリップボードにコピーしました",
+    "shareError": "共有できません"
+  },
+  "history": {
+    "title": "発見したこと",
+    "empty": "まだ発見はありません",
+    "emptySub": "何か撮ってみましょう！",
+    "recapButton": "共鳴レビュー",
+    "dailyJournal": "時間の軸",
+    "writing": "共鳴を計算中...",
+    "noItemsToday": "今日の発見はまだありません。",
+    "curiosityScore": "共鳴スコア",
+    "mood": "気分"
+  },
+  "map": {
+    "title": "発見マップ",
+    "openMaps": "Google Mapsで開く"
+  },
+  "crop": {
+     "title": "選択範囲",
+     "hint": "枠をドラッグして対象を囲む",
+     "analyze": "分析する",
+     "retake": "撮り直す"
+  }
+}

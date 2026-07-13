@@ -1,0 +1,11 @@
+{
+  "name": "LoreLens",
+  "description": "A cross-cultural interpreter for travelers in Beijing. Point your camera to decipher the hidden logic of cultural artifacts.",
+  "requestFramePermissions": [
+    "camera",
+    "geolocation"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

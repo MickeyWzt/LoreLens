@@ -1,0 +1,57 @@
+{
+  "greeting": {
+    "morning": "صباح الخير",
+    "afternoon": "مساء الخير",
+    "evening": "مساء الخير"
+  },
+  "home": {
+    "localInsight": "رؤية محلية",
+    "scan": "امسح لفك التشفير",
+    "photoBy": "صورة بواسطة",
+    "on": "على"
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "language": "اللغة",
+    "appearance": "المظهر",
+    "preferences": "التفضيلات",
+    "data": "البيانات",
+    "midnight": "منتصف الليل",
+    "porcelain": "خزف",
+    "saveGallery": "حفظ الصور في المعرض",
+    "highResAudio": "صوت عالي الدقة",
+    "highResDesc": "تفعيل زر \"اقرأ بصوت عالٍ\"",
+    "clearHistory": "مسح السجل",
+    "confirmClear": "انقر مرة أخرى للتأكيد",
+    "itemsInStorage": "عناصر في التخزين"
+  },
+  "result": {
+    "essence": "الجوهر",
+    "mirror": "رؤية معكوسة",
+    "philosophy": "الفلسفة",
+    "action": "جرب هذا",
+    "share": "تم النسخ إلى الحافظة",
+    "shareError": "تعذر المشاركة"
+  },
+  "history": {
+    "title": "اكتشافاتي",
+    "empty": "لا توجد اكتشافات بعد.",
+    "emptySub": "التقط شيئًا ما!",
+    "recapButton": "مراجعة الرنين",
+    "dailyJournal": "خريطة المحور",
+    "writing": "جارٍ حساب الرنين...",
+    "noItemsToday": "لم يتم العثور على اكتشافات اليوم.",
+    "curiosityScore": "درجة الرنين",
+    "mood": "المزاج"
+  },
+  "map": {
+    "title": "خريطة الاكتشافات",
+    "openMaps": "افتح في خرائط جوجل"
+  },
+  "crop": {
+    "title": "تحديد التركيز",
+    "hint": "اسحب الزوايا لتأطير الكائن",
+    "analyze": "تحليل التحديد",
+    "retake": "إعادة الالتقاط"
+  }
+}

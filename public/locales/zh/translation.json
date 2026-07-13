@@ -1,0 +1,69 @@
+{
+  "greeting": {
+    "morning": "早上好",
+    "afternoon": "下午好",
+    "evening": "晚上好"
+  },
+  "home": {
+    "localInsight": "本地洞察",
+    "scan": "扫描解读",
+    "photoBy": "摄影师",
+    "on": "来自"
+  },
+  "settings": {
+    "title": "设置",
+    "language": "语言",
+    "appearance": "外观",
+    "preferences": "偏好",
+    "data": "数据",
+    "midnight": "深邃黑",
+    "porcelain": "陶瓷白",
+    "accentColor": "主题点色",
+    "indigo": "靛蓝",
+    "teal": "青玉",
+    "amber": "琥珀",
+    "violet": "紫罗兰",
+    "reduceMotion": "减少动效",
+    "reduceMotionDesc": "为动效敏感用户简化界面过渡与过渡动画",
+    "saveGallery": "保存照片到相册",
+    "highResAudio": "高清语音朗读",
+    "highResDesc": "在结果页启用“朗读”按钮",
+    "clearHistory": "清除历史记录",
+    "confirmClear": "再次点击确认",
+    "itemsInStorage": "个项目已存储"
+  },
+  "result": {
+    "essence": "本质",
+    "mirror": "镜像洞察",
+    "philosophy": "文化逻辑",
+    "action": "试一试",
+    "share": "已复制到剪贴板",
+    "shareError": "分享失败"
+  },
+  "history": {
+    "title": "我的发现",
+    "empty": "暂无发现",
+    "emptySub": "去探索一下吧！",
+    "recapButton": "共鸣回顾",
+    "dailyJournal": "时空轴线",
+    "writing": "正在计算文化共鸣...",
+    "noItemsToday": "今天还没有新的发现哦。",
+    "curiosityScore": "共鸣指数",
+    "mood": "今日心情",
+    "manage": "编辑",
+    "deleteSelected": "删除已选",
+    "cancel": "取消",
+    "selectAll": "全选",
+    "deselectAll": "取消全选"
+  },
+  "map": {
+    "title": "发现地图",
+    "openMaps": "在 Google Maps 打开"
+  },
+  "crop": {
+    "title": "框选目标",
+    "hint": "拖动边框以聚焦物体",
+    "analyze": "开始解读",
+    "retake": "重拍"
+  }
+}

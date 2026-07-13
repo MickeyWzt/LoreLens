@@ -1,0 +1,69 @@
+{
+  "greeting": {
+    "morning": "Good morning",
+    "afternoon": "Good afternoon",
+    "evening": "Good evening"
+  },
+  "home": {
+    "localInsight": "Local Insight",
+    "scan": "Scan to Decipher",
+    "photoBy": "Photo by",
+    "on": "on"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "appearance": "Appearance",
+    "preferences": "Preferences",
+    "data": "Data",
+    "midnight": "Midnight",
+    "porcelain": "Porcelain",
+    "accentColor": "Accent Color",
+    "indigo": "Indigo",
+    "teal": "Teal",
+    "amber": "Amber",
+    "violet": "Violet",
+    "reduceMotion": "Reduce Motion",
+    "reduceMotionDesc": "Simplify page transitions and interactive animations",
+    "saveGallery": "Save Photos to Gallery",
+    "highResAudio": "High-Res Audio",
+    "highResDesc": "Enable \"Read Aloud\" button in results",
+    "clearHistory": "Clear History",
+    "confirmClear": "Tap again to Confirm",
+    "itemsInStorage": "items in storage"
+  },
+  "result": {
+    "essence": "The Essence",
+    "mirror": "Mirror Insight",
+    "philosophy": "Philosophy",
+    "action": "Try this",
+    "share": "Copied to clipboard",
+    "shareError": "Unable to share"
+  },
+  "history": {
+    "title": "My Discoveries",
+    "empty": "No discoveries yet.",
+    "emptySub": "Go capture something!",
+    "recapButton": "Resonance Review",
+    "dailyJournal": "The Axis Map",
+    "writing": "Calculating resonance...",
+    "noItemsToday": "No discoveries found for today.",
+    "curiosityScore": "Resonance Score",
+    "mood": "Mood",
+    "manage": "Edit",
+    "deleteSelected": "Delete Selected",
+    "cancel": "Cancel",
+    "selectAll": "Select All",
+    "deselectAll": "Deselect All"
+  },
+  "map": {
+    "title": "Discovery Map",
+    "openMaps": "Open in Google Maps"
+  },
+  "crop": {
+    "title": "Focus Selection",
+    "hint": "Drag corners to frame the object",
+    "analyze": "Analyze Selection",
+    "retake": "Retake"
+  }
+}

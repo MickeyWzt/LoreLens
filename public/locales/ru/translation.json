@@ -1,0 +1,57 @@
+{
+  "greeting": {
+    "morning": "Доброе утро",
+    "afternoon": "Добрый день",
+    "evening": "Добрый вечер"
+  },
+  "home": {
+    "localInsight": "Местные знания",
+    "scan": "Сканировать",
+    "photoBy": "Фото",
+    "on": "на"
+  },
+  "settings": {
+    "title": "Настройки",
+    "language": "Язык",
+    "appearance": "Внешний вид",
+    "preferences": "Предпочтения",
+    "data": "Данные",
+    "midnight": "Полночь",
+    "porcelain": "Фарфор",
+    "saveGallery": "Сохранять фото",
+    "highResAudio": "Аудио высокого качества",
+    "highResDesc": "Включить кнопку \"Прочитать вслух\"",
+    "clearHistory": "Очистить историю",
+    "confirmClear": "Нажмите еще раз",
+    "itemsInStorage": "элементов в памяти"
+  },
+  "result": {
+    "essence": "Суть",
+    "mirror": "Зеркальный взгляд",
+    "philosophy": "Философия",
+    "action": "Попробуйте это",
+    "share": "Скопировано",
+    "shareError": "Не удалось поделиться"
+  },
+  "history": {
+    "title": "Мои открытия",
+    "empty": "Пока нет открытий.",
+    "emptySub": "Идите и снимите что-нибудь!",
+    "recapButton": "Оценка резонанса",
+    "dailyJournal": "Ось времени",
+    "writing": "Вычисление резонанса...",
+    "noItemsToday": "Сегодня нет открытий.",
+    "curiosityScore": "Оценка резонанса",
+    "mood": "Настроение"
+  },
+  "map": {
+    "title": "Карта открытий",
+    "openMaps": "Открыть в Google Maps"
+  },
+  "crop": {
+    "title": "Фокус",
+    "hint": "Перетащите углы, чтобы выделить объект",
+    "analyze": "Анализ",
+    "retake": "Переснять"
+  }
+}

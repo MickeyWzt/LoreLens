@@ -1,0 +1,57 @@
+{
+  "greeting": {
+    "morning": "Bonjour",
+    "afternoon": "Bonne après-midi",
+    "evening": "Bonsoir"
+  },
+  "home": {
+    "localInsight": "Aperçu Local",
+    "scan": "Scanner",
+    "photoBy": "Photo par",
+    "on": "sur"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "language": "Langue",
+    "appearance": "Apparence",
+    "preferences": "Préférences",
+    "data": "Données",
+    "midnight": "Minuit",
+    "porcelain": "Porcelaine",
+    "saveGallery": "Enregistrer les photos",
+    "highResAudio": "Audio Haute Rés",
+    "highResDesc": "Activer la lecture à voix haute",
+    "clearHistory": "Effacer l'historique",
+    "confirmClear": "Appuyez à nouveau pour confirmer",
+    "itemsInStorage": "éléments stockés"
+  },
+  "result": {
+    "essence": "L'Essence",
+    "mirror": "Miroir Culturel",
+    "philosophy": "Philosophie",
+    "action": "Essayez ceci",
+    "share": "Copié dans le presse-papiers",
+    "shareError": "Impossible de partager"
+  },
+  "history": {
+    "title": "Mes Découvertes",
+    "empty": "Aucune découverte.",
+    "emptySub": "Allez capturer quelque chose !",
+    "recapButton": "Résonance",
+    "dailyJournal": "L'Axe du Temps",
+    "writing": "Calcul de la résonance...",
+    "noItemsToday": "Aucune découverte aujourd'hui.",
+    "curiosityScore": "Score de Résonance",
+    "mood": "Humeur"
+  },
+  "map": {
+    "title": "Carte des Découvertes",
+    "openMaps": "Ouvrir dans Google Maps"
+  },
+  "crop": {
+     "title": "Sélection",
+     "hint": "Encadrez l'objet",
+     "analyze": "Analyser",
+     "retake": "Reprendre"
+  }
+}

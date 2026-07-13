@@ -1,0 +1,39 @@
+{
+  "name": "lorelens",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx server.ts",
+    "build": "vite build && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
+    "start": "node dist/server.cjs"
+  },
+  "dependencies": {
+    "@google/genai": "^2.6.0",
+    "i18next": "^26.2.0",
+    "i18next-browser-languagedetector": "^8.2.1",
+    "i18next-http-backend": "^4.0.0",
+    "leaflet": "1.9.4",
+    "leaflet.markercluster": "^1.5.3",
+    "localforage": "^1.10.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "react-i18next": "^17.0.8",
+    "zustand": "^5.0.13"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.0",
+    "@types/express": "^5.0.6",
+    "@types/leaflet.markercluster": "^1.5.6",
+    "@types/node": "^22.14.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "esbuild": "^0.28.0",
+    "express": "^5.2.1",
+    "tailwindcss": "^4.3.0",
+    "tsx": "^4.22.3",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.0",
+    "vite-plugin-pwa": "^1.3.0",
+    "workbox-window": "^7.4.1"
+  }
+}
