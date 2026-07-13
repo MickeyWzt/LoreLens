@@ -17,6 +17,7 @@ export default defineConfig(({ mode }) => {
         VitePWA({
           registerType: 'autoUpdate',
           workbox: {
+            globPatterns: ['**/*.{js,css,html,svg,png,ico,webmanifest,json,woff,woff2}'],
             runtimeCaching: [
               {
                 urlPattern: /^https:\/\/images\.unsplash\.com\/.*/i,

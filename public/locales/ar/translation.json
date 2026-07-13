@@ -49,5 +49,6 @@
     "cameraHelp": "اسمح باستخدام الكاميرا في المتصفح أو اختر صورة.", "offlineRetry": "أنت غير متصل. أعد المحاولة بعد الاتصال.",
     "analysisFailed": "فشل التحليل", "serviceNotConfigured": "خدمة الذكاء الاصطناعي غير مهيأة", "rateLimited": "الخدمة مشغولة. حاول بعد قليل."
   },
-  "aria": { "close": "إغلاق", "share": "مشاركة", "readAloud": "قراءة بصوت عالٍ", "capture": "التقاط صورة", "upload": "اختيار صورة", "openMap": "فتح الخريطة", "openHistory": "فتح السجل" }
+  "aria": { "close": "إغلاق", "share": "مشاركة", "readAloud": "قراءة بصوت عالٍ", "capture": "التقاط صورة", "upload": "اختيار صورة", "openMap": "فتح الخريطة", "openHistory": "فتح السجل" },
+  "pwa": { "updatePrompt": "يتوفر إصدار جديد من LoreLens. هل تريد إعادة التحميل الآن؟" }
 }

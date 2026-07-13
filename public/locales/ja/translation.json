@@ -49,5 +49,6 @@
     "cameraHelp": "ブラウザーでカメラを許可するか、写真を選んでください。", "offlineRetry": "オフラインです。接続後に再試行してください。",
     "analysisFailed": "解析に失敗しました", "serviceNotConfigured": "AI サービスが設定されていません", "rateLimited": "サービスが混み合っています。少し待って再試行してください。"
   },
-  "aria": { "close": "閉じる", "share": "共有", "readAloud": "読み上げ", "capture": "撮影", "upload": "写真を選ぶ", "openMap": "地図を開く", "openHistory": "履歴を開く" }
+  "aria": { "close": "閉じる", "share": "共有", "readAloud": "読み上げ", "capture": "撮影", "upload": "写真を選ぶ", "openMap": "地図を開く", "openHistory": "履歴を開く" },
+  "pwa": { "updatePrompt": "LoreLens の新しいバージョンがあります。再読み込みしますか？" }
 }

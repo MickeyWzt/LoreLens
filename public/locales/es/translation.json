@@ -49,5 +49,6 @@
     "cameraHelp": "Permite la cámara en el navegador o elige una foto.", "offlineRetry": "No tienes conexión. Reintenta al volver a conectarte.",
     "analysisFailed": "Falló el análisis", "serviceNotConfigured": "El servicio de IA no está configurado", "rateLimited": "El servicio está ocupado. Reintenta en breve."
   },
-  "aria": { "close": "Cerrar", "share": "Compartir", "readAloud": "Leer en voz alta", "capture": "Tomar foto", "upload": "Elegir foto", "openMap": "Abrir mapa", "openHistory": "Abrir historial" }
+  "aria": { "close": "Cerrar", "share": "Compartir", "readAloud": "Leer en voz alta", "capture": "Tomar foto", "upload": "Elegir foto", "openMap": "Abrir mapa", "openHistory": "Abrir historial" },
+  "pwa": { "updatePrompt": "Hay una nueva versión de LoreLens. ¿Recargar ahora?" }
 }

@@ -2,19 +2,15 @@ import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import { registerSW } from 'virtual:pwa-register';
-import './i18n';
+import i18n from './i18n';
 import './index.css';
 
 // Register service worker
 const updateSW = registerSW({
   onNeedRefresh() {
-    // Show a prompt to user if there's a new version
-    if (confirm('New content available. Reload?')) {
+    if (confirm(i18n.t('pwa.updatePrompt'))) {
       updateSW(true);
     }
-  },
-  onOfflineReady() {
-    console.log('App is ready to work offline');
   },
 });
 
@@ -26,7 +22,7 @@ if (!rootElement) {
 const root = ReactDOM.createRoot(rootElement);
 root.render(
   <React.StrictMode>
-    <Suspense fallback={<div className="flex w-full h-screen items-center justify-center bg-black text-white">Loading...</div>}>
+    <Suspense fallback={<div className="flex w-full h-screen items-center justify-center bg-black text-white">LoreLens</div>}>
       <App />
     </Suspense>
   </React.StrictMode>

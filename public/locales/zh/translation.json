@@ -49,5 +49,6 @@
     "cameraHelp": "请在浏览器中允许相机权限，或改为选择照片。", "offlineRetry": "当前离线，请联网后重试。",
     "analysisFailed": "解读失败", "serviceNotConfigured": "AI 服务尚未配置", "rateLimited": "服务繁忙，请稍后重试。"
   },
-  "aria": { "close": "关闭", "share": "分享", "readAloud": "朗读", "capture": "拍照", "upload": "选择照片", "openMap": "打开地图", "openHistory": "打开历史" }
+  "aria": { "close": "关闭", "share": "分享", "readAloud": "朗读", "capture": "拍照", "upload": "选择照片", "openMap": "打开地图", "openHistory": "打开历史" },
+  "pwa": { "updatePrompt": "LoreLens 新版本已准备好，立即重新加载吗？" }
 }

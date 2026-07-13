@@ -1,5 +1,5 @@
 
-import React, { useState, useRef, useEffect, useCallback, useReducer } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useReducer, lazy, Suspense } from 'react';
 import { decipherImage } from './services/aiService';
 import { HistoryItem, ViewState, type ApiError, type AnalysisRecordV2 } from './types';
 import { triggerHaptic, compressHistoryImage } from './utils';
@@ -11,14 +11,21 @@ import { normalizeImageFile } from './utils/image';
 import i18n from './i18n';
 import { localizeApiError } from './services/errorMessages';
 import { ResultDrawer } from './components/ResultDrawer';
-import { HistoryView } from './components/HistoryView';
-import { SettingsView } from './components/SettingsView';
-import { MapView } from './components/MapView';
 import { HomeView } from './components/HomeView';
 import { CropView } from './components/CropView';
 import { IconCamera, IconHistory, IconSettings, IconSparkles, IconMap, IconChevronUp, IconPhoto } from './components/Icons';
 import { useSettingsStore } from './store/useSettingsStore';
 import { useHistoryStore } from './store/useHistoryStore';
+
+const HistoryView = lazy(() => import('./components/HistoryView').then((module) => ({ default: module.HistoryView })));
+const SettingsView = lazy(() => import('./components/SettingsView').then((module) => ({ default: module.SettingsView })));
+const MapView = lazy(() => import('./components/MapView').then((module) => ({ default: module.MapView })));
+
+const ViewLoader = () => (
+  <div className="absolute inset-0 z-30 flex items-center justify-center bg-black text-white" aria-live="polite">
+    <div className="h-8 w-8 animate-spin rounded-full border-2 border-white/25 border-t-white" />
+  </div>
+);
 
 const App: React.FC = () => {
   const { t } = useTranslation();
@@ -553,6 +560,7 @@ const App: React.FC = () => {
 
       {/* History View */}
       {viewState === ViewState.HISTORY && (
+        <Suspense fallback={<ViewLoader />}>
           <HistoryView 
             onSelect={handleHistorySelect} 
             onClose={() => {
@@ -560,17 +568,21 @@ const App: React.FC = () => {
             }} 
             onShowNotification={showNotification}
           />
+        </Suspense>
       )}
 
       {/* Map View */}
       {viewState === ViewState.MAP && (
+        <Suspense fallback={<ViewLoader />}>
           <MapView 
             onClose={() => setViewState(ViewState.CAMERA)} 
           />
+        </Suspense>
       )}
 
        {/* Settings View */}
        {viewState === ViewState.SETTINGS && (
+        <Suspense fallback={<ViewLoader />}>
           <SettingsView 
             onBack={() => {
                 setViewState(ViewState.CAMERA);
@@ -578,6 +590,7 @@ const App: React.FC = () => {
                 dispatchScan({ type: 'RESET' });
             }} 
           />
+        </Suspense>
       )}
 
     </div>

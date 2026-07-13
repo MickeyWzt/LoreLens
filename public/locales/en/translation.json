@@ -49,5 +49,6 @@
     "cameraHelp": "Allow camera access in your browser, or choose a photo instead.", "offlineRetry": "You are offline. Retry after reconnecting.",
     "analysisFailed": "Analysis failed", "serviceNotConfigured": "The AI service is not configured", "rateLimited": "The service is busy. Try again shortly."
   },
-  "aria": { "close": "Close", "share": "Share", "readAloud": "Read aloud", "capture": "Take photo", "upload": "Choose photo", "openMap": "Open map", "openHistory": "Open history" }
+  "aria": { "close": "Close", "share": "Share", "readAloud": "Read aloud", "capture": "Take photo", "upload": "Choose photo", "openMap": "Open map", "openHistory": "Open history" },
+  "pwa": { "updatePrompt": "A new LoreLens version is ready. Reload now?" }
 }
