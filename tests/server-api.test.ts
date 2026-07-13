@@ -67,4 +67,23 @@ describe('server API', () => {
 
     expect(response.status).toBe(204);
   });
+
+  test('allows the configured map tiles and remote travel photos in the CSP', async () => {
+    const module = await loadApp();
+    expect(module).not.toBeNull();
+    if (!module) return;
+
+    const app = module.createApiApp({
+      ai: { decipher: vi.fn(), recap: vi.fn() },
+      background: { getBackground: vi.fn(), trackDownload: vi.fn() },
+      capabilities: { vision: false, text: false, background: false },
+    });
+    const response = await request(app).get('/api/health');
+    const policy = response.headers['content-security-policy'];
+
+    expect(policy).toContain('https://a.basemaps.cartocdn.com');
+    expect(policy).toContain('https://d.basemaps.cartocdn.com');
+    expect(policy).toContain('https://images.unsplash.com');
+    expect(policy).toContain("connect-src 'self' https://images.unsplash.com");
+  });
 });

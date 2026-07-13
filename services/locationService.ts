@@ -24,6 +24,7 @@ interface ResolveLocationOptions {
   storage?: StorageLike;
   fetchImpl?: typeof fetch;
   now?: () => number;
+  isOnline?: boolean;
 }
 
 export function createMemoryStorage(): StorageLike {
@@ -61,6 +62,7 @@ export async function resolveLocation({
   storage = typeof localStorage !== 'undefined' ? localStorage : createMemoryStorage(),
   fetchImpl = fetch,
   now = Date.now,
+  isOnline = typeof navigator === 'undefined' ? true : navigator.onLine,
 }: ResolveLocationOptions = {}): Promise<LocationSnapshot> {
   if (geolocation) {
     for (const [enableHighAccuracy, timeout] of [[true, 8_000], [false, 6_000]] as const) {
@@ -89,6 +91,8 @@ export async function resolveLocation({
   const cached = readCached(storage);
   if (cached) return cached;
 
+  if (!isOnline) return { source: 'none', approximate: true, capturedAt: now() };
+
   try {
     const response = await fetchImpl('/api/location/ip', { signal: AbortSignal.timeout(5_000) });
     if (response.status !== 204 && response.ok) {
@@ -113,6 +117,7 @@ export async function addLocationLabel(
   fetchImpl: typeof fetch = fetch,
 ): Promise<LocationSnapshot> {
   if (snapshot.lat === undefined || snapshot.lng === undefined || snapshot.label) return snapshot;
+  if (typeof navigator !== 'undefined' && !navigator.onLine) return snapshot;
   try {
     const query = new URLSearchParams({
       lat: String(snapshot.lat),

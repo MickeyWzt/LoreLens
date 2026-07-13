@@ -193,6 +193,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
                 {/* Font Size Toggle */}
                 <div className={`flex items-center justify-between p-2 rounded-xl border ${borderClass} ${isDark ? 'bg-gray-900' : 'bg-white'}`}>
                     <button
+                        aria-label={t('settings.fontSmall')}
                         onClick={() => setFontSize('small')}
                         className={`flex-1 py-3 rounded-lg text-xs transition-colors duration-200 ${fontSize === 'small' ? `${accent.lightBg} ${accent.text} font-bold shadow-sm` : `${subTextClass} hover:opacity-80`}`}
                     >
@@ -200,6 +201,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
                     </button>
                     <div className={`w-px h-6 ${isDark ? 'bg-gray-800' : 'bg-gray-200'}`}></div>
                     <button
+                        aria-label={t('settings.fontMedium')}
                         onClick={() => setFontSize('medium')}
                         className={`flex-1 py-3 rounded-lg text-base transition-colors duration-200 ${fontSize === 'medium' ? `${accent.lightBg} ${accent.text} font-bold shadow-sm` : `${subTextClass} hover:opacity-80`}`}
                     >
@@ -207,6 +209,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
                     </button>
                     <div className={`w-px h-6 ${isDark ? 'bg-gray-800' : 'bg-gray-200'}`}></div>
                     <button
+                        aria-label={t('settings.fontLarge')}
                         onClick={() => setFontSize('large')}
                         className={`flex-1 py-3 rounded-lg text-xl transition-colors duration-200 ${fontSize === 'large' ? `${accent.lightBg} ${accent.text} font-bold shadow-sm` : `${subTextClass} hover:opacity-80`}`}
                     >

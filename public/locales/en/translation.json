@@ -14,7 +14,7 @@
   "settings": {
     "title": "Settings", "language": "Language", "appearance": "Appearance", "preferences": "Preferences", "data": "Data",
     "midnight": "Midnight", "porcelain": "Porcelain", "accentColor": "Accent color", "indigo": "Indigo", "teal": "Teal", "amber": "Amber", "violet": "Violet",
-    "reduceMotion": "Reduce motion", "reduceMotionDesc": "Simplify transitions and animations",
+    "reduceMotion": "Reduce motion", "reduceMotionDesc": "Simplify transitions and animations", "fontSmall": "Small text", "fontMedium": "Medium text", "fontLarge": "Large text",
     "saveGallery": "Save crops to gallery", "readAloud": "Enable read aloud", "highResDesc": "Show a browser read-aloud button in results",
     "clearHistory": "Clear history", "confirmClear": "Tap again to confirm", "itemsInStorage": "items in storage",
     "exportData": "Export", "importData": "Import", "exported": "Backup exported", "imported": "Imported {{count}} records", "importInvalid": "This backup is invalid",
@@ -47,8 +47,8 @@
   "errors": {
     "invalidImage": "This image could not be opened", "cameraDenied": "Camera permission was denied", "cameraUnavailable": "Camera is unavailable",
     "cameraHelp": "Allow camera access in your browser, or choose a photo instead.", "offlineRetry": "You are offline. Retry after reconnecting.",
-    "analysisFailed": "Analysis failed", "serviceNotConfigured": "The AI service is not configured", "rateLimited": "The service is busy. Try again shortly."
+    "analysisFailed": "Analysis failed", "serviceNotConfigured": "The AI service is not configured", "rateLimited": "The service is busy. Try again shortly.", "saveFailed": "The image could not be saved"
   },
-  "aria": { "close": "Close", "share": "Share", "readAloud": "Read aloud", "capture": "Take photo", "upload": "Choose photo", "openMap": "Open map", "openHistory": "Open history" },
+  "aria": { "close": "Close", "share": "Share", "readAloud": "Read aloud", "capture": "Take photo", "upload": "Choose photo", "openMap": "Open map", "openHistory": "Open history", "capturedImage": "Captured photo" },
   "pwa": { "updatePrompt": "A new LoreLens version is ready. Reload now?" }
 }

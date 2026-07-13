@@ -14,7 +14,7 @@
   "settings": {
     "title": "Ajustes", "language": "Idioma", "appearance": "Apariencia", "preferences": "Preferencias", "data": "Datos",
     "midnight": "Medianoche", "porcelain": "Porcelana", "accentColor": "Color de acento", "indigo": "Índigo", "teal": "Verde azulado", "amber": "Ámbar", "violet": "Violeta",
-    "reduceMotion": "Reducir movimiento", "reduceMotionDesc": "Simplifica transiciones y animaciones",
+    "reduceMotion": "Reducir movimiento", "reduceMotionDesc": "Simplifica transiciones y animaciones", "fontSmall": "Texto pequeño", "fontMedium": "Texto mediano", "fontLarge": "Texto grande",
     "saveGallery": "Guardar recortes en la galería", "readAloud": "Activar lectura en voz alta", "highResDesc": "Muestra el botón de lectura del navegador en los resultados",
     "clearHistory": "Borrar historial", "confirmClear": "Toca de nuevo para confirmar", "itemsInStorage": "elementos guardados",
     "exportData": "Exportar", "importData": "Importar", "exported": "Copia exportada", "imported": "Se importaron {{count}} registros", "importInvalid": "La copia no es válida",
@@ -47,8 +47,8 @@
   "errors": {
     "invalidImage": "No se pudo abrir esta imagen", "cameraDenied": "Se denegó el permiso de la cámara", "cameraUnavailable": "La cámara no está disponible",
     "cameraHelp": "Permite la cámara en el navegador o elige una foto.", "offlineRetry": "No tienes conexión. Reintenta al volver a conectarte.",
-    "analysisFailed": "Falló el análisis", "serviceNotConfigured": "El servicio de IA no está configurado", "rateLimited": "El servicio está ocupado. Reintenta en breve."
+    "analysisFailed": "Falló el análisis", "serviceNotConfigured": "El servicio de IA no está configurado", "rateLimited": "El servicio está ocupado. Reintenta en breve.", "saveFailed": "No se pudo guardar la imagen"
   },
-  "aria": { "close": "Cerrar", "share": "Compartir", "readAloud": "Leer en voz alta", "capture": "Tomar foto", "upload": "Elegir foto", "openMap": "Abrir mapa", "openHistory": "Abrir historial" },
+  "aria": { "close": "Cerrar", "share": "Compartir", "readAloud": "Leer en voz alta", "capture": "Tomar foto", "upload": "Elegir foto", "openMap": "Abrir mapa", "openHistory": "Abrir historial", "capturedImage": "Foto capturada" },
   "pwa": { "updatePrompt": "Hay una nueva versión de LoreLens. ¿Recargar ahora?" }
 }

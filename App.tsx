@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect, useCallback, useReducer, lazy, Susp
 import { decipherImage } from './services/aiService';
 import { HistoryItem, ViewState, type ApiError, type AnalysisRecordV2 } from './types';
 import { triggerHaptic, compressHistoryImage } from './utils';
-import { createPendingRecord } from './domain/records';
+import { createPendingRecord, deferAnalysisRecord } from './domain/records';
 import { initialScanState, scanReducer } from './domain/scanState';
 import { useAppContextStore } from './store/useAppContextStore';
 import { useTranslation } from 'react-i18next';
@@ -42,12 +42,13 @@ const App: React.FC = () => {
   // Camera Optimization State
   const streamRef = useRef<MediaStream | null>(null);
   const analysisAbortRef = useRef<AbortController | null>(null);
+  const activeAnalysisIdRef = useRef<string | null>(null);
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [cameraError, setCameraError] = useState<'denied' | 'unavailable' | null>(null);
 
   // Stores
   const { theme, language, fontSize, saveToGallery, reduceMotion } = useSettingsStore();
-  const { history, addRecord, loadHistory } = useHistoryStore();
+  const { history, records, addRecord, updateRecord, loadHistory } = useHistoryStore();
   const ensureLocation = useAppContextStore((state) => state.ensureLocation);
   
   // Notification State
@@ -187,6 +188,7 @@ const App: React.FC = () => {
      ctx.drawImage(video, 0, 0, width, height);
      const base64Image = canvas.toDataURL('image/jpeg', 0.85);
      
+     activeAnalysisIdRef.current = null;
      dispatchScan({ type: 'CAPTURE', image: base64Image });
   }, []);
 
@@ -196,6 +198,7 @@ const App: React.FC = () => {
     e.target.value = '';
     if (file) {
       try {
+        activeAnalysisIdRef.current = null;
         dispatchScan({ type: 'CAPTURE', image: await normalizeImageFile(file) });
       } catch {
         showNotification(t('errors.invalidImage'));
@@ -206,19 +209,17 @@ const App: React.FC = () => {
   // Called after Crop is confirmed
   const handleCropConfirm = async (croppedBase64: string) => {
       triggerHaptic([50, 50]);
-      dispatchScan({ type: 'START_ANALYSIS', image: croppedBase64 });
-      
       if (saveToGallery) {
           try {
               const link = document.createElement('a');
               link.href = croppedBase64;
-              link.download = `context-lens-crop-${Date.now()}.jpg`;
+              link.download = `lorelens-crop-${Date.now()}.jpg`;
               document.body.appendChild(link);
               link.click();
               document.body.removeChild(link);
               showNotification(t('common.saved'));
-          } catch (e) {
-              console.error("Failed to save image", e);
+          } catch {
+              showNotification(t('errors.saveFailed'));
           }
       }
 
@@ -230,7 +231,8 @@ const App: React.FC = () => {
     const controller = new AbortController();
     analysisAbortRef.current = controller;
     const createdAt = Date.now();
-    const id = crypto.randomUUID();
+    const id = activeAnalysisIdRef.current || crypto.randomUUID();
+    activeAnalysisIdRef.current = id;
     dispatchScan({ type: 'START_ANALYSIS', image: base64 });
 
     try {
@@ -302,6 +304,7 @@ const App: React.FC = () => {
 
   const resetCamera = () => {
     analysisAbortRef.current?.abort();
+    activeAnalysisIdRef.current = null;
     setIsDrawerOpen(false);
     dispatchScan({ type: 'OPEN_CAMERA' });
   };
@@ -320,6 +323,15 @@ const App: React.FC = () => {
   const backToHome = () => {
       resetCamera();
       dispatchScan({ type: 'RESET' });
+  };
+
+  const handleDeferAnalysis = () => {
+    const id = activeAnalysisIdRef.current;
+    if (scan.stage === 'error' && id) {
+      const record = records.find((candidate) => candidate.id === id);
+      if (record) updateRecord(id, deferAnalysisRecord(record));
+    }
+    backToHome();
   };
 
   return (
@@ -342,7 +354,11 @@ const App: React.FC = () => {
       </div>
 
       {/* 1. Camera / Viewfinder Layer (Always rendered in background) */}
-      <div className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${viewState === ViewState.CAMERA ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+      <div
+        aria-hidden={viewState !== ViewState.CAMERA}
+        inert={viewState !== ViewState.CAMERA}
+        className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${viewState === ViewState.CAMERA ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+      >
         
         {/* Aesthetic Background when Camera is Off (Saves Battery) */}
         <div className={`absolute inset-0 bg-gradient-to-br from-[#121212] to-black transition-opacity duration-700 ${!capturedImage && (!isCameraReady || isHomeOpen) ? 'opacity-100' : 'opacity-0'}`}>
@@ -352,7 +368,7 @@ const App: React.FC = () => {
         </div>
 
         {capturedImage && !isCropping ? (
-            <img src={capturedImage} className="w-full h-full object-cover" alt="Captured" />
+            <img src={capturedImage} className="w-full h-full object-cover" alt={t('aria.capturedImage')} />
         ) : (
              <video 
                 ref={videoRef} 
@@ -415,7 +431,7 @@ const App: React.FC = () => {
                             {t('scan.choosePhoto')}
                         </button>
                     </div>
-                    <button type="button" onClick={backToHome} className="mt-4 w-full text-sm text-white/55">
+                    <button type="button" onClick={handleDeferAnalysis} className="mt-4 w-full text-sm text-white/55">
                         {t('scan.later')}
                     </button>
                 </div>

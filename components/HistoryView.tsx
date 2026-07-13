@@ -130,7 +130,15 @@ const AxisMap = ({ items, onSelect, isDark }: { items: HistoryItem[], onSelect: 
 
                             {/* The Card */}
                             <div 
+                                role="button"
+                                tabIndex={0}
                                 onClick={() => onSelect(item)}
+                                onKeyDown={(event) => {
+                                    if (event.key === 'Enter' || event.key === ' ') {
+                                        event.preventDefault();
+                                        onSelect(item);
+                                    }
+                                }}
                                 className={`ms-12 flex-1 p-3 rounded-xl border flex gap-3 items-center cursor-pointer transition-all active:scale-95 hover:scale-[1.02] ${isDark ? 'bg-white/5 border-white/10 hover:bg-white/10' : 'bg-white border-gray-100 hover:shadow-md'}`}
                             >
                                 <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0 border border-white/10">
@@ -372,12 +380,21 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
                     return (
                         <div 
                             key={item.id}
+                            role="button"
+                            tabIndex={0}
+                            aria-pressed={isEditMode ? isSelected : undefined}
                             onClick={() => {
                                 if (isEditMode) {
                                     toggleSelectItem(item.id);
                                 } else {
                                     onSelect(item);
                                 }
+                            }}
+                            onKeyDown={(event) => {
+                                if (event.key !== 'Enter' && event.key !== ' ') return;
+                                event.preventDefault();
+                                if (isEditMode) toggleSelectItem(item.id);
+                                else onSelect(item);
                             }}
                             className={`flex gap-4 p-4 rounded-2xl border transition-all cursor-pointer animate-fade-in-up ${itemBgClass} ${
                                 isEditMode && isSelected 

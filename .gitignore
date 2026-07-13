@@ -11,6 +11,8 @@ node_modules
 dist
 dist-ssr
 *.local
+.playwright-cli/
+output/playwright/
 .env
 .env.local
 !.env.example

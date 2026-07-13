@@ -81,7 +81,7 @@ export const ResultDrawer: React.FC<ResultDrawerProps> = ({
     }
   };
 
-  if (!result) return null;
+  if (!result || !isOpen) return null;
   const isDark = theme === 'dark';
   
   // Dynamic Styles

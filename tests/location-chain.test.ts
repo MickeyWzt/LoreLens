@@ -69,4 +69,22 @@ describe('location fallback chain', () => {
 
     expect(result).toEqual({ source: 'none', approximate: true, capturedAt: 2_000 });
   });
+
+  test('does not start an IP request while the browser is offline', async () => {
+    const module = await loadLocation();
+    expect(module).not.toBeNull();
+    if (!module) return;
+
+    const fetchImpl = vi.fn();
+    const result = await module.resolveLocation({
+      geolocation: undefined,
+      storage: module.createMemoryStorage(),
+      fetchImpl,
+      isOnline: false,
+      now: () => 3_000,
+    });
+
+    expect(fetchImpl).not.toHaveBeenCalled();
+    expect(result.source).toBe('none');
+  });
 });

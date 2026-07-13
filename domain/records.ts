@@ -30,6 +30,15 @@ export function createPendingRecord(input: NewPendingRecord): AnalysisRecordV2 {
   });
 }
 
+export function deferAnalysisRecord(record: AnalysisRecordV2, now = Date.now()): AnalysisRecordV2 {
+  return analysisRecordSchema.parse({
+    ...record,
+    status: 'pending',
+    error: undefined,
+    updatedAt: now,
+  });
+}
+
 export function exportRecords(
   records: AnalysisRecordV2[],
   settings?: Record<string, unknown>,

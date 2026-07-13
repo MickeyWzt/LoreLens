@@ -72,11 +72,52 @@ function sendError(
 export function createApiApp(dependencies: ApiDependencies) {
   const app = express();
   app.disable('x-powered-by');
-  app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
+  app.use(helmet({
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+    contentSecurityPolicy: {
+      directives: {
+        connectSrc: [
+          "'self'",
+          'https://images.unsplash.com',
+          'https://a.basemaps.cartocdn.com',
+          'https://b.basemaps.cartocdn.com',
+          'https://c.basemaps.cartocdn.com',
+          'https://d.basemaps.cartocdn.com',
+        ],
+        imgSrc: [
+          "'self'",
+          'data:',
+          'blob:',
+          'https://images.unsplash.com',
+          'https://a.basemaps.cartocdn.com',
+          'https://b.basemaps.cartocdn.com',
+          'https://c.basemaps.cartocdn.com',
+          'https://d.basemaps.cartocdn.com',
+        ],
+      },
+    },
+  }));
   app.use((request, response, next) => {
     const requestId = String(request.header('x-request-id') || randomUUID()).slice(0, 128);
     response.locals.requestId = requestId;
     response.setHeader('x-request-id', requestId);
+    next();
+  });
+  app.use((request, response, next) => {
+    if (process.env.NODE_ENV !== 'test') {
+      const startedAt = performance.now();
+      response.once('finish', () => {
+        console.info(JSON.stringify({
+          level: 'info',
+          event: 'request_completed',
+          requestId: response.locals.requestId,
+          method: request.method,
+          path: request.path,
+          status: response.statusCode,
+          durationMs: Math.round(performance.now() - startedAt),
+        }));
+      });
+    }
     next();
   });
   app.use(express.json({ limit: '10mb' }));
@@ -181,6 +222,16 @@ export function createApiApp(dependencies: ApiDependencies) {
       ? candidate.status
       : 500;
     const retryable = isRetryableProviderError(error);
+    if (process.env.NODE_ENV !== 'test') {
+      console.error(JSON.stringify({
+        level: 'error',
+        event: 'request_failed',
+        requestId: response.locals.requestId,
+        code: candidate.code || (retryable ? 'UPSTREAM_UNAVAILABLE' : 'INTERNAL_ERROR'),
+        status,
+        retryable,
+      }));
+    }
     sendError(
       response,
       status,

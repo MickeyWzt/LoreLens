@@ -5,6 +5,7 @@ import { createApiApp } from './server/app';
 import { createBackgroundService } from './server/background/service';
 import { loadServerConfig } from './server/config';
 import { createLocationService } from './server/location/service';
+import { shouldUseViteMiddleware } from './server/runtime';
 
 async function startServer() {
   const config = loadServerConfig();
@@ -18,7 +19,7 @@ async function startServer() {
     capabilities: config.capabilities,
   });
 
-  if (config.nodeEnv !== 'production') {
+  if (shouldUseViteMiddleware(config.nodeEnv, process.argv[1])) {
     const vite = await createViteServer({ server: { middlewareMode: true }, appType: 'spa' });
     app.use(vite.middlewares);
   } else {

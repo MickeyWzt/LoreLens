@@ -14,7 +14,7 @@
   "settings": {
     "title": "Настройки", "language": "Язык", "appearance": "Оформление", "preferences": "Предпочтения", "data": "Данные",
     "midnight": "Полночь", "porcelain": "Фарфор", "accentColor": "Акцентный цвет", "indigo": "Индиго", "teal": "Бирюзовый", "amber": "Янтарный", "violet": "Фиолетовый",
-    "reduceMotion": "Уменьшить движение", "reduceMotionDesc": "Упрощает переходы и анимацию",
+    "reduceMotion": "Уменьшить движение", "reduceMotionDesc": "Упрощает переходы и анимацию", "fontSmall": "Мелкий текст", "fontMedium": "Средний текст", "fontLarge": "Крупный текст",
     "saveGallery": "Сохранять обрезанные фото", "readAloud": "Включить чтение вслух", "highResDesc": "Показывает кнопку браузерного чтения в результатах",
     "clearHistory": "Очистить историю", "confirmClear": "Нажмите ещё раз", "itemsInStorage": "элементов сохранено",
     "exportData": "Экспорт", "importData": "Импорт", "exported": "Резервная копия экспортирована", "imported": "Импортировано записей: {{count}}", "importInvalid": "Эта копия недействительна",
@@ -47,8 +47,8 @@
   "errors": {
     "invalidImage": "Не удалось открыть изображение", "cameraDenied": "Доступ к камере запрещён", "cameraUnavailable": "Камера недоступна",
     "cameraHelp": "Разрешите камеру в браузере или выберите фото.", "offlineRetry": "Нет подключения. Повторите после восстановления сети.",
-    "analysisFailed": "Ошибка анализа", "serviceNotConfigured": "Служба ИИ не настроена", "rateLimited": "Служба занята. Повторите немного позже."
+    "analysisFailed": "Ошибка анализа", "serviceNotConfigured": "Служба ИИ не настроена", "rateLimited": "Служба занята. Повторите немного позже.", "saveFailed": "Не удалось сохранить изображение"
   },
-  "aria": { "close": "Закрыть", "share": "Поделиться", "readAloud": "Читать вслух", "capture": "Сделать фото", "upload": "Выбрать фото", "openMap": "Открыть карту", "openHistory": "Открыть историю" },
+  "aria": { "close": "Закрыть", "share": "Поделиться", "readAloud": "Читать вслух", "capture": "Сделать фото", "upload": "Выбрать фото", "openMap": "Открыть карту", "openHistory": "Открыть историю", "capturedImage": "Снятая фотография" },
   "pwa": { "updatePrompt": "Доступна новая версия LoreLens. Перезагрузить сейчас?" }
 }

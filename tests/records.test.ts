@@ -37,4 +37,23 @@ describe('versioned records', () => {
     expect(merged[0].image).toBe('new');
     expect(() => module.importRecords('{"schemaVersion":1}', [])).toThrow();
   });
+
+  test('defers a failed analysis without losing its local image', async () => {
+    const module = await loadRecords();
+    expect(module).not.toBeNull();
+    if (!module) return;
+
+    const failed = {
+      ...module.createPendingRecord({
+        id: 'failed-1', image: 'local-image', language: 'en', createdAt: 10,
+      }),
+      status: 'failed' as const,
+      error: { code: 'RATE_LIMITED', message: 'Busy', retryable: true, requestId: 'req-1' },
+    };
+
+    expect(module.deferAnalysisRecord(failed, 20)).toMatchObject({
+      id: 'failed-1', status: 'pending', image: 'local-image', updatedAt: 20,
+    });
+    expect(module.deferAnalysisRecord(failed, 20).error).toBeUndefined();
+  });
 });

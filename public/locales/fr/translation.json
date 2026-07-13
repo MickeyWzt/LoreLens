@@ -14,7 +14,7 @@
   "settings": {
     "title": "Réglages", "language": "Langue", "appearance": "Apparence", "preferences": "Préférences", "data": "Données",
     "midnight": "Minuit", "porcelain": "Porcelaine", "accentColor": "Couleur d’accent", "indigo": "Indigo", "teal": "Sarcelle", "amber": "Ambre", "violet": "Violet",
-    "reduceMotion": "Réduire les animations", "reduceMotionDesc": "Simplifie les transitions et les animations",
+    "reduceMotion": "Réduire les animations", "reduceMotionDesc": "Simplifie les transitions et les animations", "fontSmall": "Petit texte", "fontMedium": "Texte moyen", "fontLarge": "Grand texte",
     "saveGallery": "Enregistrer les recadrages", "readAloud": "Activer la lecture à voix haute", "highResDesc": "Affiche le bouton de lecture du navigateur dans les résultats",
     "clearHistory": "Effacer l’historique", "confirmClear": "Touchez encore pour confirmer", "itemsInStorage": "éléments enregistrés",
     "exportData": "Exporter", "importData": "Importer", "exported": "Sauvegarde exportée", "imported": "{{count}} éléments importés", "importInvalid": "Cette sauvegarde est invalide",
@@ -47,8 +47,8 @@
   "errors": {
     "invalidImage": "Impossible d’ouvrir cette image", "cameraDenied": "L’accès à l’appareil photo a été refusé", "cameraUnavailable": "L’appareil photo est indisponible",
     "cameraHelp": "Autorisez l’appareil photo dans le navigateur ou choisissez une photo.", "offlineRetry": "Vous êtes hors ligne. Réessayez après reconnexion.",
-    "analysisFailed": "Échec de l’analyse", "serviceNotConfigured": "Le service d’IA n’est pas configuré", "rateLimited": "Le service est occupé. Réessayez bientôt."
+    "analysisFailed": "Échec de l’analyse", "serviceNotConfigured": "Le service d’IA n’est pas configuré", "rateLimited": "Le service est occupé. Réessayez bientôt.", "saveFailed": "Impossible d’enregistrer l’image"
   },
-  "aria": { "close": "Fermer", "share": "Partager", "readAloud": "Lire à voix haute", "capture": "Prendre une photo", "upload": "Choisir une photo", "openMap": "Ouvrir la carte", "openHistory": "Ouvrir l’historique" },
+  "aria": { "close": "Fermer", "share": "Partager", "readAloud": "Lire à voix haute", "capture": "Prendre une photo", "upload": "Choisir une photo", "openMap": "Ouvrir la carte", "openHistory": "Ouvrir l’historique", "capturedImage": "Photo capturée" },
   "pwa": { "updatePrompt": "Une nouvelle version de LoreLens est prête. Recharger maintenant ?" }
 }
