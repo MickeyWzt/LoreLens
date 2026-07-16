@@ -43,6 +43,7 @@ interface ApiDependencies {
     background: boolean;
     ipLocation?: boolean;
   };
+  developmentMode?: boolean;
 }
 
 type AsyncHandler = (request: Request, response: Response, next: NextFunction) => Promise<void>;
@@ -74,7 +75,7 @@ export function createApiApp(dependencies: ApiDependencies) {
   app.disable('x-powered-by');
   app.use(helmet({
     crossOriginResourcePolicy: { policy: 'cross-origin' },
-    contentSecurityPolicy: {
+    contentSecurityPolicy: dependencies.developmentMode ? false : {
       directives: {
         connectSrc: [
           "'self'",

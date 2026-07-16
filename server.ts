@@ -9,6 +9,7 @@ import { shouldUseViteMiddleware } from './server/runtime';
 
 async function startServer() {
   const config = loadServerConfig();
+  const useViteMiddleware = shouldUseViteMiddleware(config.nodeEnv, process.argv[1]);
   const ai = createAiService(config.ai);
   const background = createBackgroundService({ accessKey: config.unsplashAccessKey });
   const location = createLocationService({ ipLocationUrl: config.ipLocationUrl });
@@ -17,9 +18,10 @@ async function startServer() {
     background,
     location,
     capabilities: config.capabilities,
+    developmentMode: useViteMiddleware,
   });
 
-  if (shouldUseViteMiddleware(config.nodeEnv, process.argv[1])) {
+  if (useViteMiddleware) {
     const vite = await createViteServer({ server: { middlewareMode: true }, appType: 'spa' });
     app.use(vite.middlewares);
   } else {

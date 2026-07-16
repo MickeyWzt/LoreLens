@@ -86,4 +86,20 @@ describe('server API', () => {
     expect(policy).toContain('https://images.unsplash.com');
     expect(policy).toContain("connect-src 'self' https://images.unsplash.com");
   });
+
+  test('does not send a CSP while Vite development middleware is active', async () => {
+    const module = await loadApp();
+    expect(module).not.toBeNull();
+    if (!module) return;
+
+    const app = module.createApiApp({
+      ai: { decipher: vi.fn(), recap: vi.fn() },
+      background: { getBackground: vi.fn(), trackDownload: vi.fn() },
+      capabilities: { vision: false, text: false, background: false },
+      developmentMode: true,
+    });
+    const response = await request(app).get('/api/health');
+
+    expect(response.headers['content-security-policy']).toBeUndefined();
+  });
 });
