@@ -35,7 +35,6 @@ export const HomeView: React.FC<HomeViewProps> = ({
     location,
     locationStatus,
     background,
-    ensureLocation,
     ensureBackground,
   } = useAppContextStore();
   const isDark = theme === 'dark';
@@ -44,10 +43,6 @@ export const HomeView: React.FC<HomeViewProps> = ({
   const today = new Date().setHours(0, 0, 0, 0);
   const completed = records.filter((record) => record.status === 'complete');
   const todayCount = completed.filter((record) => record.createdAt >= today).length;
-
-  useEffect(() => {
-    if (locationEnabled) void ensureLocation(language);
-  }, [ensureLocation, language, locationEnabled]);
 
   useEffect(() => {
     if (locationEnabled && locationStatus !== 'ready') return;

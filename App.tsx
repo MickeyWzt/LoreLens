@@ -72,6 +72,12 @@ const App: React.FC = () => {
     loadHistory();
   }, [loadHistory]);
 
+  // Location is an app-level capability: request it as soon as LoreLens opens,
+  // rather than waiting for the home screen (which may be replaced or remounted).
+  useEffect(() => {
+    if (locationEnabled) void ensureLocation(language);
+  }, [ensureLocation, language, locationEnabled]);
+
   useEffect(() => {
     if (viewState !== ViewState.CAMERA) analysisAbortRef.current?.abort();
   }, [viewState]);
