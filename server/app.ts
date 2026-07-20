@@ -19,7 +19,7 @@ const decipherRequestSchema = z.object({
   base64Image: z.string().startsWith('data:image/').max(10 * 1024 * 1024),
   language: appLanguageSchema,
   locationLabel: z.string().trim().max(200).optional(),
-  location: locationSnapshotSchema.pick({ lat: true, lng: true }).optional(),
+  location: locationSnapshotSchema.optional(),
 });
 
 const recapRequestSchema = z.object({

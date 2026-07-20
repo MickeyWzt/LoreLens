@@ -5,6 +5,7 @@ import {
   type AppLanguage,
   type DailyRecapResult,
   type DecipherResult,
+  type LocationSnapshot,
 } from '../../domain/model';
 import type { AiConfig, ProviderConfig } from '../config';
 import { runWithFallback } from './orchestrator';
@@ -13,7 +14,7 @@ export interface DecipherInput {
   base64Image: string;
   language: AppLanguage;
   locationLabel?: string;
-  location?: unknown;
+  location?: LocationSnapshot;
 }
 
 export interface RecapInput {
@@ -82,11 +83,46 @@ async function postOpenAiJson(
   return parseJsonObject(content);
 }
 
-function visionPrompt(language: AppLanguage, locationLabel?: string): string {
-  const locationHint = locationLabel
-    ? `The traveler reports this location: ${locationLabel}. Treat it only as a hint.`
-    : 'No reliable location is available. Do not invent one.';
+const LOCATION_SOURCE_LABELS: Record<LocationSnapshot['source'], string> = {
+  gps: 'device GPS',
+  exif: 'photo EXIF GPS',
+  cache: 'cached device location',
+  ip: 'coarse IP location',
+  none: 'unavailable',
+};
+
+function locationEvidence(location?: LocationSnapshot, locationLabel?: string): string {
+  if (!location || location.source === 'none') {
+    return locationLabel
+      ? `The traveler reports this location: ${locationLabel}. Treat it only as a weak hint.`
+      : 'No reliable location is available. Do not invent one.';
+  }
+  const evidence = [
+    location.label ? `label: ${location.label}` : undefined,
+    location.lat !== undefined && location.lng !== undefined
+      ? `coordinates: ${location.lat.toFixed(6)}, ${location.lng.toFixed(6)}`
+      : undefined,
+    location.accuracy !== undefined ? `accuracy: ${Math.round(location.accuracy)} meters` : undefined,
+    `source: ${LOCATION_SOURCE_LABELS[location.source]}`,
+    `precision: ${location.approximate ? 'approximate' : 'precise'}`,
+    `location captured at: ${new Date(location.capturedAt).toISOString()}`,
+  ].filter(Boolean).join('; ');
+  const strength = (location.source === 'gps' || location.source === 'exif')
+    && !location.approximate
+    && (location.accuracy === undefined || location.accuracy <= 500)
+    ? 'Treat precise GPS or EXIF as strong evidence.'
+    : 'Treat cached, approximate, or IP location only as weak evidence.';
+  return `Photo location evidence (${evidence}). ${strength}`;
+}
+
+function visionPrompt(
+  language: AppLanguage,
+  location?: LocationSnapshot,
+  locationLabel?: string,
+): string {
+  const locationHint = locationEvidence(location, locationLabel);
   return `You are LoreLens, a cross-cultural travel interpreter. Identify and explain the visible subject. ${locationHint}
+Cross-check visual evidence with location evidence. If they conflict, or the subject may be a replica, say that the exact identity is uncertain instead of inventing a place. Only return mapUri when visual identification and location evidence agree.
 Return only one JSON object in ${LANGUAGE_NAMES[language]} with these keys: title, essence, mirrorInsight, philosophy, quickAction, and optional mapUri. Do not assume the image is from China or Beijing.`;
 }
 
@@ -96,23 +132,71 @@ Return only JSON with journal, score (0-100 based on the supplied evidence), moo
 Observations: ${JSON.stringify(input.records).slice(0, 24_000)}`;
 }
 
+function mapCoordinates(mapUri: string): { lat: number; lng: number } | undefined {
+  const direct = mapUri.match(/(?:@|geo:)(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/i);
+  if (direct) return { lat: Number(direct[1]), lng: Number(direct[2]) };
+  try {
+    const url = new URL(mapUri);
+    const candidate = url.searchParams.get('query')
+      || url.searchParams.get('q')
+      || url.searchParams.get('ll');
+    const match = candidate?.match(/^\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*$/);
+    return match ? { lat: Number(match[1]), lng: Number(match[2]) } : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+function distanceKm(a: { lat: number; lng: number }, b: { lat: number; lng: number }): number {
+  const radians = (degrees: number) => degrees * Math.PI / 180;
+  const dLat = radians(b.lat - a.lat);
+  const dLng = radians(b.lng - a.lng);
+  const lat1 = radians(a.lat);
+  const lat2 = radians(b.lat);
+  const value = Math.sin(dLat / 2) ** 2
+    + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2;
+  return 6_371 * 2 * Math.atan2(Math.sqrt(value), Math.sqrt(1 - value));
+}
+
+function enforceLocationConsistency(
+  result: DecipherResult,
+  location?: LocationSnapshot,
+): DecipherResult {
+  if (
+    !location
+    || location.lat === undefined
+    || location.lng === undefined
+    || location.approximate
+    || (location.source !== 'gps' && location.source !== 'exif')
+    || (location.accuracy !== undefined && location.accuracy > 500)
+    || !result.mapUri
+  ) return result;
+  const mapped = mapCoordinates(result.mapUri);
+  if (!mapped || distanceKm({ lat: location.lat, lng: location.lng }, mapped) <= 25) return result;
+  const { mapUri: _conflictingMapUri, ...safeResult } = result;
+  return safeResult;
+}
+
 function makeOpenAiVision(
   config: ProviderConfig,
   timeoutMs: number,
   fetchImpl: typeof fetch,
 ) {
-  return async (input: DecipherInput) => parseDecipherResult(await postOpenAiJson(config, {
-    model: config.model,
-    messages: [{
-      role: 'user',
-      content: [
-        { type: 'image_url', image_url: { url: input.base64Image } },
-        { type: 'text', text: visionPrompt(input.language, input.locationLabel) },
-      ],
-    }],
-    response_format: { type: 'json_object' },
-    temperature: 0.2,
-  }, timeoutMs, fetchImpl));
+  return async (input: DecipherInput) => {
+    const result = parseDecipherResult(await postOpenAiJson(config, {
+      model: config.model,
+      messages: [{
+        role: 'user',
+        content: [
+          { type: 'image_url', image_url: { url: input.base64Image } },
+          { type: 'text', text: visionPrompt(input.language, input.location, input.locationLabel) },
+        ],
+      }],
+      response_format: { type: 'json_object' },
+      temperature: 0.2,
+    }, timeoutMs, fetchImpl));
+    return enforceLocationConsistency(result, input.location);
+  };
 }
 
 function makeOpenAiText(
@@ -140,11 +224,14 @@ function makeGeminiVision(config: ProviderConfig) {
       model: config.model,
       contents: [{ parts: [
         { inlineData: { mimeType: match[1], data: match[2] } },
-        { text: visionPrompt(input.language, input.locationLabel) },
+        { text: visionPrompt(input.language, input.location, input.locationLabel) },
       ] }],
       config: { responseMimeType: 'application/json' },
     });
-    return parseDecipherResult(parseJsonObject(response.text));
+    return enforceLocationConsistency(
+      parseDecipherResult(parseJsonObject(response.text)),
+      input.location,
+    );
   };
 }
 

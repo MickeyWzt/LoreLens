@@ -20,7 +20,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
     saveToGallery, setSaveToGallery, 
     readAloudEnabled, setReadAloudEnabled,
     accentColor, setAccentColor,
-    reduceMotion, setReduceMotion
+    reduceMotion, setReduceMotion,
+    locationEnabled, setLocationEnabled
   } = useSettingsStore();
   const { records, clearHistory, importJson } = useHistoryStore();
   const historyCount = records.length;
@@ -50,7 +51,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
 
   const handleExport = () => {
       const json = exportRecords(records, {
-          theme, fontSize, language, saveToGallery, readAloudEnabled, accentColor, reduceMotion,
+          theme, fontSize, language, saveToGallery, readAloudEnabled, accentColor, reduceMotion, locationEnabled,
       });
       const url = URL.createObjectURL(new Blob([json], { type: 'application/json' }));
       const anchor = document.createElement('a');
@@ -222,6 +223,23 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
             <div className="space-y-4">
                 <h2 className={`text-sm font-bold uppercase tracking-wider ${subTextClass}`}>{t('settings.preferences')}</h2>
                 
+                {/* Location-assisted identification */}
+                <button
+                    type="button"
+                    role="switch"
+                    aria-checked={locationEnabled}
+                    onClick={() => setLocationEnabled(!locationEnabled)}
+                    className={`w-full flex items-center justify-between py-4 border-b cursor-pointer text-start transition-colors ${borderClass} ${isDark ? 'active:bg-gray-900' : 'active:bg-gray-100'}`}
+                >
+                    <div className="flex flex-col pe-4">
+                        <span className="text-lg font-light">{t('settings.locationEnabled')}</span>
+                        <span className={`text-xs ${subTextClass}`}>{t('settings.locationEnabledDesc')}</span>
+                    </div>
+                    <div className={`w-12 h-6 rounded-full relative transition-colors duration-200 ${locationEnabled ? accent.bg : isDark ? 'bg-gray-700' : 'bg-gray-300'}`}>
+                        <div className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow transition-all duration-200 ${locationEnabled ? 'start-[calc(100%-1.25rem)]' : 'start-1'}`}></div>
+                    </div>
+                </button>
+
                 {/* Save Photos to Gallery */}
                 <button
                     type="button"

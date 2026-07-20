@@ -29,7 +29,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   onOpenSettings,
 }) => {
   const { t } = useTranslation();
-  const { theme, language, accentColor, reduceMotion } = useSettingsStore();
+  const { theme, language, accentColor, reduceMotion, locationEnabled } = useSettingsStore();
   const { records } = useHistoryStore();
   const {
     location,
@@ -46,14 +46,15 @@ export const HomeView: React.FC<HomeViewProps> = ({
   const todayCount = completed.filter((record) => record.createdAt >= today).length;
 
   useEffect(() => {
-    void ensureLocation(language);
-  }, [ensureLocation, language]);
+    if (locationEnabled) void ensureLocation(language);
+  }, [ensureLocation, language, locationEnabled]);
 
   useEffect(() => {
-    if (locationStatus !== 'ready') return;
-    const query = location?.label || (location?.lat !== undefined ? 'travel city' : 'world travel');
+    if (locationEnabled && locationStatus !== 'ready') return;
+    const activeLocation = locationEnabled ? location : undefined;
+    const query = activeLocation?.label || (activeLocation?.lat !== undefined ? 'travel city' : 'world travel');
     void ensureBackground(query, bucket);
-  }, [bucket, ensureBackground, location, locationStatus]);
+  }, [bucket, ensureBackground, location, locationEnabled, locationStatus]);
 
   const greetingKey = new Date().getHours() < 12
     ? 'greeting.morning'
@@ -61,10 +62,10 @@ export const HomeView: React.FC<HomeViewProps> = ({
       ? 'greeting.afternoon'
       : 'greeting.evening';
 
-  const locationLabel = locationStatus === 'loading'
+  const locationLabel = locationEnabled && locationStatus === 'loading'
     ? t('location.locating')
-    : location?.label || t('location.unavailable');
-  const precisionLabel = location?.source === 'none' || !location
+    : (locationEnabled ? location?.label : undefined) || t('location.unavailable');
+  const precisionLabel = !locationEnabled || location?.source === 'none' || !location
     ? t('location.unavailableShort')
     : location.approximate
       ? t('location.approximate')

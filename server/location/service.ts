@@ -29,7 +29,7 @@ export function createLocationService({
           format: 'json',
           lat: String(lat),
           lon: String(lng),
-          zoom: '12',
+          zoom: '18',
           addressdetails: '1',
           'accept-language': language,
         }).toString();
@@ -51,8 +51,7 @@ export function createLocationService({
         const city = address.city || address.town || address.village || address.county;
         const region = address.state || address.region;
         const country = address.country;
-        const label = [city, region, country].filter(Boolean).join(', ')
-          || payload.name
+        const label = [...new Set([payload.name, city, region, country].filter(Boolean))].join(', ')
           || payload.display_name;
         if (!label) throw Object.assign(new Error('Reverse geocoding returned no label'), { status: 502 });
         return { label };

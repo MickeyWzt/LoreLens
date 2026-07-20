@@ -16,6 +16,7 @@
     "midnight": "Midnight", "porcelain": "Porcelain", "accentColor": "Accent color", "indigo": "Indigo", "teal": "Teal", "amber": "Amber", "violet": "Violet",
     "reduceMotion": "Reduce motion", "reduceMotionDesc": "Simplify transitions and animations", "fontSmall": "Small text", "fontMedium": "Medium text", "fontLarge": "Large text",
     "saveGallery": "Save crops to gallery", "readAloud": "Enable read aloud", "highResDesc": "Show a browser read-aloud button in results",
+    "locationEnabled": "Use location for identification", "locationEnabledDesc": "Enabled by default; precise location improves landmark matching",
     "clearHistory": "Clear history", "confirmClear": "Tap again to confirm", "itemsInStorage": "items in storage",
     "exportData": "Export", "importData": "Import", "exported": "Backup exported", "imported": "Imported {{count}} records", "importInvalid": "This backup is invalid",
     "aiDescription": "Qwen vision · DeepSeek text · optional Gemini fallback"

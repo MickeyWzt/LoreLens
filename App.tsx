@@ -1,13 +1,14 @@
 
 import React, { useState, useRef, useEffect, useCallback, useReducer, lazy, Suspense } from 'react';
 import { decipherImage } from './services/aiService';
-import { HistoryItem, ViewState, type ApiError, type AnalysisRecordV2 } from './types';
+import { HistoryItem, ViewState, type ApiError, type AnalysisRecordV2, type LocationSnapshot } from './types';
 import { triggerHaptic, compressHistoryImage } from './utils';
 import { createPendingRecord, deferAnalysisRecord } from './domain/records';
 import { initialScanState, scanReducer } from './domain/scanState';
 import { useAppContextStore } from './store/useAppContextStore';
 import { useTranslation } from 'react-i18next';
 import { normalizeImageFile } from './utils/image';
+import { resolvePhotoLocation } from './services/photoLocationService';
 import i18n from './i18n';
 import { localizeApiError } from './services/errorMessages';
 import { ResultDrawer } from './components/ResultDrawer';
@@ -43,13 +44,15 @@ const App: React.FC = () => {
   const streamRef = useRef<MediaStream | null>(null);
   const analysisAbortRef = useRef<AbortController | null>(null);
   const activeAnalysisIdRef = useRef<string | null>(null);
+  const capturedLocationRef = useRef<Promise<LocationSnapshot> | undefined>(undefined);
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [cameraError, setCameraError] = useState<'denied' | 'unavailable' | null>(null);
 
   // Stores
-  const { theme, language, fontSize, saveToGallery, reduceMotion } = useSettingsStore();
+  const { theme, language, fontSize, saveToGallery, reduceMotion, locationEnabled } = useSettingsStore();
   const { history, records, addRecord, updateRecord, loadHistory } = useHistoryStore();
   const ensureLocation = useAppContextStore((state) => state.ensureLocation);
+  const refreshLocation = useAppContextStore((state) => state.refreshLocation);
   
   // Notification State
   const [notification, setNotification] = useState<string | null>(null);
@@ -187,10 +190,16 @@ const App: React.FC = () => {
      
      ctx.drawImage(video, 0, 0, width, height);
      const base64Image = canvas.toDataURL('image/jpeg', 0.85);
+     capturedLocationRef.current = resolvePhotoLocation({
+       kind: 'camera',
+       language,
+       locationEnabled,
+       getDeviceLocation: () => refreshLocation(language),
+     });
      
      activeAnalysisIdRef.current = null;
      dispatchScan({ type: 'CAPTURE', image: base64Image });
-  }, []);
+  }, [language, locationEnabled, refreshLocation]);
 
   // Handle File Upload
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -198,6 +207,13 @@ const App: React.FC = () => {
     e.target.value = '';
     if (file) {
       try {
+        capturedLocationRef.current = resolvePhotoLocation({
+          kind: 'upload',
+          file,
+          language,
+          locationEnabled,
+          getDeviceLocation: () => refreshLocation(language),
+        });
         activeAnalysisIdRef.current = null;
         dispatchScan({ type: 'CAPTURE', image: await normalizeImageFile(file) });
       } catch {
@@ -234,13 +250,21 @@ const App: React.FC = () => {
     const id = activeAnalysisIdRef.current || crypto.randomUUID();
     activeAnalysisIdRef.current = id;
     dispatchScan({ type: 'START_ANALYSIS', image: base64 });
+    let attachedLocation: LocationSnapshot | undefined;
 
     try {
+        const locationPromise = capturedLocationRef.current || resolvePhotoLocation({
+          kind: 'camera',
+          language,
+          locationEnabled,
+          getDeviceLocation: () => ensureLocation(language),
+        });
         const [location, thumbnail, storedImage] = await Promise.all([
-          ensureLocation(language),
+          locationPromise,
           compressHistoryImage(base64, 400, 0.6),
           compressHistoryImage(base64, 1600, 0.76),
         ]);
+        attachedLocation = location;
         if (controller.signal.aborted) return;
 
         if (!navigator.onLine) {
@@ -291,6 +315,7 @@ const App: React.FC = () => {
           image: await compressHistoryImage(base64, 1600, 0.76),
           thumbnail: await compressHistoryImage(base64),
           language,
+          location: attachedLocation,
           error: details,
           createdAt,
           updatedAt: Date.now(),
@@ -305,6 +330,7 @@ const App: React.FC = () => {
   const resetCamera = () => {
     analysisAbortRef.current?.abort();
     activeAnalysisIdRef.current = null;
+    capturedLocationRef.current = undefined;
     setIsDrawerOpen(false);
     dispatchScan({ type: 'OPEN_CAMERA' });
   };

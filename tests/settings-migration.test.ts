@@ -16,4 +16,15 @@ describe('settings migration', () => {
     expect(migrated).toMatchObject({ readAloudEnabled: true, language: 'zh' });
     expect(migrated).not.toHaveProperty('highResAudio');
   });
+
+  test('enables location assistance by default for existing settings', async () => {
+    const module = await loadSettings();
+    expect(module).not.toBeNull();
+    if (!module) return;
+
+    expect(module.migrateSettingsState({ language: 'zh' })).toMatchObject({
+      language: 'zh',
+      locationEnabled: true,
+    });
+  });
 });

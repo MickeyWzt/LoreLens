@@ -9,26 +9,35 @@ interface AppContextState {
   background?: ClientBackground | null;
   backgroundKey?: string;
   ensureLocation: (language: string) => Promise<LocationSnapshot>;
+  refreshLocation: (language: string) => Promise<LocationSnapshot>;
   ensureBackground: (query: string, timeBucket: string) => Promise<ClientBackground | null>;
 }
 
 let pendingLocation: Promise<LocationSnapshot> | undefined;
 
+function requestLocation(
+  language: string,
+  set: (state: Partial<AppContextState>) => void,
+): Promise<LocationSnapshot> {
+  if (pendingLocation) return pendingLocation;
+  set({ locationStatus: 'loading' });
+  pendingLocation = resolveLocation()
+    .then((location) => addLocationLabel(location, language))
+    .then((location) => {
+      set({ location, locationStatus: 'ready' });
+      return location;
+    })
+    .finally(() => { pendingLocation = undefined; });
+  return pendingLocation;
+}
+
 export const useAppContextStore = create<AppContextState>((set, get) => ({
   locationStatus: 'idle',
   ensureLocation: async (language) => {
     if (get().location) return get().location!;
-    if (pendingLocation) return pendingLocation;
-    set({ locationStatus: 'loading' });
-    pendingLocation = resolveLocation()
-      .then((location) => addLocationLabel(location, language))
-      .then((location) => {
-        set({ location, locationStatus: 'ready' });
-        return location;
-      })
-      .finally(() => { pendingLocation = undefined; });
-    return pendingLocation;
+    return requestLocation(language, set);
   },
+  refreshLocation: (language) => requestLocation(language, set),
   ensureBackground: async (query, timeBucket) => {
     const key = `${query.trim().toLowerCase()}::${timeBucket}`;
     if (get().backgroundKey === key) return get().background ?? null;

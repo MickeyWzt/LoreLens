@@ -30,7 +30,7 @@ export const locationSnapshotSchema = z.object({
   lng: z.number().min(-180).max(180).optional(),
   label: z.string().trim().min(1).optional(),
   accuracy: z.number().nonnegative().optional(),
-  source: z.enum(['gps', 'cache', 'ip', 'none']),
+  source: z.enum(['gps', 'exif', 'cache', 'ip', 'none']),
   approximate: z.boolean(),
   capturedAt: z.number().int().nonnegative(),
 });

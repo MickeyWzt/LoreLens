@@ -11,6 +11,7 @@ export function migrateSettingsState(persistedState: unknown): Record<string, un
   return {
     ...rest,
     readAloudEnabled: Boolean(old.readAloudEnabled ?? old.highResAudio ?? false),
+    locationEnabled: old.locationEnabled !== false,
   };
 }
 
@@ -46,6 +47,7 @@ interface SettingsState {
   language: AppLanguage;
   accentColor: AppAccentColor;
   reduceMotion: boolean;
+  locationEnabled: boolean;
   
   setSaveToGallery: (val: boolean) => void;
   setReadAloudEnabled: (val: boolean) => void;
@@ -54,6 +56,7 @@ interface SettingsState {
   setLanguage: (lang: AppLanguage) => void;
   setAccentColor: (color: AppAccentColor) => void;
   setReduceMotion: (reduce: boolean) => void;
+  setLocationEnabled: (enabled: boolean) => void;
 }
 
 export const useSettingsStore = create<SettingsState>()(
@@ -66,6 +69,7 @@ export const useSettingsStore = create<SettingsState>()(
       language: 'en',
       accentColor: 'indigo',
       reduceMotion: false,
+      locationEnabled: true,
       
       setSaveToGallery: (saveToGallery) => set({ saveToGallery }),
       setReadAloudEnabled: (readAloudEnabled) => set({ readAloudEnabled }),
@@ -74,6 +78,7 @@ export const useSettingsStore = create<SettingsState>()(
       setLanguage: (language) => set({ language }),
       setAccentColor: (accentColor) => set({ accentColor }),
       setReduceMotion: (reduceMotion) => set({ reduceMotion }),
+      setLocationEnabled: (locationEnabled) => set({ locationEnabled }),
     }),
     {
       name: SETTINGS_KEY,

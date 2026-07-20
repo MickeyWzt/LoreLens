@@ -88,6 +88,8 @@
 
 地图无数据时显示全球视图。地图保留 Leaflet、OpenStreetMap 和 CARTO 署名。
 
+定位辅助现在默认启用。相机照片在拍摄时绑定新的设备定位；本地上传的 JPEG 优先读取自身 EXIF GPS，缺失 EXIF 时不会使用当前设备位置冒充拍摄地。完整 `LocationSnapshot` 会进入视觉 Provider，反向地理编码也会保留附近 POI 名称，用于检查图片、坐标与仿制地标是否一致。
+
 ## 部署步骤
 
 ```powershell

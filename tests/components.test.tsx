@@ -43,6 +43,17 @@ describe('accessible app states', () => {
     expect(readAloud).toHaveAttribute('aria-checked', 'true');
   });
 
+  test('location assistance is enabled by default and can be disabled', async () => {
+    const user = userEvent.setup();
+    useSettingsStore.setState({ locationEnabled: true });
+    renderLocalized(<SettingsView onBack={() => undefined} />);
+
+    const location = screen.getByRole('switch', { name: /use location for identification/i });
+    expect(location).toHaveAttribute('aria-checked', 'true');
+    await user.click(location);
+    expect(location).toHaveAttribute('aria-checked', 'false');
+  });
+
   test('font-size controls have distinct accessible names', () => {
     renderLocalized(<SettingsView onBack={() => undefined} />);
 

@@ -53,6 +53,42 @@ describe('server API', () => {
     expect(decipher).toHaveBeenCalledTimes(1);
   });
 
+  test('preserves the full location snapshot sent with a photo', async () => {
+    const module = await loadApp();
+    expect(module).not.toBeNull();
+    if (!module) return;
+
+    const decipher = vi.fn().mockResolvedValue({
+      title: 'Tower',
+      essence: 'A landmark.',
+      mirrorInsight: 'Location adds context.',
+      philosophy: 'Evidence should converge.',
+      quickAction: 'Look for signs.',
+    });
+    const app = module.createApiApp({
+      ai: { decipher, recap: vi.fn() },
+      background: { getBackground: vi.fn(), trackDownload: vi.fn() },
+      capabilities: { vision: true, text: true, background: false },
+    });
+    const location = {
+      lat: 36.1147,
+      lng: -115.1728,
+      label: 'Las Vegas Strip, Nevada, USA',
+      accuracy: 18,
+      source: 'gps',
+      approximate: false,
+      capturedAt: 1_720_000_000_000,
+    };
+    const response = await request(app).post('/api/ai/decipher').send({
+      base64Image: 'data:image/jpeg;base64,YQ==',
+      language: 'en',
+      location,
+    });
+
+    expect(response.status).toBe(200);
+    expect(decipher).toHaveBeenCalledWith(expect.objectContaining({ location }));
+  });
+
   test('returns no-content instead of an error when backgrounds are not configured', async () => {
     const module = await loadApp();
     expect(module).not.toBeNull();
