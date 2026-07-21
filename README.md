@@ -108,7 +108,7 @@ npm start
 - `MIMO_API_KEY`
 - `UNSPLASH_ACCESS_KEY`
 
-Render 会执行 `npm ci --include=dev && npm run build`，随后以 `npm start` 启动，并使用 `/api/health` 进行健康检查。生产环境启用一层可信代理、每分钟 API 限流以及 AI/TTS 每日额度；修改额度只需调整 Render 环境变量。
+Render 会执行 `npm ci --include=dev && npm run build`，随后以 `npm start` 启动，并使用 `/api/health` 进行健康检查。生产环境启用一层可信代理、90 秒 AI 上游超时、每分钟 API 限流以及 AI/TTS 每日额度；修改额度只需调整 Render 环境变量。
 
 免费 Render Web Service 适合公开测试，但闲置后会休眠。正式推广时应改为常驻实例，并在 AI 服务商后台配置余额提醒与消费上限。
 

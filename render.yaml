@@ -38,7 +38,7 @@ services:
       - key: DEEPSEEK_BASE_URL
         value: https://dashscope.aliyuncs.com/compatible-mode/v1
       - key: AI_TIMEOUT_MS
-        value: 30000
+        value: 90000
       - key: MIMO_API_KEY
         sync: false
       - key: MIMO_TTS_MODEL
