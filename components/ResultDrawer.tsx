@@ -36,6 +36,7 @@ export const ResultDrawer: React.FC<ResultDrawerProps> = ({
     } else {
       triggerHaptic(50);
     }
+    return () => cancelSpeech();
   }, [isOpen]);
 
   const handlePlayAudio = async () => {

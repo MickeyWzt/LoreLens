@@ -14,6 +14,7 @@ import {
 import { isRetryableProviderError } from './ai/errors';
 import type { BackgroundResult } from './background/service';
 import type { LocationService } from './location/service';
+import type { TtsService } from './tts/service';
 
 const decipherRequestSchema = z.object({
   base64Image: z.string().startsWith('data:image/').max(10 * 1024 * 1024),
@@ -27,6 +28,11 @@ const recapRequestSchema = z.object({
   records: z.array(z.unknown()).min(1).max(100),
 });
 
+const speechRequestSchema = z.object({
+  text: z.string().trim().min(1).max(5_000),
+  language: appLanguageSchema,
+});
+
 interface ApiDependencies {
   ai: {
     decipher(input: z.infer<typeof decipherRequestSchema>): Promise<DecipherResult>;
@@ -37,9 +43,11 @@ interface ApiDependencies {
     trackDownload(downloadLocation: string): Promise<void>;
   };
   location?: LocationService;
+  tts?: TtsService;
   capabilities: {
     vision: boolean;
     text: boolean;
+    tts?: boolean;
     background: boolean;
     ipLocation?: boolean;
   };
@@ -159,6 +167,21 @@ export function createApiApp(dependencies: ApiDependencies) {
     }
     const result = parseDailyRecap(await dependencies.ai.recap(parsed.data));
     response.json({ data: result, requestId: response.locals.requestId });
+  }));
+
+  app.post('/api/tts/speech', asyncRoute(async (request, response) => {
+    const parsed = speechRequestSchema.safeParse(request.body);
+    if (!parsed.success) {
+      sendError(response, 400, 'VALIDATION_ERROR', 'The speech request is invalid.', false);
+      return;
+    }
+    if (!dependencies.tts || !dependencies.capabilities.tts) {
+      sendError(response, 503, 'TTS_NOT_CONFIGURED', 'Cloud read aloud is not configured.', false);
+      return;
+    }
+    const result = await dependencies.tts.synthesize(parsed.data.text, parsed.data.language);
+    response.setHeader('cache-control', 'no-store');
+    response.type(result.contentType).send(result.audio);
   }));
 
   app.get('/api/background', asyncRoute(async (request, response) => {

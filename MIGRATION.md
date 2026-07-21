@@ -18,7 +18,7 @@
 - 保留原有结果、时间、缩略图、坐标和地图链接。
 - 没有坐标的旧记录保持地点未知，不补写任何默认城市。
 - 旧设置 `context_lens_settings_zustand` → `lorelens_settings_v2`。
-- 旧 `highResAudio` → `readAloudEnabled`，朗读由浏览器 `speechSynthesis` 完成。
+- 旧 `highResAudio` → `readAloudEnabled`。配置 `MIMO_API_KEY` 后，中英文朗读使用小米 `mimo-v2.5-tts`；其他语言、离线和云端失败时使用浏览器 `speechSynthesis`。
 
 迁移完成后，新写入均使用 V2 key 和 schema。建议迁移成功后立即从设置页导出一份新的 V2 JSON 备份。
 
@@ -61,6 +61,7 @@
 
 - `POST /api/ai/decipher`
 - `POST /api/ai/recap`
+- `POST /api/tts/speech`
 
 前端结果契约保持为 `title`、`essence`、`mirrorInsight`、`philosophy`、`quickAction` 和可选 `mapUri`。AI 返回值现在必须通过运行时 schema 校验。
 
@@ -71,6 +72,7 @@
 - Qwen：图像解读
 - DeepSeek：旅行回顾文字生成
 - Gemini：可选备用
+- Xiaomi MiMo V2.5 TTS：中英文云端朗读；其他语言和故障场景使用浏览器语音
 
 部署时从 [.env.example](./.env.example) 复制所需变量。API Key 只放在服务端；设置页不再提供密钥输入。
 

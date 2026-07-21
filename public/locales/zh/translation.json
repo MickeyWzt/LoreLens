@@ -15,7 +15,7 @@
     "title": "设置", "language": "语言", "appearance": "外观", "preferences": "偏好", "data": "数据",
     "midnight": "深夜黑", "porcelain": "瓷白", "accentColor": "强调色", "indigo": "靛蓝", "teal": "青绿", "amber": "琥珀", "violet": "紫罗兰",
     "reduceMotion": "减少动态效果", "reduceMotionDesc": "简化页面过渡和动画", "fontSmall": "小号文字", "fontMedium": "中号文字", "fontLarge": "大号文字",
-    "saveGallery": "将裁剪照片保存到相册", "readAloud": "启用朗读", "highResDesc": "在结果页显示浏览器朗读按钮",
+    "saveGallery": "将裁剪照片保存到相册", "readAloud": "启用朗读", "highResDesc": "中英文使用小米自然语音，其他语言和离线时使用设备语音",
     "locationEnabled": "使用定位辅助识别", "locationEnabledDesc": "默认开启；精确定位可提升地标匹配准确率",
     "clearHistory": "清除历史记录", "confirmClear": "再次点击确认", "itemsInStorage": "条记录已存储",
     "exportData": "导出", "importData": "导入", "exported": "备份已导出", "imported": "已导入 {{count}} 条记录", "importInvalid": "备份文件无效",

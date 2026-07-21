@@ -1,5 +1,7 @@
 import path from 'node:path';
 import dotenv from 'dotenv';
+import type { AppLanguage } from '../types';
+import type { TtsConfig } from './tts/service';
 
 export type VisionProviderName = 'qwen' | 'gemini';
 export type TextProviderName = 'deepseek' | 'gemini';
@@ -23,9 +25,10 @@ export interface ServerConfig {
   port: number;
   nodeEnv: string;
   ai: AiConfig;
+  tts: TtsConfig;
   unsplashAccessKey?: string;
   ipLocationUrl?: string;
-  capabilities: { vision: boolean; text: boolean; background: boolean; ipLocation: boolean };
+  capabilities: { vision: boolean; text: boolean; tts: boolean; background: boolean; ipLocation: boolean };
 }
 
 const numberInRange = (value: string | undefined, fallback: number, min: number, max: number) => {
@@ -102,6 +105,10 @@ export function readServerConfig(env: NodeJS.ProcessEnv = process.env): ServerCo
     && candidateTextFallback.apiKey
     ? candidateTextFallback
     : undefined;
+  const mimoVoices: Partial<Record<AppLanguage, string>> = {
+    zh: env.MIMO_TTS_VOICE_ZH || '茉莉',
+    en: env.MIMO_TTS_VOICE_EN || 'Mia',
+  };
 
   return {
     port: numberInRange(env.PORT, 3000, 1, 65_535),
@@ -113,11 +120,19 @@ export function readServerConfig(env: NodeJS.ProcessEnv = process.env): ServerCo
       textFallback,
       timeoutMs: numberInRange(env.AI_TIMEOUT_MS, 30_000, 1_000, 120_000),
     },
+    tts: {
+      apiKey: env.MIMO_API_KEY,
+      model: env.MIMO_TTS_MODEL || 'mimo-v2.5-tts',
+      baseUrl: env.MIMO_BASE_URL || 'https://api.xiaomimimo.com/v1',
+      timeoutMs: numberInRange(env.MIMO_TTS_TIMEOUT_MS, 30_000, 1_000, 120_000),
+      voices: mimoVoices,
+    },
     unsplashAccessKey: env.UNSPLASH_ACCESS_KEY,
     ipLocationUrl: env.IP_LOCATION_URL,
     capabilities: {
       vision: Boolean(vision.apiKey),
       text: Boolean(text.apiKey),
+      tts: Boolean(env.MIMO_API_KEY),
       background: Boolean(env.UNSPLASH_ACCESS_KEY),
       ipLocation: Boolean(env.IP_LOCATION_URL),
     },

@@ -138,4 +138,46 @@ describe('server API', () => {
 
     expect(response.headers['content-security-policy']).toBeUndefined();
   });
+
+  test('returns cloud speech audio without caching it', async () => {
+    const module = await loadApp();
+    expect(module).not.toBeNull();
+    if (!module) return;
+
+    const synthesize = vi.fn().mockResolvedValue({
+      audio: Buffer.from('RIFF-test'),
+      contentType: 'audio/wav',
+    });
+    const app = module.createApiApp({
+      ai: { decipher: vi.fn(), recap: vi.fn() },
+      background: { getBackground: vi.fn(), trackDownload: vi.fn() },
+      tts: { synthesize },
+      capabilities: { vision: false, text: false, tts: true, background: false },
+    });
+    const response = await request(app).post('/api/tts/speech').send({
+      text: 'Welcome to LoreLens.',
+      language: 'en',
+    });
+
+    expect(response.status).toBe(200);
+    expect(response.headers['content-type']).toContain('audio/wav');
+    expect(response.headers['cache-control']).toBe('no-store');
+    expect(synthesize).toHaveBeenCalledWith('Welcome to LoreLens.', 'en');
+  });
+
+  test('returns a structured error when cloud speech is not configured', async () => {
+    const module = await loadApp();
+    expect(module).not.toBeNull();
+    if (!module) return;
+
+    const app = module.createApiApp({
+      ai: { decipher: vi.fn(), recap: vi.fn() },
+      background: { getBackground: vi.fn(), trackDownload: vi.fn() },
+      capabilities: { vision: false, text: false, tts: false, background: false },
+    });
+    const response = await request(app).post('/api/tts/speech').send({ text: 'Hello', language: 'en' });
+
+    expect(response.status).toBe(503);
+    expect(response.body.error).toMatchObject({ code: 'TTS_NOT_CONFIGURED', retryable: false });
+  });
 });
