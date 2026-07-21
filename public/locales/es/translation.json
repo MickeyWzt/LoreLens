@@ -15,7 +15,7 @@
     "title": "Ajustes", "language": "Idioma", "appearance": "Apariencia", "preferences": "Preferencias", "data": "Datos",
     "midnight": "Medianoche", "porcelain": "Porcelana", "accentColor": "Color de acento", "indigo": "Índigo", "teal": "Verde azulado", "amber": "Ámbar", "violet": "Violeta",
     "reduceMotion": "Reducir movimiento", "reduceMotionDesc": "Simplifica transiciones y animaciones", "fontSmall": "Texto pequeño", "fontMedium": "Texto mediano", "fontLarge": "Texto grande",
-    "saveGallery": "Guardar recortes en la galería", "readAloud": "Activar lectura en voz alta", "highResDesc": "Usa Xiaomi para chino e inglés, Qwen para japonés, español, francés y ruso, y la voz del dispositivo para árabe, otros idiomas o sin conexión",
+    "saveGallery": "Guardar recortes en la galería", "readAloud": "Activar lectura en voz alta", "highResDesc": "Usa Xiaomi para chino e inglés, Qwen para los demás idiomas oficialmente compatibles y la voz del dispositivo para árabe, uso sin conexión o fallos de la nube",
     "locationEnabled": "Usar ubicación para identificar", "locationEnabledDesc": "Activado por defecto; la ubicación precisa mejora la coincidencia de lugares",
     "clearHistory": "Borrar historial", "confirmClear": "Toca de nuevo para confirmar", "itemsInStorage": "elementos guardados",
     "exportData": "Exportar", "importData": "Importar", "exported": "Copia exportada", "imported": "Se importaron {{count}} registros", "importInvalid": "La copia no es válida",

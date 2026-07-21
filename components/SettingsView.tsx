@@ -86,8 +86,12 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
       { code: 'en', label: 'English' },
       { code: 'zh', label: '简体中文' },
       { code: 'ja', label: '日本語' },
+      { code: 'ko', label: '한국어' },
       { code: 'es', label: 'Español' },
       { code: 'fr', label: 'Français' },
+      { code: 'de', label: 'Deutsch' },
+      { code: 'it', label: 'Italiano' },
+      { code: 'pt', label: 'Português' },
       { code: 'ru', label: 'Русский' },
       { code: 'ar', label: 'العربية' }
   ];

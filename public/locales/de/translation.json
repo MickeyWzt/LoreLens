@@ -1,0 +1,55 @@
+{
+  "common": { "back": "Zurück", "retry": "Erneut versuchen", "save": "Speichern", "saved": "Gespeichert" },
+  "greeting": { "morning": "Guten Morgen", "afternoon": "Guten Tag", "evening": "Guten Abend" },
+  "home": {
+    "localInsight": "Reiseimpuls", "scan": "Scannen und entschlüsseln", "photoBy": "Foto von", "on": "auf",
+    "subtitle": "Richte deine Kamera auf die Details, die einen Ort unvergesslich machen.",
+    "totalDiscoveries": "Entdeckungen", "today": "Heute",
+    "insight": "Eine Stadt wird lesbar, wenn du langsam genug wirst, um ihre kleinsten Entscheidungen wahrzunehmen."
+  },
+  "location": {
+    "locating": "Standort wird ermittelt…", "unavailable": "Standort nicht verfügbar", "unavailableShort": "Nicht verfügbar",
+    "approximate": "Ungefährer Standort", "precise": "Genauer Standort"
+  },
+  "settings": {
+    "title": "Einstellungen", "language": "Sprache", "appearance": "Darstellung", "preferences": "Präferenzen", "data": "Daten",
+    "midnight": "Mitternacht", "porcelain": "Porzellan", "accentColor": "Akzentfarbe", "indigo": "Indigo", "teal": "Petrol", "amber": "Bernstein", "violet": "Violett",
+    "reduceMotion": "Bewegungen reduzieren", "reduceMotionDesc": "Übergänge und Animationen vereinfachen", "fontSmall": "Kleine Schrift", "fontMedium": "Mittlere Schrift", "fontLarge": "Große Schrift",
+    "saveGallery": "Ausschnitte in der Galerie speichern", "readAloud": "Vorlesen aktivieren", "highResDesc": "Chinesisch und Englisch nutzen Xiaomi; alle weiteren offiziell unterstützten Cloud-Sprachen nutzen Qwen. Arabisch, Offlinebetrieb und Fehler nutzen die Gerätestimme.",
+    "locationEnabled": "Standort zur Erkennung verwenden", "locationEnabledDesc": "Standardmäßig aktiviert; ein genauer Standort verbessert die Zuordnung von Sehenswürdigkeiten",
+    "clearHistory": "Verlauf löschen", "confirmClear": "Zum Bestätigen erneut tippen", "itemsInStorage": "gespeicherte Elemente",
+    "exportData": "Exportieren", "importData": "Importieren", "exported": "Sicherung exportiert", "imported": "{{count}} Einträge importiert", "importInvalid": "Diese Sicherung ist ungültig",
+    "aiDescription": "Qwen-Bilderkennung · DeepSeek-Text · optionaler Gemini-Fallback"
+  },
+  "result": {
+    "essence": "Das Wesentliche", "mirror": "Kulturelle Parallele", "philosophy": "Philosophie", "action": "Probier das",
+    "share": "In die Zwischenablage kopiert", "shareError": "Teilen nicht möglich"
+  },
+  "history": {
+    "title": "Meine Entdeckungen", "empty": "Noch keine Entdeckungen", "emptySub": "Halte etwas fest, das deinen Blick anzieht",
+    "recapButton": "Resonanz-Rückblick", "dailyJournal": "Die Achsenkarte", "writing": "Resonanz wird berechnet…", "noItemsToday": "Heute keine Entdeckungen",
+    "curiosityScore": "Resonanzwert", "mood": "Stimmung", "manage": "Bearbeiten", "deleteSelected": "Auswahl löschen", "cancel": "Abbrechen",
+    "selectAll": "Alle auswählen", "deselectAll": "Auswahl aufheben", "pending": "Für später gespeichert", "failed": "Analyse fehlgeschlagen",
+    "pendingHint": "Dein Bild bleibt auf diesem Gerät, bis du es erneut versuchst", "retrySuccess": "Analyse abgeschlossen",
+    "deleted": "{{count}} Einträge gelöscht", "selected": "{{count}} ausgewählt", "journalFailed": "Das Tagebuch konnte nicht erstellt werden"
+  },
+  "map": {
+    "title": "Entdeckungskarte", "openMaps": "In Karten öffnen", "currentLocation": "Aktueller Standort",
+    "empty": "Noch keine Standortdaten. Die Karte zeigt die Weltansicht."
+  },
+  "crop": {
+    "title": "Bildausschnitt wählen", "hint": "Ziehe den Rahmen oder seine Ecken", "analyze": "Auswahl analysieren", "retake": "Neu aufnehmen",
+    "useFullImage": "Ganzes Bild", "sourceAlt": "Foto zum Zuschneiden", "resizeHandle": "Auswahlgröße ändern"
+  },
+  "scan": {
+    "savedForLater": "Für später gespeichert", "analysisFailed": "Analyse konnte nicht abgeschlossen werden", "pendingHint": "Stelle die Verbindung wieder her und versuche es dann erneut.",
+    "failureHint": "Versuche es erneut oder wähle ein anderes Foto.", "choosePhoto": "Foto auswählen", "later": "Später erledigen", "deciphering": "Wird entschlüsselt"
+  },
+  "errors": {
+    "invalidImage": "Dieses Bild konnte nicht geöffnet werden", "cameraDenied": "Kamerazugriff wurde verweigert", "cameraUnavailable": "Kamera ist nicht verfügbar",
+    "cameraHelp": "Erlaube den Kamerazugriff im Browser oder wähle stattdessen ein Foto.", "offlineRetry": "Du bist offline. Versuche es nach dem Verbinden erneut.",
+    "analysisFailed": "Analyse fehlgeschlagen", "serviceNotConfigured": "Der KI-Dienst ist nicht eingerichtet", "rateLimited": "Der Dienst ist ausgelastet. Versuche es gleich noch einmal.", "saveFailed": "Das Bild konnte nicht gespeichert werden"
+  },
+  "aria": { "close": "Schließen", "share": "Teilen", "readAloud": "Vorlesen", "capture": "Foto aufnehmen", "upload": "Foto auswählen", "openMap": "Karte öffnen", "openHistory": "Verlauf öffnen", "capturedImage": "Aufgenommenes Foto" },
+  "pwa": { "updatePrompt": "Eine neue LoreLens-Version ist verfügbar. Jetzt neu laden?" }
+}

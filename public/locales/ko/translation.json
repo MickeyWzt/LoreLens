@@ -1,0 +1,55 @@
+{
+  "common": { "back": "뒤로", "retry": "다시 시도", "save": "저장", "saved": "저장됨" },
+  "greeting": { "morning": "좋은 아침이에요", "afternoon": "안녕하세요", "evening": "좋은 저녁이에요" },
+  "home": {
+    "localInsight": "여행 영감", "scan": "스캔해서 해석하기", "photoBy": "촬영", "on": "제공",
+    "subtitle": "장소를 기억할 가치가 있게 만드는 디테일에 카메라를 향해 보세요.",
+    "totalDiscoveries": "발견", "today": "오늘",
+    "insight": "천천히 걸으며 작은 선택들을 알아볼 때 도시는 비로소 읽히기 시작합니다."
+  },
+  "location": {
+    "locating": "현재 위치를 찾는 중…", "unavailable": "위치를 사용할 수 없음", "unavailableShort": "사용할 수 없음",
+    "approximate": "대략적인 위치", "precise": "정확한 위치"
+  },
+  "settings": {
+    "title": "설정", "language": "언어", "appearance": "화면", "preferences": "환경설정", "data": "데이터",
+    "midnight": "미드나이트", "porcelain": "포슬린", "accentColor": "강조 색상", "indigo": "인디고", "teal": "틸", "amber": "앰버", "violet": "바이올렛",
+    "reduceMotion": "동작 줄이기", "reduceMotionDesc": "전환과 애니메이션을 단순하게 표시", "fontSmall": "작은 글자", "fontMedium": "보통 글자", "fontLarge": "큰 글자",
+    "saveGallery": "자른 사진을 갤러리에 저장", "readAloud": "소리 내어 읽기 사용", "highResDesc": "중국어와 영어는 Xiaomi를, 그 밖의 공식 지원 클라우드 언어는 Qwen을 사용합니다. 아랍어·오프라인·오류 시에는 기기 음성을 사용합니다.",
+    "locationEnabled": "식별에 위치 사용", "locationEnabledDesc": "기본으로 켜져 있으며 정확한 위치는 명소 판별에 도움이 됩니다",
+    "clearHistory": "기록 지우기", "confirmClear": "확인하려면 한 번 더 누르세요", "itemsInStorage": "개 항목 저장됨",
+    "exportData": "내보내기", "importData": "가져오기", "exported": "백업을 내보냈습니다", "imported": "{{count}}개 기록을 가져왔습니다", "importInvalid": "올바르지 않은 백업입니다",
+    "aiDescription": "Qwen 이미지 인식 · DeepSeek 텍스트 · 선택적 Gemini 대체"
+  },
+  "result": {
+    "essence": "핵심", "mirror": "문화적 비추어 보기", "philosophy": "철학", "action": "이렇게 해보세요",
+    "share": "클립보드에 복사했습니다", "shareError": "공유할 수 없습니다"
+  },
+  "history": {
+    "title": "나의 발견", "empty": "아직 발견이 없습니다", "emptySub": "시선을 끄는 장면을 담아 보세요",
+    "recapButton": "공명 돌아보기", "dailyJournal": "여행의 축", "writing": "공명을 계산하는 중…", "noItemsToday": "오늘의 발견이 없습니다",
+    "curiosityScore": "공명 점수", "mood": "분위기", "manage": "편집", "deleteSelected": "선택 항목 삭제", "cancel": "취소",
+    "selectAll": "모두 선택", "deselectAll": "모두 선택 해제", "pending": "나중을 위해 저장됨", "failed": "분석 실패",
+    "pendingHint": "다시 시도할 때까지 이미지는 이 기기에만 보관됩니다", "retrySuccess": "분석 완료",
+    "deleted": "{{count}}개 기록을 삭제했습니다", "selected": "{{count}}개 선택됨", "journalFailed": "여행 기록을 만들 수 없습니다"
+  },
+  "map": {
+    "title": "발견 지도", "openMaps": "지도에서 열기", "currentLocation": "현재 위치",
+    "empty": "아직 위치 데이터가 없어 세계 지도를 표시합니다."
+  },
+  "crop": {
+    "title": "관심 영역 선택", "hint": "프레임이나 모서리를 드래그하세요", "analyze": "선택 영역 분석", "retake": "다시 촬영",
+    "useFullImage": "전체 사용", "sourceAlt": "자를 사진", "resizeHandle": "선택 영역 크기 조절"
+  },
+  "scan": {
+    "savedForLater": "나중을 위해 저장됨", "analysisFailed": "분석을 완료하지 못했습니다", "pendingHint": "네트워크에 다시 연결한 뒤 준비되면 재시도하세요.",
+    "failureHint": "다시 시도하거나 다른 사진을 선택하세요.", "choosePhoto": "사진 선택", "later": "나중에 하기", "deciphering": "해석 중"
+  },
+  "errors": {
+    "invalidImage": "이미지를 열 수 없습니다", "cameraDenied": "카메라 권한이 거부되었습니다", "cameraUnavailable": "카메라를 사용할 수 없습니다",
+    "cameraHelp": "브라우저에서 카메라 접근을 허용하거나 사진을 선택하세요.", "offlineRetry": "오프라인 상태입니다. 연결 후 다시 시도하세요.",
+    "analysisFailed": "분석 실패", "serviceNotConfigured": "AI 서비스가 설정되지 않았습니다", "rateLimited": "서비스가 혼잡합니다. 잠시 후 다시 시도하세요.", "saveFailed": "이미지를 저장할 수 없습니다"
+  },
+  "aria": { "close": "닫기", "share": "공유", "readAloud": "소리 내어 읽기", "capture": "사진 촬영", "upload": "사진 선택", "openMap": "지도 열기", "openHistory": "기록 열기", "capturedImage": "촬영한 사진" },
+  "pwa": { "updatePrompt": "새 LoreLens 버전을 사용할 수 있습니다. 지금 새로고침할까요?" }
+}

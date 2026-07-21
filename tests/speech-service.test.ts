@@ -63,6 +63,16 @@ describe('speech service', () => {
     expect(browserSpeak).toHaveBeenCalledOnce();
   });
 
+  test('uses cloud TTS for newly added official Qwen languages', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false, status: 503 }));
+    const { speakText } = await import('../services/speechService');
+
+    await speakText('Willkommen in der Altstadt.', 'de');
+
+    expect(fetch).toHaveBeenCalledOnce();
+    expect(browserSpeak).toHaveBeenCalledOnce();
+  });
+
   test('falls back to browser TTS when the cloud request fails', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false, status: 503 }));
     const { speakText } = await import('../services/speechService');

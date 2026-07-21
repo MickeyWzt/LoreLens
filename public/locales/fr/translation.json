@@ -15,7 +15,7 @@
     "title": "Réglages", "language": "Langue", "appearance": "Apparence", "preferences": "Préférences", "data": "Données",
     "midnight": "Minuit", "porcelain": "Porcelaine", "accentColor": "Couleur d’accent", "indigo": "Indigo", "teal": "Sarcelle", "amber": "Ambre", "violet": "Violet",
     "reduceMotion": "Réduire les animations", "reduceMotionDesc": "Simplifie les transitions et les animations", "fontSmall": "Petit texte", "fontMedium": "Texte moyen", "fontLarge": "Grand texte",
-    "saveGallery": "Enregistrer les recadrages", "readAloud": "Activer la lecture à voix haute", "highResDesc": "Utilise Xiaomi en chinois et en anglais, Qwen en japonais, espagnol, français et russe, et la voix de l’appareil en arabe, pour les autres langues ou hors connexion",
+    "saveGallery": "Enregistrer les recadrages", "readAloud": "Activer la lecture à voix haute", "highResDesc": "Utilise Xiaomi en chinois et en anglais, Qwen pour les autres langues officiellement prises en charge, et la voix de l’appareil en arabe, hors connexion ou en cas d’échec du cloud",
     "locationEnabled": "Utiliser la position pour identifier", "locationEnabledDesc": "Activé par défaut ; une position précise améliore l’identification des lieux",
     "clearHistory": "Effacer l’historique", "confirmClear": "Touchez encore pour confirmer", "itemsInStorage": "éléments enregistrés",
     "exportData": "Exporter", "importData": "Importer", "exported": "Sauvegarde exportée", "imported": "{{count}} éléments importés", "importInvalid": "Cette sauvegarde est invalide",

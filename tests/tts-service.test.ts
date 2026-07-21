@@ -87,6 +87,34 @@ describe('Qwen TTS service', () => {
     expect(String(options.body)).not.toContain('qwen-secret');
   });
 
+  test('maps every official non-Xiaomi app language to Qwen', async () => {
+    const fetchMock = vi.fn().mockImplementation(async () => new Response(JSON.stringify({
+      output: { audio: { data: Buffer.from('RIFF-qwen').toString('base64') } },
+    }), { status: 200 }));
+    vi.stubGlobal('fetch', fetchMock);
+    const service = createQwenTtsService(qwenConfig);
+    const cases = [
+      ['ja', 'Japanese'],
+      ['ko', 'Korean'],
+      ['es', 'Spanish'],
+      ['fr', 'French'],
+      ['de', 'German'],
+      ['it', 'Italian'],
+      ['pt', 'Portuguese'],
+      ['ru', 'Russian'],
+    ] as const;
+
+    for (const [language] of cases) {
+      await service.synthesize('LoreLens', language);
+    }
+
+    expect(fetchMock).toHaveBeenCalledTimes(cases.length);
+    const sentLanguages = fetchMock.mock.calls.map(([, options]) => (
+      JSON.parse(String((options as RequestInit).body)).input.language_type
+    ));
+    expect(sentLanguages).toEqual(cases.map(([, languageType]) => languageType));
+  });
+
   test('downloads only trusted Aliyun audio URLs', async () => {
     const fetchMock = vi.fn()
       .mockResolvedValueOnce(new Response(JSON.stringify({
@@ -102,7 +130,7 @@ describe('Qwen TTS service', () => {
     expect(fetchMock.mock.calls[1][0]).toBe('https://dashscope-result.oss-cn-beijing.aliyuncs.com/audio.wav');
   });
 
-  test('routes Chinese and English to MiMo and four other official languages to Qwen', async () => {
+  test('routes Chinese and English to MiMo and the other official languages to Qwen', async () => {
     const fetchMock = vi.fn()
       .mockResolvedValueOnce(new Response(JSON.stringify({
         choices: [{ message: { audio: { data: Buffer.from('RIFF-mimo').toString('base64') } } }],

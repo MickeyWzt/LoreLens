@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { describe, expect, test } from 'vitest';
 
-const languages = ['en', 'zh', 'ja', 'es', 'fr', 'ru', 'ar'];
+const languages = ['en', 'zh', 'ja', 'ko', 'es', 'fr', 'de', 'it', 'pt', 'ru', 'ar'];
 
 const flatten = (value: unknown, prefix = ''): string[] => {
   if (!value || typeof value !== 'object') return [prefix];
@@ -10,7 +10,7 @@ const flatten = (value: unknown, prefix = ''): string[] => {
 };
 
 describe('translations', () => {
-  test('all seven languages contain exactly the same visible keys', () => {
+  test('all eleven languages contain exactly the same visible keys', () => {
     const keySets = languages.map((language) => {
       const file = path.join(process.cwd(), 'public', 'locales', language, 'translation.json');
       return flatten(JSON.parse(fs.readFileSync(file, 'utf8'))).sort();

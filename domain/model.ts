@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const appLanguageSchema = z.enum(['en', 'zh', 'ja', 'es', 'fr', 'ru', 'ar']);
+export const appLanguageSchema = z.enum(['en', 'zh', 'ja', 'ko', 'es', 'fr', 'de', 'it', 'pt', 'ru', 'ar']);
 export type AppLanguage = z.infer<typeof appLanguageSchema>;
 
 export const decipherResultSchema = z.object({

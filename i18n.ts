@@ -9,7 +9,7 @@ i18n
   .use(initReactI18next)
   .init({
     fallbackLng: 'en',
-    supportedLngs: ['en', 'zh', 'ja', 'es', 'fr', 'ru', 'ar'],
+    supportedLngs: ['en', 'zh', 'ja', 'ko', 'es', 'fr', 'de', 'it', 'pt', 'ru', 'ar'],
     debug: false,
     interpolation: {
       escapeValue: false, // React already safe from xss

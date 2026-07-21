@@ -59,8 +59,12 @@ const QWEN_LANGUAGE: Partial<Record<AppLanguage, string>> = {
   zh: 'Chinese',
   en: 'English',
   ja: 'Japanese',
+  ko: 'Korean',
   es: 'Spanish',
   fr: 'French',
+  de: 'German',
+  it: 'Italian',
+  pt: 'Portuguese',
   ru: 'Russian',
 };
 

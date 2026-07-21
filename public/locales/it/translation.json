@@ -1,0 +1,55 @@
+{
+  "common": { "back": "Indietro", "retry": "Riprova", "save": "Salva", "saved": "Salvato" },
+  "greeting": { "morning": "Buongiorno", "afternoon": "Buon pomeriggio", "evening": "Buonasera" },
+  "home": {
+    "localInsight": "Spunto di viaggio", "scan": "Scansiona e decifra", "photoBy": "Foto di", "on": "su",
+    "subtitle": "Punta la fotocamera sui dettagli che rendono un luogo degno di essere ricordato.",
+    "totalDiscoveries": "Scoperte", "today": "Oggi",
+    "insight": "Una città diventa leggibile quando rallenti abbastanza da notare le sue scelte più piccole."
+  },
+  "location": {
+    "locating": "Ricerca della posizione…", "unavailable": "Posizione non disponibile", "unavailableShort": "Non disponibile",
+    "approximate": "Posizione approssimativa", "precise": "Posizione precisa"
+  },
+  "settings": {
+    "title": "Impostazioni", "language": "Lingua", "appearance": "Aspetto", "preferences": "Preferenze", "data": "Dati",
+    "midnight": "Mezzanotte", "porcelain": "Porcellana", "accentColor": "Colore in risalto", "indigo": "Indaco", "teal": "Verde acqua", "amber": "Ambra", "violet": "Viola",
+    "reduceMotion": "Riduci movimento", "reduceMotionDesc": "Semplifica transizioni e animazioni", "fontSmall": "Testo piccolo", "fontMedium": "Testo medio", "fontLarge": "Testo grande",
+    "saveGallery": "Salva i ritagli nella galleria", "readAloud": "Attiva lettura ad alta voce", "highResDesc": "Cinese e inglese usano Xiaomi; le altre lingue cloud ufficialmente supportate usano Qwen. Arabo, modalità offline ed errori usano la voce del dispositivo.",
+    "locationEnabled": "Usa la posizione per il riconoscimento", "locationEnabledDesc": "Attiva per impostazione predefinita; una posizione precisa migliora l’abbinamento dei luoghi",
+    "clearHistory": "Cancella cronologia", "confirmClear": "Tocca di nuovo per confermare", "itemsInStorage": "elementi salvati",
+    "exportData": "Esporta", "importData": "Importa", "exported": "Backup esportato", "imported": "Importati {{count}} elementi", "importInvalid": "Questo backup non è valido",
+    "aiDescription": "Visione Qwen · testo DeepSeek · Gemini facoltativo come riserva"
+  },
+  "result": {
+    "essence": "L’essenza", "mirror": "Riflesso culturale", "philosophy": "Filosofia", "action": "Prova questo",
+    "share": "Copiato negli appunti", "shareError": "Impossibile condividere"
+  },
+  "history": {
+    "title": "Le mie scoperte", "empty": "Ancora nessuna scoperta", "emptySub": "Cattura qualcosa che attira il tuo sguardo",
+    "recapButton": "Riepilogo delle risonanze", "dailyJournal": "La mappa degli assi", "writing": "Calcolo della risonanza…", "noItemsToday": "Nessuna scoperta oggi",
+    "curiosityScore": "Punteggio di risonanza", "mood": "Umore", "manage": "Modifica", "deleteSelected": "Elimina selezionati", "cancel": "Annulla",
+    "selectAll": "Seleziona tutto", "deselectAll": "Deseleziona tutto", "pending": "Salvato per dopo", "failed": "Analisi non riuscita",
+    "pendingHint": "L’immagine resta su questo dispositivo finché non riprovi", "retrySuccess": "Analisi completata",
+    "deleted": "Eliminati {{count}} elementi", "selected": "{{count}} selezionati", "journalFailed": "Impossibile creare il diario"
+  },
+  "map": {
+    "title": "Mappa delle scoperte", "openMaps": "Apri nelle mappe", "currentLocation": "Posizione attuale",
+    "empty": "Non ci sono ancora dati di posizione. La mappa mostra una vista globale."
+  },
+  "crop": {
+    "title": "Seleziona l’area", "hint": "Trascina il riquadro o gli angoli", "analyze": "Analizza selezione", "retake": "Scatta di nuovo",
+    "useFullImage": "Usa intera", "sourceAlt": "Foto da ritagliare", "resizeHandle": "Ridimensiona selezione"
+  },
+  "scan": {
+    "savedForLater": "Salvato per dopo", "analysisFailed": "Impossibile completare l’analisi", "pendingHint": "Riconnettiti e riprova quando vuoi.",
+    "failureHint": "Riprova o scegli un’altra foto.", "choosePhoto": "Scegli foto", "later": "Fallo più tardi", "deciphering": "Decifrazione"
+  },
+  "errors": {
+    "invalidImage": "Impossibile aprire questa immagine", "cameraDenied": "Permesso della fotocamera negato", "cameraUnavailable": "Fotocamera non disponibile",
+    "cameraHelp": "Consenti l’accesso alla fotocamera nel browser o scegli una foto.", "offlineRetry": "Sei offline. Riprova dopo esserti riconnesso.",
+    "analysisFailed": "Analisi non riuscita", "serviceNotConfigured": "Il servizio IA non è configurato", "rateLimited": "Il servizio è occupato. Riprova tra poco.", "saveFailed": "Impossibile salvare l’immagine"
+  },
+  "aria": { "close": "Chiudi", "share": "Condividi", "readAloud": "Leggi ad alta voce", "capture": "Scatta foto", "upload": "Scegli foto", "openMap": "Apri mappa", "openHistory": "Apri cronologia", "capturedImage": "Foto acquisita" },
+  "pwa": { "updatePrompt": "È disponibile una nuova versione di LoreLens. Ricaricare ora?" }
+}

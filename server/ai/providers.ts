@@ -31,8 +31,12 @@ const LANGUAGE_NAMES: Record<AppLanguage, string> = {
   en: 'English',
   zh: 'Simplified Chinese',
   ja: 'Japanese',
+  ko: 'Korean',
   es: 'Spanish',
   fr: 'French',
+  de: 'German',
+  it: 'Italian',
+  pt: 'Brazilian Portuguese',
   ru: 'Russian',
   ar: 'Arabic',
 };

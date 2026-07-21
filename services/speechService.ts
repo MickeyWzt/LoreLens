@@ -4,13 +4,19 @@ const SPEECH_LANGUAGE: Record<AppLanguage, string> = {
   en: 'en-US',
   zh: 'zh-CN',
   ja: 'ja-JP',
+  ko: 'ko-KR',
   es: 'es-ES',
   fr: 'fr-FR',
+  de: 'de-DE',
+  it: 'it-IT',
+  pt: 'pt-BR',
   ru: 'ru-RU',
   ar: 'ar-SA',
 };
 
-const CLOUD_TTS_LANGUAGES = new Set<AppLanguage>(['zh', 'en', 'ja', 'es', 'fr', 'ru']);
+const CLOUD_TTS_LANGUAGES = new Set<AppLanguage>([
+  'zh', 'en', 'ja', 'ko', 'es', 'fr', 'de', 'it', 'pt', 'ru',
+]);
 
 let activeAudio: HTMLAudioElement | null = null;
 let activeRequest: AbortController | null = null;
@@ -71,7 +77,7 @@ function speakWithBrowser(text: string, language: AppLanguage): Promise<void> {
   });
 }
 
-async function speakWithMimo(text: string, language: AppLanguage): Promise<void> {
+async function speakWithCloud(text: string, language: AppLanguage): Promise<void> {
   const controller = new AbortController();
   activeRequest = controller;
   const response = await fetch('/api/tts/speech', {
@@ -111,7 +117,7 @@ export async function speakText(text: string, language: AppLanguage): Promise<vo
   cancelSpeech();
   if (CLOUD_TTS_LANGUAGES.has(language) && navigator.onLine !== false) {
     try {
-      await speakWithMimo(text, language);
+      await speakWithCloud(text, language);
       return;
     } catch (error) {
       if (error instanceof DOMException && error.name === 'AbortError') return;
