@@ -53,11 +53,11 @@ describe('speech service', () => {
     expect(browserSpeak).not.toHaveBeenCalled();
   });
 
-  test('uses browser TTS directly for languages without MiMo built-in voices', async () => {
+  test('uses browser TTS directly for languages outside the configured cloud providers', async () => {
     vi.stubGlobal('fetch', vi.fn());
     const { speakText } = await import('../services/speechService');
 
-    await speakText('古い街へようこそ。', 'ja');
+    await speakText('مرحبًا بكم في المدينة القديمة.', 'ar');
 
     expect(fetch).not.toHaveBeenCalled();
     expect(browserSpeak).toHaveBeenCalledOnce();

@@ -10,7 +10,7 @@ const SPEECH_LANGUAGE: Record<AppLanguage, string> = {
   ar: 'ar-SA',
 };
 
-const MIMO_LANGUAGES = new Set<AppLanguage>(['zh', 'en']);
+const CLOUD_TTS_LANGUAGES = new Set<AppLanguage>(['zh', 'en', 'ja', 'es', 'fr', 'ru']);
 
 let activeAudio: HTMLAudioElement | null = null;
 let activeRequest: AbortController | null = null;
@@ -109,7 +109,7 @@ async function speakWithMimo(text: string, language: AppLanguage): Promise<void>
 
 export async function speakText(text: string, language: AppLanguage): Promise<void> {
   cancelSpeech();
-  if (MIMO_LANGUAGES.has(language) && navigator.onLine !== false) {
+  if (CLOUD_TTS_LANGUAGES.has(language) && navigator.onLine !== false) {
     try {
       await speakWithMimo(text, language);
       return;

@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test, vi } from 'vitest';
-import { createMimoTtsService } from '../server/tts/service';
+import { createMimoTtsService, createQwenTtsService, createTtsService } from '../server/tts/service';
 
 const config = {
   apiKey: 'test-secret',
@@ -54,5 +54,75 @@ describe('MiMo TTS service', () => {
       status: 502,
       code: 'INVALID_TTS_RESPONSE',
     });
+  });
+});
+
+describe('Qwen TTS service', () => {
+  afterEach(() => vi.unstubAllGlobals());
+
+  const qwenConfig = {
+    apiKey: 'qwen-secret',
+    baseUrl: 'https://dashscope.aliyuncs.com/api/v1/',
+    model: 'qwen3-tts-flash',
+    timeoutMs: 2_000,
+    voice: 'Cherry',
+  };
+
+  test('maps a supported language and decodes inline audio', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify({
+      output: { audio: { data: Buffer.from('RIFF-qwen').toString('base64'), url: '' } },
+    }), { status: 200 }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    const result = await createQwenTtsService(qwenConfig).synthesize('Bienvenue.', 'fr');
+
+    expect(result.audio.toString()).toBe('RIFF-qwen');
+    const [url, options] = fetchMock.mock.calls[0] as [string, RequestInit];
+    expect(url).toBe('https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation');
+    const body = JSON.parse(String(options.body));
+    expect(body).toMatchObject({
+      model: 'qwen3-tts-flash',
+      input: { text: 'Bienvenue.', voice: 'Cherry', language_type: 'French' },
+    });
+    expect(String(options.body)).not.toContain('qwen-secret');
+  });
+
+  test('downloads only trusted Aliyun audio URLs', async () => {
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        output: { audio: { data: '', url: 'http://dashscope-result.oss-cn-beijing.aliyuncs.com/audio.wav' } },
+      }), { status: 200 }))
+      .mockResolvedValueOnce(new Response(Buffer.from('RIFF-url'), { status: 200 }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    const result = await createQwenTtsService(qwenConfig).synthesize('Hola.', 'es');
+
+    expect(result.audio.toString()).toBe('RIFF-url');
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(fetchMock.mock.calls[1][0]).toBe('https://dashscope-result.oss-cn-beijing.aliyuncs.com/audio.wav');
+  });
+
+  test('routes Chinese and English to MiMo and four other official languages to Qwen', async () => {
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        choices: [{ message: { audio: { data: Buffer.from('RIFF-mimo').toString('base64') } } }],
+      }), { status: 200 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        output: { audio: { data: Buffer.from('RIFF-qwen').toString('base64') } },
+      }), { status: 200 }));
+    vi.stubGlobal('fetch', fetchMock);
+    const service = createTtsService({ mimo: config, qwen: qwenConfig });
+
+    expect((await service.synthesize('你好', 'zh')).audio.toString()).toBe('RIFF-mimo');
+    expect((await service.synthesize('こんにちは', 'ja')).audio.toString()).toBe('RIFF-qwen');
+  });
+
+  test('rejects Arabic so the client can use its device voice', async () => {
+    vi.stubGlobal('fetch', vi.fn());
+    await expect(createQwenTtsService(qwenConfig).synthesize('مرحبًا', 'ar')).rejects.toMatchObject({
+      status: 422,
+      code: 'TTS_LANGUAGE_UNSUPPORTED',
+    });
+    expect(fetch).not.toHaveBeenCalled();
   });
 });

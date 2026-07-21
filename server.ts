@@ -6,7 +6,7 @@ import { createBackgroundService } from './server/background/service';
 import { loadServerConfig } from './server/config';
 import { createLocationService } from './server/location/service';
 import { shouldUseViteMiddleware } from './server/runtime';
-import { createMimoTtsService } from './server/tts/service';
+import { createTtsService } from './server/tts/service';
 
 async function startServer() {
   const config = loadServerConfig();
@@ -14,7 +14,7 @@ async function startServer() {
   const ai = createAiService(config.ai);
   const background = createBackgroundService({ accessKey: config.unsplashAccessKey });
   const location = createLocationService({ ipLocationUrl: config.ipLocationUrl });
-  const tts = createMimoTtsService(config.tts);
+  const tts = createTtsService(config.tts);
   const app = createApiApp({
     ai,
     background,

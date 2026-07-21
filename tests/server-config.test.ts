@@ -24,9 +24,15 @@ describe('server config', () => {
     expect(config.ai.text.provider).toBe('deepseek');
     expect(config.capabilities).toMatchObject({ vision: true, text: true, tts: true });
     expect(config.tts).toMatchObject({
-      model: 'mimo-v2.5-tts',
-      baseUrl: 'https://api.xiaomimimo.com/v1',
-      voices: { zh: '茉莉', en: 'Mia' },
+      mimo: {
+        model: 'mimo-v2.5-tts',
+        baseUrl: 'https://api.xiaomimimo.com/v1',
+        voices: { zh: '茉莉', en: 'Mia' },
+      },
+      qwen: {
+        model: 'qwen3-tts-flash',
+        voice: 'Cherry',
+      },
     });
   });
 });
