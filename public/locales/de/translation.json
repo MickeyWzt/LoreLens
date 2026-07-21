@@ -15,7 +15,7 @@
     "title": "Einstellungen", "language": "Sprache", "appearance": "Darstellung", "preferences": "Präferenzen", "data": "Daten",
     "midnight": "Mitternacht", "porcelain": "Porzellan", "accentColor": "Akzentfarbe", "indigo": "Indigo", "teal": "Petrol", "amber": "Bernstein", "violet": "Violett",
     "reduceMotion": "Bewegungen reduzieren", "reduceMotionDesc": "Übergänge und Animationen vereinfachen", "fontSmall": "Kleine Schrift", "fontMedium": "Mittlere Schrift", "fontLarge": "Große Schrift",
-    "saveGallery": "Ausschnitte in der Galerie speichern", "readAloud": "Vorlesen aktivieren", "highResDesc": "Chinesisch und Englisch nutzen Xiaomi; alle weiteren offiziell unterstützten Cloud-Sprachen nutzen Qwen. Arabisch, Offlinebetrieb und Fehler nutzen die Gerätestimme.",
+    "saveGallery": "Ausschnitte in der Galerie speichern", "readAloud": "Vorlesen aktivieren", "readAloudDesc": "Liest Ergebnisse mit einer natürlichen Stimme vor.",
     "locationEnabled": "Standort zur Erkennung verwenden", "locationEnabledDesc": "Standardmäßig aktiviert; ein genauer Standort verbessert die Zuordnung von Sehenswürdigkeiten",
     "clearHistory": "Verlauf löschen", "confirmClear": "Zum Bestätigen erneut tippen", "itemsInStorage": "gespeicherte Elemente",
     "exportData": "Exportieren", "importData": "Importieren", "exported": "Sicherung exportiert", "imported": "{{count}} Einträge importiert", "importInvalid": "Diese Sicherung ist ungültig",

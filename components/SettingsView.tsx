@@ -240,11 +240,11 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
                     onClick={() => setLocationEnabled(!locationEnabled)}
                     className={`ll-pressable flex w-full cursor-pointer items-center justify-between border-b py-4 text-start transition-transform duration-150 ${borderClass}`}
                 >
-                    <div className="flex flex-col pe-4">
+                    <div className="flex min-w-0 flex-col pe-4">
                         <span className="text-lg font-light">{t('settings.locationEnabled')}</span>
                         <span className={`text-xs ${subTextClass}`}>{t('settings.locationEnabledDesc')}</span>
                     </div>
-                    <div className={`w-12 h-6 rounded-full relative transition-colors duration-200 ${locationEnabled ? accent.bg : isDark ? 'bg-gray-700' : 'bg-gray-300'}`}>
+                    <div className={`relative h-6 w-12 shrink-0 rounded-full transition-colors duration-200 ${locationEnabled ? accent.bg : isDark ? 'bg-gray-700' : 'bg-gray-300'}`}>
                         <div className={`absolute start-1 top-1 h-4 w-4 rounded-full bg-white shadow transition-transform duration-150 [transition-timing-function:var(--ll-ease-out)] ${locationEnabled ? 'translate-x-6 rtl:-translate-x-6' : ''}`}></div>
                     </div>
                 </button>
@@ -257,9 +257,9 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
                     onClick={() => setSaveToGallery(!saveToGallery)}
                     className={`ll-pressable flex w-full cursor-pointer items-center justify-between border-b py-4 text-start transition-transform duration-150 ${borderClass}`}
                 >
-                    <span className="text-lg font-light">{t('settings.saveGallery')}</span>
+                    <span className="min-w-0 pe-4 text-lg font-light">{t('settings.saveGallery')}</span>
                     <div 
-                        className={`w-12 h-6 rounded-full relative transition-colors duration-200 ${saveToGallery ? accent.bg : isDark ? 'bg-gray-700' : 'bg-gray-300'}`}
+                        className={`relative h-6 w-12 shrink-0 rounded-full transition-colors duration-200 ${saveToGallery ? accent.bg : isDark ? 'bg-gray-700' : 'bg-gray-300'}`}
                     >
                         <div className={`absolute start-1 top-1 h-4 w-4 rounded-full bg-white shadow transition-transform duration-150 [transition-timing-function:var(--ll-ease-out)] ${saveToGallery ? 'translate-x-6 rtl:-translate-x-6' : ''}`}></div>
                     </div>
@@ -273,12 +273,12 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
                     onClick={() => setReadAloudEnabled(!readAloudEnabled)}
                     className={`ll-pressable flex w-full cursor-pointer items-center justify-between border-b py-4 text-start transition-transform duration-150 ${borderClass}`}
                 >
-                    <div className="flex flex-col">
+                    <div className="flex min-w-0 flex-col pe-4">
                         <span className="text-lg font-light">{t('settings.readAloud')}</span>
-                        <span className={`text-xs ${subTextClass}`}>{t('settings.highResDesc')}</span>
+                        <span className={`text-xs ${subTextClass}`}>{t('settings.readAloudDesc')}</span>
                     </div>
                     <div 
-                    className={`w-12 h-6 rounded-full relative transition-colors duration-200 ${readAloudEnabled ? accent.bg : isDark ? 'bg-gray-700' : 'bg-gray-300'}`}
+                    className={`relative h-6 w-12 shrink-0 rounded-full transition-colors duration-200 ${readAloudEnabled ? accent.bg : isDark ? 'bg-gray-700' : 'bg-gray-300'}`}
                     >
                         <div className={`absolute start-1 top-1 h-4 w-4 rounded-full bg-white shadow transition-transform duration-150 [transition-timing-function:var(--ll-ease-out)] ${readAloudEnabled ? 'translate-x-6 rtl:-translate-x-6' : ''}`}></div>
                     </div>
@@ -292,12 +292,12 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
                     onClick={() => setReduceMotion(!reduceMotion)}
                     className="ll-pressable flex w-full cursor-pointer items-center justify-between py-4 text-start transition-transform duration-150"
                 >
-                    <div className="flex flex-col pe-4">
+                    <div className="flex min-w-0 flex-col pe-4">
                         <span className="text-lg font-light">{t('settings.reduceMotion')}</span>
                         <span className={`text-xs ${subTextClass}`}>{t('settings.reduceMotionDesc')}</span>
                     </div>
                     <div 
-                        className={`w-12 h-6 rounded-full relative transition-colors duration-200 ${reduceMotion ? accent.bg : isDark ? 'bg-gray-700' : 'bg-gray-300'}`}
+                        className={`relative h-6 w-12 shrink-0 rounded-full transition-colors duration-200 ${reduceMotion ? accent.bg : isDark ? 'bg-gray-700' : 'bg-gray-300'}`}
                     >
                         <div className={`absolute start-1 top-1 h-4 w-4 rounded-full bg-white shadow transition-transform duration-150 [transition-timing-function:var(--ll-ease-out)] ${reduceMotion ? 'translate-x-6 rtl:-translate-x-6' : ''}`}></div>
                     </div>

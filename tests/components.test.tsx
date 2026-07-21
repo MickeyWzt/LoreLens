@@ -43,6 +43,14 @@ describe('accessible app states', () => {
     expect(readAloud).toHaveAttribute('aria-checked', 'true');
   });
 
+  test('read aloud preference keeps provider details out of the interface', () => {
+    renderLocalized(<SettingsView onBack={() => undefined} />);
+    const readAloud = screen.getByRole('switch', { name: /enable read aloud/i });
+
+    expect(readAloud).toHaveTextContent('Read results aloud with a natural voice.');
+    expect(readAloud).not.toHaveTextContent(/Xiaomi|Qwen/i);
+  });
+
   test('location assistance is enabled by default and can be disabled', async () => {
     const user = userEvent.setup();
     useSettingsStore.setState({ locationEnabled: true });

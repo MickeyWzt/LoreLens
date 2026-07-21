@@ -15,7 +15,7 @@
     "title": "設定", "language": "言語", "appearance": "外観", "preferences": "環境設定", "data": "データ",
     "midnight": "ミッドナイト", "porcelain": "ポーセリン", "accentColor": "アクセントカラー", "indigo": "インディゴ", "teal": "ティール", "amber": "アンバー", "violet": "バイオレット",
     "reduceMotion": "動きを減らす", "reduceMotionDesc": "画面遷移とアニメーションを簡略化します", "fontSmall": "小さい文字", "fontMedium": "標準の文字", "fontLarge": "大きい文字",
-    "saveGallery": "切り抜きをギャラリーに保存", "readAloud": "読み上げを有効にする", "highResDesc": "中国語と英語は Xiaomi、その他の公式対応クラウド言語は Qwen、アラビア語・オフライン・クラウド障害時は端末音声を使用します",
+    "saveGallery": "切り抜きをギャラリーに保存", "readAloud": "読み上げを有効にする", "readAloudDesc": "自然な音声で結果を読み上げます。",
     "locationEnabled": "位置情報を識別に使用", "locationEnabledDesc": "初期設定で有効。正確な位置情報でランドマーク照合を改善します",
     "clearHistory": "履歴を消去", "confirmClear": "もう一度タップして確認", "itemsInStorage": "件を保存中",
     "exportData": "書き出す", "importData": "読み込む", "exported": "バックアップを書き出しました", "imported": "{{count}} 件を読み込みました", "importInvalid": "このバックアップは無効です",

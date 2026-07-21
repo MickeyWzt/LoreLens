@@ -15,7 +15,7 @@
     "title": "الإعدادات", "language": "اللغة", "appearance": "المظهر", "preferences": "التفضيلات", "data": "البيانات",
     "midnight": "منتصف الليل", "porcelain": "الخزف", "accentColor": "لون التمييز", "indigo": "نيلي", "teal": "فيروزي", "amber": "كهرماني", "violet": "بنفسجي",
     "reduceMotion": "تقليل الحركة", "reduceMotionDesc": "تبسيط الانتقالات والرسوم المتحركة", "fontSmall": "نص صغير", "fontMedium": "نص متوسط", "fontLarge": "نص كبير",
-    "saveGallery": "حفظ الصور المقصوصة في المعرض", "readAloud": "تفعيل القراءة بصوت عالٍ", "highResDesc": "يستخدم Xiaomi للصينية والإنجليزية وQwen لبقية اللغات السحابية المدعومة رسميًا وصوت الجهاز للعربية وعند عدم الاتصال أو تعطل الخدمة السحابية",
+    "saveGallery": "حفظ الصور المقصوصة في المعرض", "readAloud": "تفعيل القراءة بصوت عالٍ", "readAloudDesc": "يقرأ النتائج بصوت طبيعي.",
     "locationEnabled": "استخدام الموقع للمساعدة في التعرّف", "locationEnabledDesc": "مفعّل افتراضيًا؛ الموقع الدقيق يحسّن مطابقة المعالم",
     "clearHistory": "مسح السجل", "confirmClear": "اضغط مرة أخرى للتأكيد", "itemsInStorage": "عنصر محفوظ",
     "exportData": "تصدير", "importData": "استيراد", "exported": "تم تصدير النسخة الاحتياطية", "imported": "تم استيراد {{count}} سجلاً", "importInvalid": "هذه النسخة غير صالحة",
