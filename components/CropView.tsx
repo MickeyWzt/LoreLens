@@ -94,13 +94,13 @@ export const CropView: React.FC<CropViewProps> = ({ imageSrc, onConfirm, onCance
   ];
 
   return (
-    <section className="absolute inset-0 z-50 flex flex-col bg-black text-white">
-      <header className="absolute inset-x-0 top-0 z-20 flex items-center justify-between bg-gradient-to-b from-black/90 to-transparent px-5 pb-12 pt-[max(1.25rem,env(safe-area-inset-top))]">
-        <button type="button" onClick={onCancel} className="rounded-full bg-white/10 px-4 py-2 text-sm backdrop-blur-xl">
+    <section className="absolute inset-0 z-50 flex flex-col bg-[#0b0b0a] text-white ll-screen-enter">
+      <header className="absolute inset-x-0 top-0 z-20 flex items-center justify-between bg-gradient-to-b from-black/88 to-transparent px-5 pb-12 pt-[max(1rem,env(safe-area-inset-top))]">
+        <button type="button" onClick={onCancel} className="ll-icon-button ll-pressable rounded-xl px-4 py-2.5 text-sm font-semibold">
           {t('crop.retake')}
         </button>
-        <h2 className="text-sm font-medium uppercase tracking-[0.18em]">{t('crop.title')}</h2>
-        <button type="button" onClick={() => onConfirm(imageSrc)} className="rounded-full bg-white/10 px-4 py-2 text-sm backdrop-blur-xl">
+        <h2 className="font-mono text-[10px] font-medium uppercase tracking-[0.2em]">{t('crop.title')}</h2>
+        <button type="button" onClick={() => onConfirm(imageSrc)} className="ll-icon-button ll-pressable rounded-xl px-4 py-2.5 text-sm font-semibold">
           {t('crop.useFullImage')}
         </button>
       </header>
@@ -127,7 +127,7 @@ export const CropView: React.FC<CropViewProps> = ({ imageSrc, onConfirm, onCance
             style={{ left: imageRect.left, top: imageRect.top, width: imageRect.width, height: imageRect.height }}
           >
             <div
-              className="absolute cursor-move touch-none border-2 border-white shadow-[0_0_0_9999px_rgba(0,0,0,0.52)]"
+              className="absolute cursor-move touch-none border border-[#f2efe6] shadow-[0_0_0_9999px_rgba(0,0,0,0.58)]"
               style={{ left: `${crop.x}%`, top: `${crop.y}%`, width: `${crop.width}%`, height: `${crop.height}%` }}
               onPointerDown={(event) => startDrag(event, 'move')}
             >
@@ -156,7 +156,7 @@ export const CropView: React.FC<CropViewProps> = ({ imageSrc, onConfirm, onCance
                   type="button"
                   aria-label={t('crop.resizeHandle')}
                   onPointerDown={(event) => startDrag(event, handle)}
-                  className={`absolute z-10 h-9 w-9 touch-none rounded-full border-2 border-white bg-indigo-500/80 shadow-lg ${className}`}
+                  className={`absolute z-10 h-9 w-9 touch-none rounded-xl border border-white/80 bg-[#c87648] shadow-lg ${className}`}
                 />
               ))}
             </div>
@@ -164,9 +164,9 @@ export const CropView: React.FC<CropViewProps> = ({ imageSrc, onConfirm, onCance
         )}
       </div>
 
-      <footer className="absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-black via-black/90 to-transparent px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-16 text-center">
-        <p className="mb-4 text-xs tracking-wide text-white/60">{t('crop.hint')}</p>
-        <button type="button" onClick={performCrop} className="w-full rounded-full bg-white px-8 py-4 text-base font-bold text-black active:scale-[0.98]">
+      <footer className="absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-black via-black/90 to-transparent px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-16 text-center">
+        <p className="mb-3 font-mono text-[9px] uppercase tracking-[0.14em] text-white/52">{t('crop.hint')}</p>
+        <button type="button" onClick={performCrop} className="ll-primary-action w-full rounded-[1.2rem] bg-[#f2efe6] px-8 py-4 text-base font-bold text-[#0b0b0a]">
           {t('crop.analyze')}
         </button>
       </footer>

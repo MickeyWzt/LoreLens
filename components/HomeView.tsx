@@ -85,29 +85,30 @@ export const HomeView: React.FC<HomeViewProps> = ({
   };
 
   return (
-    <main className={`relative h-full overflow-hidden ${isDark ? 'bg-black text-white' : 'bg-stone-100 text-stone-950'}`}>
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(99,102,241,0.36),transparent_46%),radial-gradient(circle_at_85%_80%,rgba(168,85,247,0.25),transparent_44%),linear-gradient(160deg,#15131d,#050505_58%,#111827)]" />
+    <main className={`ll-grain relative h-full overflow-hidden ${isDark ? 'bg-[#0b0b0a] text-white' : 'bg-stone-100 text-stone-950'}`}>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_18%,rgba(199,114,66,0.24),transparent_40%),linear-gradient(155deg,#22211d,#0b0b0a_62%,#171611)]" />
       {background?.imageUrl && (
         <img
           src={background.imageUrl}
           alt=""
-          className={`absolute inset-0 h-full w-full object-cover ${reduceMotion ? '' : 'animate-fade-in'}`}
+          className={`absolute inset-0 h-full w-full object-cover saturate-[0.82] ${reduceMotion ? '' : 'animate-fade-in'}`}
         />
       )}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/35 to-black/95" />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,4,3,0.18)_0%,rgba(4,4,3,0.2)_30%,rgba(4,4,3,0.82)_76%,rgba(4,4,3,0.98)_100%)]" />
+      <div className="absolute inset-0 shadow-[inset_0_0_120px_rgba(0,0,0,0.42)]" />
 
-      <div className="relative z-10 mx-auto flex h-full w-full max-w-md flex-col px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(2rem,env(safe-area-inset-top))]">
+      <div className="relative z-10 mx-auto flex h-full w-full max-w-lg flex-col px-5 pb-[max(1.1rem,env(safe-area-inset-bottom))] pt-[max(1.25rem,env(safe-area-inset-top))] sm:px-7">
         <header className="flex items-center justify-between">
-          <div className="min-w-0 rounded-full border border-white/15 bg-black/25 px-4 py-2 backdrop-blur-xl">
-            <p className="truncate text-sm font-medium text-white">{locationLabel}</p>
-            <p className="text-[10px] uppercase tracking-[0.18em] text-white/60">{precisionLabel}</p>
+          <div className="ll-material min-w-0 max-w-[68%] rounded-2xl px-3.5 py-2.5">
+            <p className="truncate text-[13px] font-semibold leading-tight text-white">{locationLabel}</p>
+            <p className="mt-1 font-mono text-[9px] uppercase tracking-[0.16em] text-white/52">{precisionLabel}</p>
           </div>
           <div className="flex gap-2">
             <button
               type="button"
               aria-label={t('history.title')}
               onClick={onOpenHistory}
-              className="rounded-full border border-white/15 bg-black/25 p-3 text-white backdrop-blur-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              className="ll-icon-button h-11 w-11 rounded-2xl text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
               <IconHistory className="h-5 w-5" />
             </button>
@@ -115,44 +116,54 @@ export const HomeView: React.FC<HomeViewProps> = ({
               type="button"
               aria-label={t('settings.title')}
               onClick={onOpenSettings}
-              className="rounded-full border border-white/15 bg-black/25 p-3 text-white backdrop-blur-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              className="ll-icon-button h-11 w-11 rounded-2xl text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
               <IconSettings className="h-5 w-5" />
             </button>
           </div>
         </header>
 
-        <section className="mt-auto text-white">
-          <p className="text-sm font-medium tracking-wide text-white/65">{t(greetingKey)}</p>
-          <p className="mt-3 max-w-sm text-base leading-relaxed text-white/72">{t('home.subtitle')}</p>
-
-          <div className="mt-7 grid grid-cols-2 gap-3">
-            <div className="rounded-3xl border border-white/12 bg-white/8 p-4 backdrop-blur-xl">
-              <p className="text-3xl font-light">{completed.length}</p>
-              <p className="mt-1 text-xs uppercase tracking-[0.16em] text-white/55">{t('home.totalDiscoveries')}</p>
-            </div>
-            <div className="rounded-3xl border border-white/12 bg-white/8 p-4 backdrop-blur-xl">
-              <p className="text-3xl font-light">{todayCount}</p>
-              <p className="mt-1 text-xs uppercase tracking-[0.16em] text-white/55">{t('home.today')}</p>
-            </div>
+        <section className={`mt-auto text-white ${reduceMotion ? '' : 'll-screen-enter'}`}>
+          <div className="mb-4 flex items-center gap-3">
+            <span className="h-px w-8 bg-white/55" aria-hidden="true" />
+            <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-white/58">{t('home.localInsight')}</p>
           </div>
+          <h1 className="max-w-sm font-serif text-[clamp(2.65rem,12vw,4.4rem)] font-normal leading-[0.92] tracking-[-0.045em] text-[#f4f0e6]">
+            {t(greetingKey)}
+          </h1>
+          <p className="mt-4 max-w-sm text-[15px] font-medium leading-relaxed text-white/72">{t('home.subtitle')}</p>
 
-          <div className="mt-3 rounded-3xl border border-white/12 bg-black/25 p-5 backdrop-blur-xl">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/50">{t('home.localInsight')}</p>
-            <p className="mt-2 font-serif text-lg italic leading-relaxed text-white/88">{t('home.insight')}</p>
+          <blockquote className="mt-5 max-w-sm border-s border-white/28 ps-4 font-serif text-[15px] italic leading-relaxed text-white/72">
+            {t('home.insight')}
+          </blockquote>
+
+          <div className="ll-material mt-6 overflow-hidden rounded-[1.65rem] p-2">
+            <div className="flex items-center px-3 pb-2.5 pt-1.5">
+              <div className="flex flex-1 items-baseline gap-2 border-e border-white/14 pe-4">
+                <p className="font-mono text-xl font-medium text-[#f4f0e6]">{completed.length}</p>
+                <p className="text-[9px] font-semibold uppercase tracking-[0.13em] text-white/48">{t('home.totalDiscoveries')}</p>
+              </div>
+              <div className="flex flex-1 items-baseline gap-2 ps-4">
+                <p className="font-mono text-xl font-medium text-[#f4f0e6]">{todayCount}</p>
+                <p className="text-[9px] font-semibold uppercase tracking-[0.13em] text-white/48">{t('home.today')}</p>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => { triggerHaptic(); onScanStart(); }}
+              className="ll-primary-action flex w-full items-center justify-between rounded-[1.2rem] bg-[#f2efe6] py-2.5 pe-4 ps-2.5 text-[#0b0b0a]"
+            >
+              <span className={`flex h-11 w-11 items-center justify-center rounded-[0.9rem] text-white ${accent.bg}`}>
+                <IconCamera className="h-5 w-5" />
+              </span>
+              <span className="text-[15px] font-bold tracking-[-0.01em]">{t('home.scan')}</span>
+              <span className="font-mono text-sm text-black/38" aria-hidden="true">↗</span>
+            </button>
           </div>
-
-          <button
-            type="button"
-            onClick={() => { triggerHaptic(); onScanStart(); }}
-            className={`mt-5 flex w-full items-center justify-center gap-3 rounded-full px-6 py-4 text-base font-semibold text-white shadow-2xl transition-transform active:scale-[0.98] ${accent.bg}`}
-          >
-            <IconCamera className="h-6 w-6" />
-            {t('home.scan')}
-          </button>
 
           {background && (
-            <div className="mt-3 flex items-center justify-between px-2 text-[10px] text-white/50">
+            <div className="mt-2.5 flex items-center justify-between px-2 font-mono text-[8px] uppercase tracking-[0.08em] text-white/38">
               <span>
                 {t('home.photoBy')}{' '}
                 <a className="underline" href={background.photographerUrl} target="_blank" rel="noreferrer">{background.photographer}</a>

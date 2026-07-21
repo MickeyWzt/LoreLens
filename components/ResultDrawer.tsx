@@ -86,18 +86,17 @@ export const ResultDrawer: React.FC<ResultDrawerProps> = ({
   const isDark = theme === 'dark';
   
   // Dynamic Styles
-  const cardBg = isDark ? 'bg-[#121212] border-white/10' : 'bg-white border-gray-200';
-  const textMain = isDark ? 'text-white' : 'text-gray-900';
-  const textSub = isDark ? 'text-gray-300' : 'text-gray-600';
-  const textMuted = isDark ? 'text-gray-400' : 'text-gray-500';
-  const iconBtn = isDark ? 'bg-white/10 hover:bg-white/20 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-700';
+  const cardBg = isDark ? 'bg-[#151513] border-white/12' : 'bg-[#f2efe6] border-black/10';
+  const textMain = isDark ? 'text-[#f4f0e6]' : 'text-[#171714]';
+  const textSub = isDark ? 'text-white/66' : 'text-black/66';
+  const textMuted = isDark ? 'text-white/42' : 'text-black/44';
+  const iconBtn = isDark ? 'border-white/12 bg-white/7 text-white' : 'border-black/10 bg-black/5 text-[#171714]';
   
   // Section Styles
-  const essenceBg = isDark ? 'bg-zinc-900/50' : 'bg-gray-50';
-  const mirrorBg = isDark ? 'bg-indigo-950/30 border-indigo-500/30' : 'bg-indigo-50 border-indigo-100';
-  const mirrorText = isDark ? 'text-indigo-200' : 'text-indigo-900';
-  const actionBg = isDark ? 'bg-emerald-950/30 border-emerald-500/20' : 'bg-emerald-50 border-emerald-200';
-  const actionText = isDark ? 'text-emerald-200' : 'text-emerald-900';
+  const mirrorBg = isDark ? 'bg-[#f2efe6] border-white/70' : 'bg-[#171714] border-black';
+  const mirrorText = isDark ? 'text-[#171714]' : 'text-[#f4f0e6]';
+  const actionBg = isDark ? 'bg-[#211d19] border-[#c87648]/35' : 'bg-[#e8e2d5] border-[#b8643b]/25';
+  const actionText = isDark ? 'text-[#f2c4a8]' : 'text-[#69331e]';
 
   return (
     <div 
@@ -105,47 +104,44 @@ export const ResultDrawer: React.FC<ResultDrawerProps> = ({
       aria-modal={isOpen}
       aria-hidden={!isOpen}
       aria-labelledby="lorelens-result-title"
-      className={`fixed inset-x-0 bottom-0 z-40 transform transition-transform duration-[600ms] cubic-bezier(0.19, 1, 0.22, 1) ${
-        isOpen ? 'translate-y-0' : 'translate-y-[110%]'
-      }`}
+      className="ll-sheet-enter fixed inset-x-0 bottom-0 z-40"
     >
-      <div className="relative mx-auto w-full max-w-md">
+      <div className="relative mx-auto w-full max-w-lg">
         {/* Drawer Handle */}
         <div 
-            className={`absolute -top-14 inset-x-0 flex justify-center transition-opacity duration-300 ${isOpen ? 'opacity-100 delay-300' : 'opacity-0'}`}
+            className="absolute -top-14 inset-x-0 flex justify-center"
         >
             <button 
                 aria-label={t('aria.close')}
                 onClick={onClose}
-                className="glass-panel rounded-full p-2.5 text-white active:scale-90 transition-transform duration-200"
+                className="ll-icon-button h-11 w-11 rounded-2xl text-white"
             >
                 <IconChevronDown className="w-6 h-6" />
             </button>
         </div>
 
         {/* Card Content */}
-        <div className={`rounded-t-[2.5rem] border-t shadow-[0_-10px_40px_rgba(0,0,0,0.3)] overflow-hidden h-[85vh] overflow-y-auto no-scrollbar ${cardBg}`}>
-            {/* Background Glow */}
-            {isDark && (
-                <div className="absolute top-0 start-1/2 rtl:translate-x-1/2 -translate-x-1/2 w-3/4 h-32 bg-indigo-500/10 blur-[60px] pointer-events-none" />
-            )}
-
-            <div className="p-8 pb-16 space-y-8 relative">
+        <div className={`h-[88dvh] overflow-y-auto overflow-x-hidden rounded-t-[2rem] border-t shadow-[0_-22px_70px_rgba(0,0,0,0.42)] no-scrollbar ${cardBg}`}>
+            <div className="relative space-y-7 px-6 pb-[max(3rem,env(safe-area-inset-bottom))] pt-4 sm:px-8">
+                <div className={`mx-auto mb-2 h-1 w-10 rounded-full ${isDark ? 'bg-white/18' : 'bg-black/16'}`} aria-hidden="true" />
                 
                 {/* Header: Title & Actions */}
-                <div className="flex justify-between items-start animate-fade-in-up delay-100">
-                    <h2 id="lorelens-result-title" className={`text-4xl font-extralight tracking-tight pe-4 leading-tight ${textMain}`}>
-                        {result.title}
-                    </h2>
-                    <div className="flex gap-3 shrink-0 mt-1">
+                <div className="flex items-start justify-between gap-5">
+                    <div className="min-w-0">
+                        <p className={`mb-3 font-mono text-[9px] uppercase tracking-[0.22em] ${textMuted}`}>01 · {t('result.essence')}</p>
+                        <h2 id="lorelens-result-title" className={`font-serif text-[clamp(2.65rem,11vw,4rem)] font-normal leading-[0.94] tracking-[-0.04em] ${textMain}`}>
+                            {result.title}
+                        </h2>
+                    </div>
+                    <div className="mt-1 flex shrink-0 gap-2">
                         {showAudioPlayer && (
                             <button 
                                 aria-label={t('aria.readAloud')}
                                 onClick={handlePlayAudio}
                                 disabled={isLoadingAudio}
-                                className={`p-2.5 rounded-full transition-all duration-300 active:scale-90 ${
-                                    isPlaying ? 'bg-indigo-500 text-white shadow-[0_0_15px_rgba(99,102,241,0.5)]' : 
-                                    isLoadingAudio ? 'bg-indigo-900/50 text-indigo-200' :
+                                className={`ll-pressable flex h-10 w-10 items-center justify-center rounded-xl border transition-[transform,background-color] duration-150 ${
+                                    isPlaying ? 'border-[#c87648] bg-[#c87648] text-white' :
+                                    isLoadingAudio ? 'border-[#c87648]/30 bg-[#c87648]/15 text-[#c87648]' :
                                     iconBtn
                                 }`}
                             >
@@ -159,7 +155,7 @@ export const ResultDrawer: React.FC<ResultDrawerProps> = ({
                         <button 
                             aria-label={t('aria.share')}
                             onClick={handleShare}
-                            className={`transition-all duration-200 p-2.5 rounded-full active:scale-90 ${iconBtn}`}
+                            className={`ll-pressable flex h-10 w-10 items-center justify-center rounded-xl border transition-transform duration-150 ${iconBtn}`}
                         >
                             <IconShare className="w-5 h-5" />
                         </button>
@@ -167,45 +163,44 @@ export const ResultDrawer: React.FC<ResultDrawerProps> = ({
                 </div>
 
                 {/* The Essence */}
-                <div className={`p-6 rounded-3xl border border-white/5 animate-fade-in-up delay-200 ${essenceBg}`}>
-                    <h3 className={`text-xs font-bold uppercase tracking-[0.2em] mb-3 opacity-60 ${textMain}`}>{t('result.essence')}</h3>
-                    <p className={`text-xl font-medium leading-relaxed ${textMain}`}>
+                <div className={`border-y py-5 ${isDark ? 'border-white/12' : 'border-black/12'}`}>
+                    <p className={`text-[19px] font-semibold leading-relaxed tracking-[-0.015em] ${textMain}`}>
                         {result.essence}
                     </p>
                 </div>
 
                 {/* Mirror Insight (Feature Highlight) */}
-                <div className={`relative overflow-hidden p-6 rounded-3xl border animate-fade-in-up delay-300 group ${mirrorBg}`}>
-                    {/* Shimmer Effect */}
-                    <div className="absolute inset-0 animate-shimmer opacity-10 pointer-events-none"></div>
-                    
+                <div className={`relative overflow-hidden rounded-[1.7rem] border p-6 ${mirrorBg}`}>
                     <div className="relative z-10">
-                        <h3 className={`text-xs font-bold uppercase tracking-[0.2em] mb-3 flex items-center gap-2 ${mirrorText}`}>
-                            <span className="w-2 h-2 bg-indigo-500 rounded-full shadow-[0_0_8px_rgba(99,102,241,0.8)] animate-pulse"></span>
-                            {t('result.mirror')}
+                        <h3 className={`mb-5 flex items-center gap-3 font-mono text-[9px] font-medium uppercase tracking-[0.22em] ${mirrorText}`}>
+                            <span className="h-px w-7 bg-current opacity-45"></span>
+                            02 · {t('result.mirror')}
                         </h3>
-                        <p className={`text-lg italic font-serif leading-relaxed opacity-90 ${mirrorText}`}>
-                            "{result.mirrorInsight}"
+                        <p className={`font-serif text-[1.45rem] italic leading-[1.38] tracking-[-0.02em] ${mirrorText}`}>
+                            “{result.mirrorInsight}”
                         </p>
                     </div>
                 </div>
 
                 {/* Philosophy */}
-                <div className="animate-fade-in-up delay-400 ps-2 border-s-2 border-white/10">
-                    <h3 className={`text-xs font-bold uppercase tracking-[0.2em] mb-2 ps-4 ${textMuted}`}>{t('result.philosophy')}</h3>
-                    <p className={`text-base font-light leading-relaxed ps-4 ${textSub}`}>
+                <div className="grid grid-cols-[2.6rem_1fr] gap-3">
+                    <p className={`pt-1 font-mono text-[9px] tracking-[0.16em] ${textMuted}`}>03</p>
+                    <div>
+                    <h3 className={`mb-2 text-[11px] font-bold uppercase tracking-[0.16em] ${textMuted}`}>{t('result.philosophy')}</h3>
+                    <p className={`text-[15px] leading-relaxed ${textSub}`}>
                         {result.philosophy}
                     </p>
+                    </div>
                 </div>
 
                 {/* Quick Action */}
-                <div className={`mt-8 p-5 rounded-2xl border flex items-start gap-4 animate-fade-in-up delay-500 ${actionBg}`}>
-                    <div className="mt-1 w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0 text-emerald-500">
+                <div className={`mt-8 flex items-start gap-4 rounded-[1.45rem] border p-5 ${actionBg}`}>
+                    <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-current/20">
                          <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                     </div>
                     <div>
-                        <h3 className={`text-sm font-bold uppercase tracking-wide mb-1 opacity-80 ${actionText}`}>{t('result.action')}</h3>
-                        <p className={`text-base ${actionText}`}>{result.quickAction}</p>
+                        <h3 className={`mb-1 font-mono text-[9px] font-semibold uppercase tracking-[0.18em] opacity-70 ${actionText}`}>04 · {t('result.action')}</h3>
+                        <p className={`text-[15px] font-semibold leading-relaxed ${actionText}`}>{result.quickAction}</p>
                         {result.mapUri && (
                             <a 
                                 href={result.mapUri} 
@@ -219,8 +214,6 @@ export const ResultDrawer: React.FC<ResultDrawerProps> = ({
                     </div>
                 </div>
                 
-                {/* Spacer for bottom safe area */}
-                <div className="h-8"></div>
             </div>
         </div>
       </div>

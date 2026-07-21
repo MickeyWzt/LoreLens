@@ -87,7 +87,6 @@ const ResonanceFractal = ({ score, isDark }: { score: number, isDark: boolean })
                     stroke={secColor} 
                     strokeWidth="2"
                     strokeDasharray={dash}
-                    className="transition-all duration-1000 ease-out"
                 />
 
                 {/* Connecting lines to center (Fractal feel) */}
@@ -139,7 +138,7 @@ const AxisMap = ({ items, onSelect, isDark }: { items: HistoryItem[], onSelect: 
                                         onSelect(item);
                                     }
                                 }}
-                                className={`ms-12 flex-1 p-3 rounded-xl border flex gap-3 items-center cursor-pointer transition-all active:scale-95 hover:scale-[1.02] ${isDark ? 'bg-white/5 border-white/10 hover:bg-white/10' : 'bg-white border-gray-100 hover:shadow-md'}`}
+                                className={`ll-pressable ms-12 flex flex-1 cursor-pointer items-center gap-3 rounded-xl border p-3 transition-[transform,background-color,border-color] duration-150 ${isDark ? 'bg-white/5 border-white/10' : 'bg-white border-gray-100'}`}
                             >
                                 <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0 border border-white/10">
                                     {item.thumbnail ? (
@@ -265,26 +264,30 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
   const animFadeIn = reduceMotion ? '' : 'animate-fade-in';
   const animFadeInUp = reduceMotion ? '' : 'animate-fade-in-up';
   
-  const bgClass = isDark ? 'bg-black text-white' : 'bg-gray-50 text-gray-900';
-  const headerBgClass = isDark ? 'bg-black/60 border-white/10' : 'bg-white/80 border-gray-200';
-  const itemBgClass = isDark ? 'bg-neutral-900 border-white/5 active:bg-neutral-800' : 'bg-white border-gray-200 shadow-sm active:bg-gray-50';
-  const subTextClass = isDark ? 'text-gray-500' : 'text-gray-400';
+  const bgClass = isDark ? 'bg-[#0b0b0a] text-[#f4f0e6]' : 'bg-[#f2efe6] text-[#171714]';
+  const headerBgClass = isDark ? 'bg-[#0b0b0a]/92 border-white/12' : 'bg-[#f2efe6]/92 border-black/12';
+  const itemBgClass = isDark ? 'bg-[#151513] border-white/10 active:bg-[#1b1b18]' : 'bg-white/55 border-black/10 active:bg-white/80';
+  const subTextClass = isDark ? 'text-white/42' : 'text-black/42';
   const accentTextClass = accent.text;
   const iconBtnClass = isDark ? 'bg-white/10 hover:bg-white/20' : 'bg-gray-100 hover:bg-gray-200 text-gray-600';
 
   return (
-    <div role="region" aria-label={t('history.title')} className={`absolute inset-0 z-30 flex flex-col ${bgClass}`}>
+    <div role="region" aria-label={t('history.title')} className={`absolute inset-0 z-30 flex flex-col ll-screen-enter ${bgClass}`}>
         
         {/* Header */}
-        <div className={`pt-12 px-6 pb-6 flex items-center justify-between border-b backdrop-blur-md sticky top-0 z-10 ${headerBgClass}`}>
+        <div className={`sticky top-0 z-10 border-b px-5 pb-4 pt-[max(1rem,env(safe-area-inset-top))] backdrop-blur-xl ${headerBgClass}`}>
+          <div className="mx-auto flex max-w-lg items-center justify-between gap-3">
             {isEditMode ? (
                 <div className="flex items-center gap-2">
-                    <span className={`text-xl font-light tracking-wide ${animFadeIn}`}>
+                    <span className={`font-serif text-2xl tracking-[-0.02em] ${animFadeIn}`}>
                         {t('history.selected', { count: selectedIds.length })}
                     </span>
                 </div>
             ) : (
-                <h1 className={`text-3xl font-thin tracking-wider ${animFadeInUp}`}>{t('history.title')}</h1>
+                <div className={animFadeInUp}>
+                  <p className={`font-mono text-[9px] uppercase tracking-[0.2em] ${subTextClass}`}>LoreLens · 7.14</p>
+                  <h1 className="mt-0.5 font-serif text-3xl leading-none tracking-[-0.03em]">{t('history.title')}</h1>
+                </div>
             )}
             
             <div className="flex items-center gap-2">
@@ -292,7 +295,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
                     <>
                         <button 
                             onClick={toggleSelectAll}
-                            className={`px-3 py-1.5 rounded-full text-xs font-mono tracking-wider transition-all active:scale-95 border ${
+                            className={`ll-pressable rounded-xl border px-3 py-2 font-mono text-[10px] tracking-wide transition-transform duration-150 ${
                                 selectedIds.length === history.length && history.length > 0
                                     ? accent.btnActive
                                     : (isDark ? 'bg-white/5 border-white/10 hover:bg-white/10' : 'bg-white border-gray-200 hover:bg-gray-50')
@@ -305,7 +308,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
                                 setIsEditMode(false);
                                 setSelectedIds([]);
                             }}
-                            className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all active:scale-95 border ${
+                            className={`ll-pressable rounded-xl border px-3 py-2 text-xs font-semibold transition-transform duration-150 ${
                                 isDark ? 'bg-white/5 border-white/10 hover:bg-white/10' : 'bg-white border-gray-200 hover:bg-gray-100'
                             }`}
                         >
@@ -318,7 +321,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
                             <>
                                 <button 
                                     onClick={handleRecapClick}
-                                    className={`flex items-center gap-2 px-4 py-2 rounded-full transition-transform active:scale-95 border ${accent.lightBg} ${accent.text} ${accent.border}`}
+                                    className={`ll-pressable flex items-center gap-2 rounded-xl border px-3 py-2 transition-transform duration-150 ${accent.lightBg} ${accent.text} ${accent.border}`}
                                 >
                                     <IconJournal className="w-4 h-4" />
                                     <span className="text-sm font-medium">{t('history.recapButton')}</span>
@@ -328,7 +331,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
                                         setIsEditMode(true);
                                         setSelectedIds([]);
                                     }}
-                                    className={`px-4 py-2 rounded-full text-sm font-medium transition-transform active:scale-95 border ${
+                                    className={`ll-pressable rounded-xl border px-3 py-2 text-sm font-semibold transition-transform duration-150 ${
                                         isDark ? 'bg-white/10 border-white/10 hover:bg-white/20' : 'bg-white border-gray-200 hover:bg-gray-100'
                                     }`}
                                 >
@@ -339,20 +342,22 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
                         <button 
                             aria-label={t('aria.close')}
                             onClick={onClose} 
-                            className={`p-2 rounded-full active:scale-90 transition-transform duration-200 ${iconBtnClass}`}
+                            className={`ll-pressable flex h-10 w-10 items-center justify-center rounded-xl border transition-transform duration-150 ${isDark ? 'border-white/12' : 'border-black/10'} ${iconBtnClass}`}
                         >
                             <IconChevronDown className="w-6 h-6" />
                         </button>
                     </>
                 )}
             </div>
+          </div>
         </div>
 
         {/* List Content */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-3">
+        <div className="flex-1 overflow-y-auto">
+          <div className="mx-auto w-full max-w-lg space-y-3 px-5 py-5">
             {actionableRecords.map((record) => (
-                <div key={record.id} className={`flex gap-4 p-4 rounded-2xl border ${itemBgClass}`}>
-                    <div className="w-20 h-20 rounded-xl shrink-0 overflow-hidden bg-gray-800">
+                <div key={record.id} className={`flex gap-4 rounded-[1.4rem] border p-4 ${itemBgClass}`}>
+                    <div className="h-18 w-18 shrink-0 overflow-hidden rounded-[1rem] bg-gray-800">
                         {record.thumbnail && <img src={record.thumbnail} alt="" className="w-full h-full object-cover" />}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -369,9 +374,10 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
                 </div>
             ))}
             {history.length === 0 && actionableRecords.length === 0 ? (
-                <div className={`flex flex-col items-center justify-center h-64 ${subTextClass} animate-fade-in-up delay-200`}>
-                    <p>{t('history.empty')}</p>
-                    <p className="text-sm mt-2 opacity-60">{t('history.emptySub')}</p>
+                <div className={`flex h-[60vh] flex-col items-center justify-center text-center ${subTextClass} ${animFadeInUp}`}>
+                    <span className="mb-5 h-px w-10 bg-current opacity-50" aria-hidden="true" />
+                    <p className="font-serif text-3xl text-current">{t('history.empty')}</p>
+                    <p className="mt-3 max-w-xs text-sm leading-relaxed opacity-65">{t('history.emptySub')}</p>
                 </div>
             ) : (
                 history.map((item, index) => {
@@ -396,17 +402,17 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
                                 if (isEditMode) toggleSelectItem(item.id);
                                 else onSelect(item);
                             }}
-                            className={`flex gap-4 p-4 rounded-2xl border transition-all cursor-pointer animate-fade-in-up ${itemBgClass} ${
+                            className={`ll-pressable flex cursor-pointer gap-4 rounded-[1.4rem] border p-3.5 transition-[transform,background-color,border-color] duration-150 ${animFadeInUp} ${itemBgClass} ${
                                 isEditMode && isSelected 
                                     ? (isDark ? 'border-indigo-500/50 bg-indigo-500/5' : 'border-indigo-300 bg-indigo-50/40') 
                                     : ''
                             }`}
-                            style={{ animationDelay: `${index * 100}ms` }}
+                            style={{ animationDelay: `${Math.min(index, 6) * 45}ms` }}
                         >
                             {/* Checkbox (only in Edit Mode) */}
                             {isEditMode && (
                                 <div className="flex items-center justify-center shrink-0 pe-1 animate-fade-in">
-                                    <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${
+                                    <div className={`flex h-6 w-6 items-center justify-center rounded-full border-2 transition-[background-color,border-color] duration-150 ${
                                         isSelected 
                                             ? 'bg-indigo-500 border-indigo-500 text-white animate-scale-in' 
                                             : (isDark ? 'border-white/20 bg-white/5' : 'border-gray-300 bg-white')
@@ -421,9 +427,9 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
                             )}
 
                             {/* Thumbnail */}
-                            <div className={`w-20 h-20 rounded-xl shrink-0 overflow-hidden relative shadow-inner ${isDark ? 'bg-gray-800' : 'bg-gray-200'}`}>
+                            <div className={`relative h-20 w-20 shrink-0 overflow-hidden rounded-[1.05rem] shadow-inner ${isDark ? 'bg-[#22221f]' : 'bg-black/8'}`}>
                                  {item.thumbnail ? (
-                                     <img src={item.thumbnail} alt={item.title} className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
+                                     <img src={item.thumbnail} alt={item.title} className="h-full w-full object-cover" />
                                  ) : (
                                     <div className="absolute inset-0 flex items-center justify-center text-gray-500 font-serif text-2xl opacity-30">
                                         {item.title.charAt(0)}
@@ -432,7 +438,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
                             </div>
                             
                             <div className="flex-1 min-w-0 flex flex-col justify-center py-1">
-                                <h3 className={`text-lg font-normal truncate mb-1 ${isDark ? 'text-white' : 'text-gray-900'}`}>{item.title}</h3>
+                                <h3 className={`mb-1 truncate font-serif text-xl leading-tight ${isDark ? 'text-[#f4f0e6]' : 'text-[#171714]'}`}>{item.title}</h3>
                                 <p className={`text-sm mb-2 font-medium line-clamp-1 opacity-90 ${accentTextClass}`}>
                                     {item.mirrorInsight}
                                 </p>
@@ -445,7 +451,8 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
                     );
                 })
             )}
-            <div className="h-24"></div>
+            <div className="h-20"></div>
+          </div>
         </div>
 
         {/* Bulk Delete Sticky Bar at Bottom */}
@@ -461,7 +468,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
                 <button
                     onClick={handleDeleteSelected}
                     disabled={selectedIds.length === 0}
-                    className={`flex items-center justify-center gap-2 px-6 py-2.5 rounded-full text-sm font-medium transition-transform active:scale-95 ${
+                    className={`ll-pressable flex items-center justify-center gap-2 rounded-xl px-6 py-2.5 text-sm font-semibold transition-transform duration-150 ${
                         selectedIds.length === 0
                             ? 'opacity-40 cursor-not-allowed bg-red-500/10 text-red-500/50 border border-red-500/10'
                             : 'bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-600/20 active:scale-95'

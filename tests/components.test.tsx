@@ -113,6 +113,18 @@ describe('accessible app states', () => {
     expect(screen.getByText(english.home.subtitle)).toBeInTheDocument();
   });
 
+  test('navigation releases focus before hiding the camera layer', async () => {
+    const user = userEvent.setup();
+    renderLocalized(<App />);
+    const historyButton = screen.getByRole('button', { name: english.history.title });
+    historyButton.focus();
+
+    await user.click(historyButton);
+
+    expect(await screen.findByRole('region', { name: english.history.title })).toBeInTheDocument();
+    expect(document.activeElement).toBe(document.body);
+  });
+
   test('Arabic switches the document into RTL mode', () => {
     syncDocumentLanguage('ar');
     expect(document.documentElement.dir).toBe('rtl');

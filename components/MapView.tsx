@@ -156,14 +156,14 @@ export const MapView: React.FC<MapViewProps> = ({ onClose }) => {
   )) || (currentLocation?.lat !== undefined && currentLocation.lng !== undefined);
 
   return (
-    <div role="region" aria-label={t('map.title')} className="absolute inset-0 z-30 bg-black animate-fade-in flex flex-col">
+    <div role="region" aria-label={t('map.title')} className="absolute inset-0 z-30 flex flex-col bg-[#0b0b0a] ll-screen-enter">
         {/* Header - Z-index increased to 2000 to sit above Leaflet controls */}
-        <div className={`pt-12 px-6 pb-4 flex items-center justify-between z-[2000] ${isDark ? 'bg-black/60' : 'bg-white/80'} backdrop-blur-md absolute top-0 inset-x-0`}>
-            <h1 className={`text-2xl font-light tracking-wide ${isDark ? 'text-white' : 'text-gray-900'}`}>{t('map.title')}</h1>
+        <div className={`ll-material absolute inset-x-4 top-[max(1rem,env(safe-area-inset-top))] z-[2000] flex items-center justify-between rounded-2xl px-4 py-3 ${isDark ? '' : '!border-black/10 !bg-[#f2efe6]/88'}`}>
+            <h1 className={`font-serif text-2xl tracking-[-0.03em] ${isDark ? 'text-[#f4f0e6]' : 'text-[#171714]'}`}>{t('map.title')}</h1>
             <button 
                 aria-label={t('aria.close')}
                 onClick={onClose} 
-                className={`p-2 rounded-full ${isDark ? 'bg-white/10 hover:bg-white/20 text-white' : 'bg-black/5 hover:bg-black/10 text-gray-900'}`}
+                className={`ll-pressable flex h-10 w-10 items-center justify-center rounded-xl border transition-transform duration-150 ${isDark ? 'border-white/12 bg-white/7 text-white' : 'border-black/10 bg-black/5 text-[#171714]'}`}
             >
                 <IconChevronDown className="w-6 h-6" />
             </button>
@@ -171,7 +171,7 @@ export const MapView: React.FC<MapViewProps> = ({ onClose }) => {
         
         <div ref={mapContainerRef} className="w-full h-full" />
         {!hasMapData && (
-          <div className="pointer-events-none absolute inset-x-6 bottom-10 z-[1000] rounded-2xl border border-white/10 bg-black/70 p-4 text-center text-sm text-white backdrop-blur-xl">
+          <div className="ll-material pointer-events-none absolute inset-x-5 bottom-[max(1.25rem,env(safe-area-inset-bottom))] z-[1000] rounded-2xl p-4 text-center text-sm font-medium text-white">
             {t('map.empty')}
           </div>
         )}

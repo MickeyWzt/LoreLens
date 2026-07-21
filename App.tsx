@@ -362,9 +362,13 @@ const App: React.FC = () => {
   };
 
   // Handlers for Home View transitions
+  const navigateTo = (nextView: ViewState) => {
+      if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
+      setViewState(nextView);
+  };
   const startScan = () => dispatchScan({ type: 'OPEN_CAMERA' });
-  const openHistory = () => setViewState(ViewState.HISTORY);
-  const openSettings = () => setViewState(ViewState.SETTINGS);
+  const openHistory = () => navigateTo(ViewState.HISTORY);
+  const openSettings = () => navigateTo(ViewState.SETTINGS);
   const backToHome = () => {
       resetCamera();
       dispatchScan({ type: 'RESET' });
@@ -380,7 +384,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className={`relative w-full h-screen overflow-hidden font-sans transition-colors duration-500 ${theme === 'dark' ? 'bg-black text-white' : 'bg-gray-50 text-gray-900'}`}>
+    <div className={`relative h-[100dvh] w-full overflow-hidden font-sans transition-colors duration-200 ${theme === 'dark' ? 'bg-[#0b0b0a] text-white' : 'bg-[#f2efe6] text-[#171714]'}`}>
       <input
         ref={fileInputRef}
         type="file"
@@ -391,9 +395,9 @@ const App: React.FC = () => {
       />
       
       {/* Toast Notification */}
-      <div role="status" aria-live="polite" className={`fixed top-8 inset-x-0 flex justify-center z-[100] transition-all duration-300 transform ${notification ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'}`}>
-          <div className={`backdrop-blur-xl px-6 py-3 rounded-full border shadow-2xl text-sm font-medium tracking-wide flex items-center gap-2 ${theme === 'dark' ? 'bg-white/10 text-white border-white/20' : 'bg-black/80 text-white border-black/10'}`}>
-              <span className="w-2 h-2 rounded-full bg-green-400"></span>
+      <div role="status" aria-live="polite" className={`fixed inset-x-0 top-[max(1rem,env(safe-area-inset-top))] z-[100] flex justify-center px-5 transition-[opacity,transform] duration-200 [transition-timing-function:var(--ll-ease-out)] ${notification ? 'translate-y-0 opacity-100' : 'pointer-events-none -translate-y-2 opacity-0'}`}>
+          <div className={`ll-material flex items-center gap-3 rounded-2xl px-4 py-3 text-[13px] font-semibold ${theme === 'dark' ? 'text-white' : 'text-white'}`}>
+              <span className="h-1.5 w-1.5 rounded-full bg-[#e69b62]"></span>
               {notification}
           </div>
       </div>
@@ -402,14 +406,11 @@ const App: React.FC = () => {
       <div
         aria-hidden={viewState !== ViewState.CAMERA}
         inert={viewState !== ViewState.CAMERA}
-        className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${viewState === ViewState.CAMERA ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        className={`absolute inset-0 transition-opacity duration-200 ${viewState === ViewState.CAMERA ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
       >
         
         {/* Aesthetic Background when Camera is Off (Saves Battery) */}
-        <div className={`absolute inset-0 bg-gradient-to-br from-[#121212] to-black transition-opacity duration-700 ${!capturedImage && (!isCameraReady || isHomeOpen) ? 'opacity-100' : 'opacity-0'}`}>
-            <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.2) 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
-            <div className="absolute top-0 right-0 w-[50vh] h-[50vh] bg-indigo-900/10 rounded-full blur-[100px] transform translate-x-1/2 -translate-y-1/2"></div>
-            <div className="absolute bottom-0 left-0 w-[50vh] h-[50vh] bg-purple-900/10 rounded-full blur-[100px] transform -translate-x-1/2 translate-y-1/2"></div>
+        <div className={`ll-grain absolute inset-0 bg-[radial-gradient(circle_at_65%_20%,rgba(191,116,70,0.16),transparent_35%),linear-gradient(160deg,#24221e,#090909_58%,#11100e)] transition-opacity duration-200 ${!capturedImage && (!isCameraReady || isHomeOpen) ? 'opacity-100' : 'opacity-0'}`}>
         </div>
 
         {capturedImage && !isCropping ? (
@@ -420,7 +421,7 @@ const App: React.FC = () => {
                 autoPlay 
                 playsInline 
                 muted 
-                className={`w-full h-full object-cover scale-[1.02] transition-opacity duration-700 ${isCameraReady && !isHomeOpen && !isCropping ? 'opacity-100' : 'opacity-0'}`} 
+                className={`h-full w-full scale-[1.01] object-cover transition-opacity duration-200 ${isCameraReady && !isHomeOpen && !isCropping ? 'opacity-100' : 'opacity-0'}`}
              />
         )}
         
@@ -435,26 +436,21 @@ const App: React.FC = () => {
         
         {/* Analyzing Overlay - Improved Animation */}
         {isAnalyzing && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm transition-all duration-500 z-50">
+            <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/72 backdrop-blur-md">
                 <div className="relative flex flex-col items-center">
-                    {/* Pulsing Rings */}
-                    <div className="absolute w-32 h-32 bg-indigo-500/30 rounded-full animate-pulse-ring"></div>
-                    <div className="absolute w-32 h-32 bg-indigo-500/30 rounded-full animate-pulse-ring delay-300"></div>
-                    
-                    {/* Center Icon */}
-                    <div className="w-20 h-20 rounded-full bg-black/50 border border-white/20 backdrop-blur-md flex items-center justify-center relative z-10 shadow-[0_0_25px_rgba(99,102,241,0.4)]">
-                        <IconSparkles className="w-8 h-8 text-indigo-300 animate-pulse" />
+                    <div className="relative flex h-28 w-28 items-center justify-center rounded-full border border-white/14 bg-black/28 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+                        <div className="absolute inset-2 animate-[spin_1.8s_linear_infinite] rounded-full border border-transparent border-t-[#e69b62]" />
+                        <IconSparkles className="h-7 w-7 text-[#f2efe6]" />
                     </div>
-                    
-                    <p className="mt-6 text-indigo-100 font-light tracking-[0.3em] text-xs animate-pulse uppercase">{t('scan.deciphering')}</p>
+                    <p className="mt-5 font-mono text-[10px] font-medium uppercase tracking-[0.24em] text-white/66">{t('scan.deciphering')}</p>
                 </div>
             </div>
         )}
 
         {(scan.stage === 'error' || scan.stage === 'pending') && capturedImage && (
             <div className="absolute inset-0 z-50 flex items-end bg-black/55 p-6 pb-[max(2rem,env(safe-area-inset-bottom))] backdrop-blur-sm">
-                <div className="w-full rounded-3xl border border-white/15 bg-black/80 p-6 text-white shadow-2xl">
-                    <h2 className="text-xl font-medium">
+                <div className="ll-material ll-sheet-enter mx-auto w-full max-w-md rounded-[1.75rem] p-6 text-white">
+                    <h2 className="font-serif text-2xl leading-tight">
                         {scan.stage === 'pending' ? t('scan.savedForLater') : t('scan.analysisFailed')}
                     </h2>
                     <p className="mt-2 text-sm leading-relaxed text-white/65">
@@ -464,14 +460,14 @@ const App: React.FC = () => {
                         <button
                             type="button"
                             onClick={() => void processImage(capturedImage)}
-                            className="rounded-full bg-indigo-600 px-4 py-3 font-medium"
+                            className="ll-pressable rounded-xl bg-[#f2efe6] px-4 py-3 font-semibold text-[#0b0b0a] transition-transform duration-150"
                         >
                             {t('common.retry')}
                         </button>
                         <button
                             type="button"
                             onClick={() => fileInputRef.current?.click()}
-                            className="rounded-full border border-white/20 px-4 py-3 font-medium"
+                            className="ll-pressable rounded-xl border border-white/18 px-4 py-3 font-semibold transition-transform duration-150"
                         >
                             {t('scan.choosePhoto')}
                         </button>
@@ -486,11 +482,11 @@ const App: React.FC = () => {
         {/* Live Camera Interface (Only when Home is closed and not analyzing/cropping) */}
         {!isHomeOpen && !isAnalyzing && !isDrawerOpen && !isCropping && capturedImage === null && (
             <>
-                <div className="absolute top-0 inset-x-0 p-6 flex justify-between items-start z-10 pt-10 pb-20">
+                <div className="absolute inset-x-0 top-0 z-10 flex items-start justify-between px-5 pb-16 pt-[max(1.25rem,env(safe-area-inset-top))]">
                      <button 
                         aria-label={t('aria.close')}
                         onClick={backToHome} 
-                        className="text-white/90 hover:text-white transition-all active:scale-90 p-2 rounded-full bg-black/40 backdrop-blur-sm border border-white/10"
+                        className="ll-icon-button h-11 w-11 rounded-2xl text-white"
                     >
                          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                      </button>
@@ -498,24 +494,25 @@ const App: React.FC = () => {
                      {/* Map Button (Moved to Top Right) */}
                      <button 
                         aria-label={t('aria.openMap')}
-                        onClick={() => setViewState(ViewState.MAP)}
-                        className="p-4 rounded-full glass-panel text-white hover:bg-white/20 transition-all active:scale-90"
+                        onClick={() => navigateTo(ViewState.MAP)}
+                        className="ll-icon-button h-11 w-11 rounded-2xl text-white"
                     >
                          <IconMap className="w-6 h-6" />
                     </button>
                 </div>
 
-                <div className="absolute bottom-0 inset-x-0 pb-12 pt-32 flex justify-between items-center px-10 z-10 bg-gradient-to-t from-black/90 via-black/40 to-transparent">
+                <div className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black via-black/56 to-transparent px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-28">
+                  <div className="ll-material mx-auto flex max-w-sm items-center justify-between rounded-[1.8rem] px-3 py-2.5">
                     {/* Gallery / Upload Button (New) */}
                     <button 
                         aria-label={t('aria.upload')}
                         onClick={() => fileInputRef.current?.click()}
-                        className="p-4 rounded-full glass-panel text-white hover:bg-white/20 transition-all active:scale-90"
+                        className="ll-icon-button h-12 w-12 rounded-2xl text-white"
                     >
                         <IconPhoto className="w-6 h-6" />
                     </button>
 
-                    <div className="relative group">
+                    <div className="relative">
                          {/* Removed capture="environment" to allow Gallery selection on mobile */}
                         {/* Capture Button */}
                         <button 
@@ -527,27 +524,28 @@ const App: React.FC = () => {
                                     fileInputRef.current?.click();
                                 }
                             }}
-                            className="w-20 h-20 rounded-full border-[5px] border-white/30 flex items-center justify-center bg-white/10 active:scale-90 transition-transform duration-200 backdrop-blur-sm"
+                            className="ll-pressable flex h-[4.6rem] w-[4.6rem] items-center justify-center rounded-full border border-white/36 bg-white/10 transition-transform duration-150"
                         >
-                            <div className="w-16 h-16 rounded-full bg-white shadow-[0_0_20px_rgba(255,255,255,0.5)] group-hover:scale-95 transition-transform duration-200"></div>
+                            <div className="h-[3.65rem] w-[3.65rem] rounded-full bg-[#f2efe6] shadow-[inset_0_0_0_1px_rgba(0,0,0,0.08),0_4px_18px_rgba(0,0,0,0.35)]"></div>
                         </button>
                     </div>
                     
                     {/* History Button (Moved to Bottom Right) */}
                     <button 
                         aria-label={t('aria.openHistory')}
-                        onClick={() => setViewState(ViewState.HISTORY)}
-                        className="p-4 rounded-full glass-panel text-white hover:bg-white/20 transition-all active:scale-90"
+                        onClick={openHistory}
+                        className="ll-icon-button h-12 w-12 rounded-2xl text-white"
                     >
                          <IconHistory className="w-6 h-6" />
                     </button>
+                  </div>
                 </div>
 
                 {/* Reticle / Focus Frame */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                      {cameraError && (
-                       <div className="pointer-events-auto mx-8 max-w-sm rounded-3xl border border-white/15 bg-black/75 p-6 text-center text-white backdrop-blur-xl">
-                         <h2 className="text-lg font-medium">{t(
+                       <div className="ll-material ll-sheet-enter pointer-events-auto mx-7 max-w-sm rounded-[1.75rem] p-6 text-center text-white">
+                         <h2 className="font-serif text-2xl leading-tight">{t(
                            cameraError === 'denied'
                              ? 'errors.cameraDenied'
                              : cameraError === 'noPhysical'
@@ -557,20 +555,21 @@ const App: React.FC = () => {
                          <p className="mt-2 text-sm text-white/65">{t(
                            cameraError === 'noPhysical' ? 'errors.physicalCameraHelp' : 'errors.cameraHelp',
                          )}</p>
-                         <button type="button" onClick={() => fileInputRef.current?.click()} className="mt-4 rounded-full bg-white px-5 py-3 font-medium text-black">
+                         <button type="button" onClick={() => fileInputRef.current?.click()} className="ll-primary-action mt-5 rounded-xl bg-[#f2efe6] px-5 py-3 font-semibold text-[#0b0b0a]">
                            {t('scan.choosePhoto')}
                          </button>
                        </div>
                      )}
                      {!cameraError && (
-                     <div className="w-64 h-64 border border-white/30 rounded-[2rem] opacity-60 flex flex-col justify-between p-4">
+                     <div className="relative flex aspect-[4/5] w-[min(70vw,19rem)] flex-col justify-between p-2 opacity-78">
                         <div className="flex justify-between">
-                            <div className="w-4 h-4 border-t-2 border-l-2 border-white"></div>
-                            <div className="w-4 h-4 border-t-2 border-r-2 border-white"></div>
+                            <div className="h-8 w-8 rounded-tl-2xl border-s-2 border-t-2 border-white/88"></div>
+                            <div className="h-8 w-8 rounded-tr-2xl border-e-2 border-t-2 border-white/88"></div>
                         </div>
+                        <span className="absolute start-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/75" />
                         <div className="flex justify-between">
-                            <div className="w-4 h-4 border-b-2 border-l-2 border-white"></div>
-                            <div className="w-4 h-4 border-b-2 border-r-2 border-white"></div>
+                            <div className="h-8 w-8 rounded-bl-2xl border-b-2 border-s-2 border-white/88"></div>
+                            <div className="h-8 w-8 rounded-br-2xl border-b-2 border-e-2 border-white/88"></div>
                         </div>
                      </div>
                      )}
@@ -598,7 +597,7 @@ const App: React.FC = () => {
                         <button 
                             aria-label={t('result.essence')}
                             onClick={() => setIsDrawerOpen(true)}
-                            className="bg-black/40 backdrop-blur-md border border-white/20 text-white rounded-full p-4 shadow-lg active:scale-90 transition-transform hover:bg-black/60 animate-bounce"
+                            className="ll-icon-button ll-pressable rounded-2xl p-3.5 text-white"
                         >
                             <IconChevronUp className="w-6 h-6" />
                         </button>
@@ -610,7 +609,7 @@ const App: React.FC = () => {
 
       {/* 2. Home Layer - Transitions away when !isHomeOpen */}
       {viewState === ViewState.CAMERA && (
-          <div className={`absolute inset-0 z-20 transition-all duration-700 transform ${isHomeOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-12 pointer-events-none'}`}>
+          <div className={`absolute inset-0 z-20 transition-[opacity,transform] duration-[280ms] [transition-timing-function:var(--ll-ease-out)] ${isHomeOpen ? 'translate-y-0 opacity-100' : 'pointer-events-none -translate-y-2 opacity-0'}`}>
               <HomeView 
                 onScanStart={startScan}
                 onOpenHistory={openHistory}
