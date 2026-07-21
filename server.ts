@@ -21,6 +21,8 @@ async function startServer() {
     location,
     tts,
     capabilities: config.capabilities,
+    trustProxyHops: config.trustProxyHops,
+    rateLimits: config.rateLimits,
     developmentMode: useViteMiddleware,
   });
 

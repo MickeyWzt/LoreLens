@@ -25,6 +25,12 @@ jobs:
     - name: Run TypeScript typecheck
       run: npx tsc --noEmit
 
+    - name: Run tests
+      run: npm test
+
+    - name: Audit production dependencies
+      run: npm audit --omit=dev --audit-level=high
+
     - name: Run production build
       run: npm run build
       env:

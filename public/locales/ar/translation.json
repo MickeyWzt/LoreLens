@@ -19,7 +19,8 @@
     "locationEnabled": "استخدام الموقع للمساعدة في التعرّف", "locationEnabledDesc": "مفعّل افتراضيًا؛ الموقع الدقيق يحسّن مطابقة المعالم",
     "clearHistory": "مسح السجل", "confirmClear": "اضغط مرة أخرى للتأكيد", "itemsInStorage": "عنصر محفوظ",
     "exportData": "تصدير", "importData": "استيراد", "exported": "تم تصدير النسخة الاحتياطية", "imported": "تم استيراد {{count}} سجلاً", "importInvalid": "هذه النسخة غير صالحة",
-    "aiDescription": "رؤية Qwen · نص DeepSeek · Gemini احتياطي اختياري"
+    "aiDescription": "رؤية Qwen · نص DeepSeek · Gemini احتياطي اختياري",
+    "privacy": "الخصوصية", "privacyPhotos": "لا تُرسل الصور إلا عند اختيار التحليل.", "privacyLocation": "عند تفعيل الموقع، يُرسل مع الصورة لتحسين التعرّف.", "privacyStorage": "يبقى السجل على هذا الجهاز ما لم تُصدّره.", "publicBeta": "نسخة تجريبية عامة"
   },
   "result": {
     "essence": "الخلاصة", "mirror": "مرآة ثقافية", "philosophy": "الفلسفة", "action": "جرّب هذا",

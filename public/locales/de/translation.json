@@ -19,7 +19,8 @@
     "locationEnabled": "Standort zur Erkennung verwenden", "locationEnabledDesc": "Standardmäßig aktiviert; ein genauer Standort verbessert die Zuordnung von Sehenswürdigkeiten",
     "clearHistory": "Verlauf löschen", "confirmClear": "Zum Bestätigen erneut tippen", "itemsInStorage": "gespeicherte Elemente",
     "exportData": "Exportieren", "importData": "Importieren", "exported": "Sicherung exportiert", "imported": "{{count}} Einträge importiert", "importInvalid": "Diese Sicherung ist ungültig",
-    "aiDescription": "Qwen-Bilderkennung · DeepSeek-Text · optionaler Gemini-Fallback"
+    "aiDescription": "Qwen-Bilderkennung · DeepSeek-Text · optionaler Gemini-Fallback",
+    "privacy": "Datenschutz", "privacyPhotos": "Fotos werden nur gesendet, wenn Sie Analysieren wählen.", "privacyLocation": "Ist der Standort aktiviert, wird er zur besseren Erkennung mit dem Foto gesendet.", "privacyStorage": "Der Verlauf bleibt auf diesem Gerät, sofern Sie ihn nicht exportieren.", "publicBeta": "Öffentliche Beta"
   },
   "result": {
     "essence": "Das Wesentliche", "mirror": "Kulturelle Parallele", "philosophy": "Philosophie", "action": "Probier das",

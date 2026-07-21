@@ -51,6 +51,16 @@ describe('accessible app states', () => {
     expect(readAloud).not.toHaveTextContent(/Xiaomi|Qwen/i);
   });
 
+  test('settings expose a concise, collapsed privacy notice', () => {
+    renderLocalized(<SettingsView onBack={() => undefined} />);
+
+    const summary = screen.getByText('Privacy');
+    const notice = summary.closest('details');
+    expect(notice).not.toHaveAttribute('open');
+    expect(notice).toHaveTextContent('Photos are sent only when you choose Analyze.');
+    expect(notice).toHaveTextContent('History stays on this device unless you export it.');
+  });
+
   test('location assistance is enabled by default and can be disabled', async () => {
     const user = userEvent.setup();
     useSettingsStore.setState({ locationEnabled: true });

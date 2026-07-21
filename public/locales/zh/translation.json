@@ -19,7 +19,8 @@
     "locationEnabled": "使用定位辅助识别", "locationEnabledDesc": "默认开启；精确定位可提升地标匹配准确率",
     "clearHistory": "清除历史记录", "confirmClear": "再次点击确认", "itemsInStorage": "条记录已存储",
     "exportData": "导出", "importData": "导入", "exported": "备份已导出", "imported": "已导入 {{count}} 条记录", "importInvalid": "备份文件无效",
-    "aiDescription": "通义千问识图 · DeepSeek 总结 · Gemini 可选备用"
+    "aiDescription": "通义千问识图 · DeepSeek 总结 · Gemini 可选备用",
+    "privacy": "隐私", "privacyPhotos": "只有当你选择分析时，照片才会发送。", "privacyLocation": "开启定位后，位置会随照片发送以提高识别准确率。", "privacyStorage": "历史记录保存在此设备上，除非你主动导出。", "publicBeta": "公开测试版"
   },
   "result": {
     "essence": "本质", "mirror": "镜像洞察", "philosophy": "文化逻辑", "action": "试一试",

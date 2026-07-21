@@ -35,4 +35,24 @@ describe('server config', () => {
       },
     });
   });
+
+  test('reads proxy and public beta rate limits from the environment', async () => {
+    const module = await loadConfig();
+    expect(module).not.toBeNull();
+    if (!module) return;
+
+    const config = module.readServerConfig({
+      TRUST_PROXY_HOPS: '1',
+      API_RATE_LIMIT_PER_MINUTE: '120',
+      AI_RATE_LIMIT_PER_DAY: '30',
+      TTS_RATE_LIMIT_PER_DAY: '100',
+    });
+
+    expect(config.trustProxyHops).toBe(1);
+    expect(config.rateLimits).toEqual({
+      apiPerMinute: 120,
+      aiPerDay: 30,
+      ttsPerDay: 100,
+    });
+  });
 });

@@ -19,7 +19,8 @@
     "locationEnabled": "Utiliser la position pour identifier", "locationEnabledDesc": "Activé par défaut ; une position précise améliore l’identification des lieux",
     "clearHistory": "Effacer l’historique", "confirmClear": "Touchez encore pour confirmer", "itemsInStorage": "éléments enregistrés",
     "exportData": "Exporter", "importData": "Importer", "exported": "Sauvegarde exportée", "imported": "{{count}} éléments importés", "importInvalid": "Cette sauvegarde est invalide",
-    "aiDescription": "Vision Qwen · texte DeepSeek · Gemini en secours optionnel"
+    "aiDescription": "Vision Qwen · texte DeepSeek · Gemini en secours optionnel",
+    "privacy": "Confidentialité", "privacyPhotos": "Les photos ne sont envoyées que lorsque vous choisissez Analyser.", "privacyLocation": "Si la position est activée, elle accompagne la photo pour améliorer l’identification.", "privacyStorage": "L’historique reste sur cet appareil sauf si vous l’exportez.", "publicBeta": "Bêta publique"
   },
   "result": {
     "essence": "L’essentiel", "mirror": "Regard croisé", "philosophy": "Philosophie", "action": "À essayer",

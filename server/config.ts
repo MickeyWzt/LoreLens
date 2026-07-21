@@ -24,6 +24,12 @@ export interface AiConfig {
 export interface ServerConfig {
   port: number;
   nodeEnv: string;
+  trustProxyHops: number;
+  rateLimits: {
+    apiPerMinute: number;
+    aiPerDay: number;
+    ttsPerDay: number;
+  };
   ai: AiConfig;
   tts: TtsConfig;
   unsplashAccessKey?: string;
@@ -113,6 +119,12 @@ export function readServerConfig(env: NodeJS.ProcessEnv = process.env): ServerCo
   return {
     port: numberInRange(env.PORT, 3000, 1, 65_535),
     nodeEnv: env.NODE_ENV || 'development',
+    trustProxyHops: numberInRange(env.TRUST_PROXY_HOPS, 0, 0, 10),
+    rateLimits: {
+      apiPerMinute: numberInRange(env.API_RATE_LIMIT_PER_MINUTE, 120, 1, 10_000),
+      aiPerDay: numberInRange(env.AI_RATE_LIMIT_PER_DAY, 30, 1, 10_000),
+      ttsPerDay: numberInRange(env.TTS_RATE_LIMIT_PER_DAY, 100, 1, 100_000),
+    },
     ai: {
       vision,
       visionFallback,

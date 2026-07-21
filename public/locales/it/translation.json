@@ -19,7 +19,8 @@
     "locationEnabled": "Usa la posizione per il riconoscimento", "locationEnabledDesc": "Attiva per impostazione predefinita; una posizione precisa migliora l’abbinamento dei luoghi",
     "clearHistory": "Cancella cronologia", "confirmClear": "Tocca di nuovo per confermare", "itemsInStorage": "elementi salvati",
     "exportData": "Esporta", "importData": "Importa", "exported": "Backup esportato", "imported": "Importati {{count}} elementi", "importInvalid": "Questo backup non è valido",
-    "aiDescription": "Visione Qwen · testo DeepSeek · Gemini facoltativo come riserva"
+    "aiDescription": "Visione Qwen · testo DeepSeek · Gemini facoltativo come riserva",
+    "privacy": "Privacy", "privacyPhotos": "Le foto vengono inviate solo quando scegli Analizza.", "privacyLocation": "Se attiva, la posizione viene inviata con la foto per migliorare il riconoscimento.", "privacyStorage": "La cronologia resta su questo dispositivo salvo esportazione.", "publicBeta": "Beta pubblica"
   },
   "result": {
     "essence": "L’essenza", "mirror": "Riflesso culturale", "philosophy": "Filosofia", "action": "Prova questo",

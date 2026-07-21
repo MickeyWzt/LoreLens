@@ -351,8 +351,22 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
             {dataMessage && <p role="status" className={`text-center text-xs ${subTextClass}`}>{dataMessage}</p>}
             </div>
 
+            <details className={`group rounded-[1.35rem] border px-4 py-3 ${borderClass} ${surfaceClass}`}>
+                <summary className="cursor-pointer list-none text-sm font-semibold marker:content-none">
+                    <span className="flex items-center justify-between gap-4">
+                        {t('settings.privacy')}
+                        <span aria-hidden="true" className={`text-lg transition-transform duration-150 group-open:rotate-45 ${accent.text}`}>+</span>
+                    </span>
+                </summary>
+                <div className={`space-y-2 border-t pt-3 text-xs leading-relaxed ${borderClass} ${subTextClass}`}>
+                    <p>{t('settings.privacyPhotos')}</p>
+                    <p>{t('settings.privacyLocation')}</p>
+                    <p>{t('settings.privacyStorage')}</p>
+                </div>
+            </details>
+
             <div className={`mt-auto border-t pt-6 text-center font-mono text-[9px] uppercase tracking-[0.12em] ${borderClass} ${subTextClass}`}>
-                <p>LoreLens · v7.14</p>
+                <p>LoreLens · v7.14 · {t('settings.publicBeta')}</p>
                 <p className="mt-1 normal-case tracking-normal">{t('settings.aiDescription')}</p>
             </div>
         </div>
