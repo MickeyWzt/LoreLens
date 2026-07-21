@@ -10,6 +10,13 @@ interface ReverseResult {
   label: string;
 }
 
+const CHINA_MUNICIPALITIES: Record<string, { en: string; zh: string }> = {
+  'CN-BJ': { en: 'Beijing', zh: '北京' },
+  'CN-SH': { en: 'Shanghai', zh: '上海' },
+  'CN-TJ': { en: 'Tianjin', zh: '天津' },
+  'CN-CQ': { en: 'Chongqing', zh: '重庆' },
+};
+
 export function createLocationService({
   ipLocationUrl,
   fetchImpl = fetch,
@@ -49,7 +56,10 @@ export function createLocationService({
         };
         const address = payload.address || {};
         const city = address.city || address.town || address.village || address.county;
-        const region = address.state || address.region;
+        const municipality = CHINA_MUNICIPALITIES[(address['ISO3166-2-lvl4'] || '').toUpperCase()];
+        const region = address.state || address.region || (municipality
+          ? (language.toLowerCase().startsWith('zh') ? municipality.zh : municipality.en)
+          : undefined);
         const country = address.country;
         const label = [...new Set([payload.name, city, region, country].filter(Boolean))].join(', ')
           || payload.display_name;

@@ -58,4 +58,27 @@ describe('server location service', () => {
     const requestedUrl = new URL(String(fetchImpl.mock.calls[0][0]));
     expect(requestedUrl.searchParams.get('zoom')).toBe('18');
   });
+
+  test('expands a Chinese municipality ISO code into the city label', async () => {
+    const module = await loadServerLocation();
+    expect(module).not.toBeNull();
+    if (!module) return;
+
+    const fetchImpl = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        name: 'Yuzhi East Road',
+        address: {
+          city: 'Changping District',
+          'ISO3166-2-lvl4': 'CN-BJ',
+          country: 'China',
+        },
+      }),
+    });
+    const service = module.createLocationService({ fetchImpl });
+
+    await expect(service.reverse(40.07, 116.33, 'en')).resolves.toEqual({
+      label: 'Yuzhi East Road, Changping District, Beijing, China',
+    });
+  });
 });

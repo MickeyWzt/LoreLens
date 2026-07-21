@@ -10,7 +10,7 @@ interface AppContextState {
   backgroundKey?: string;
   ensureLocation: (language: string) => Promise<LocationSnapshot>;
   refreshLocation: (language: string) => Promise<LocationSnapshot>;
-  ensureBackground: (query: string, timeBucket: string) => Promise<ClientBackground | null>;
+  ensureBackground: (query: string | string[], timeBucket: string) => Promise<ClientBackground | null>;
 }
 
 let pendingLocation: Promise<LocationSnapshot> | undefined;
@@ -39,7 +39,7 @@ export const useAppContextStore = create<AppContextState>((set, get) => ({
   },
   refreshLocation: (language) => requestLocation(language, set),
   ensureBackground: async (query, timeBucket) => {
-    const key = `${query.trim().toLowerCase()}::${timeBucket}`;
+    const key = `${(Array.isArray(query) ? query : [query]).join(' || ').trim().toLowerCase()}::${timeBucket}`;
     if (get().backgroundKey === key) return get().background ?? null;
     const background = await getBackground(query, timeBucket);
     set({ background, backgroundKey: key });

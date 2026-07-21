@@ -10,21 +10,30 @@ const LAST_KEY = 'lorelens_background_v2:last';
 const MAX_AGE = 24 * 60 * 60 * 1_000;
 const inFlight = new Map<string, Promise<ClientBackground | null>>();
 
-const FINE_GRAINED_LOCATION = /(?:\b(?:road|street|avenue|boulevard|lane|drive|highway|route|district|county|subdistrict|township)\b|[路街道区县])/iu;
+const STREET_LEVEL_LOCATION = /(?:\b(?:road|street|avenue|boulevard|lane|drive|highway|route)\b|[路街道街])/iu;
 
-export function backgroundQueryForLocation(label?: string): string {
+export function backgroundQueriesForLocation(label?: string): string[] {
   const parts = label
     ?.split(/[,，،]/u)
     .map((part) => part.trim())
     .filter(Boolean) || [];
-  if (parts.length === 0) return 'world travel cityscape';
+  if (parts.length === 0) return ['world travel cityscape'];
 
-  const country = parts.at(-1)!;
-  const focus = parts.find((part) => !FINE_GRAINED_LOCATION.test(part)) || country;
-  const place = focus.toLocaleLowerCase('en-US') === country.toLocaleLowerCase('en-US')
-    ? country
-    : `${focus} ${country}`;
-  return `${place} travel cityscape`;
+  const candidates: string[] = [];
+  const add = (locationParts: string[]) => {
+    if (locationParts.length === 0) return;
+    const query = `${locationParts.join(' ')} travel cityscape`;
+    if (!candidates.includes(query)) candidates.push(query);
+  };
+  add(parts);
+
+  const regionalParts = parts.filter((part) => !STREET_LEVEL_LOCATION.test(part));
+  add(regionalParts);
+  for (let index = 1; index < regionalParts.length; index += 1) {
+    add(regionalParts.slice(index));
+  }
+  candidates.push('world travel cityscape');
+  return [...new Set(candidates)];
 }
 
 const storage = () => typeof localStorage !== 'undefined' ? localStorage : undefined;
@@ -55,26 +64,33 @@ function write(key: string, data: ClientBackground): void {
 }
 
 export function getBackground(
-  query: string,
+  query: string | string[],
   timeBucket: string,
   fetchImpl: typeof fetch = fetch,
 ): Promise<ClientBackground | null> {
-  const cacheKey = `${CACHE_PREFIX}${keyFor(query, timeBucket)}`;
+  const queries = (Array.isArray(query) ? query : [query])
+    .map((candidate) => candidate.trim())
+    .filter(Boolean);
+  const cacheKey = `${CACHE_PREFIX}${keyFor(queries.join(' || '), timeBucket)}`;
   const cached = read(cacheKey);
   if (cached) return Promise.resolve(cached);
   const existing = inFlight.get(cacheKey);
   if (existing) return existing;
 
   const pending = (async () => {
-    if (typeof navigator !== 'undefined' && !navigator.onLine) return read(LAST_KEY, true);
+    if (typeof navigator !== 'undefined' && navigator.onLine === false) return read(LAST_KEY, true);
     try {
-      const params = new URLSearchParams({ query, timeBucket });
-      const response = await fetchImpl(`/api/background?${params}`);
-      if (response.status === 204 || !response.ok) return read(LAST_KEY, true);
-      const payload = await response.json() as { data?: ClientBackground };
-      if (!payload.data?.imageUrl) return read(LAST_KEY, true);
-      write(cacheKey, payload.data);
-      return payload.data;
+      for (const candidate of queries) {
+        const params = new URLSearchParams({ query: candidate, timeBucket });
+        const response = await fetchImpl(`/api/background?${params}`);
+        if (response.status === 204) continue;
+        if (!response.ok) return read(LAST_KEY, true);
+        const payload = await response.json() as { data?: ClientBackground };
+        if (!payload.data?.imageUrl) continue;
+        write(cacheKey, payload.data);
+        return payload.data;
+      }
+      return read(LAST_KEY, true);
     } catch {
       return read(LAST_KEY, true);
     }
