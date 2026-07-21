@@ -157,7 +157,7 @@ tests/                 Vitest、RTL 和 API 集成测试
 ## 验收基线
 
 - TypeScript 检查通过
-- 21 个测试文件、75 项测试通过
-- 生产主入口 chunk 约 278 KB，地图、历史和设置按需加载
+- 22 个测试文件、81 项测试通过
+- 生产主入口 chunk 约 280 KB，地图、历史和设置按需加载
 - `npm audit --audit-level=high` 无 high/critical 漏洞
 - 已在 390×844、430×932 和 1440×900 的真实 Chromium 浏览器中验证核心流程

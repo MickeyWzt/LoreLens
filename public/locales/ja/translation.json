@@ -46,8 +46,8 @@
     "failureHint": "再試行するか、別の写真を選んでください。", "choosePhoto": "写真を選ぶ", "later": "あとで行う", "deciphering": "解析中"
   },
   "errors": {
-    "invalidImage": "この画像を開けません", "cameraDenied": "カメラの許可が拒否されました", "cameraUnavailable": "カメラを利用できません",
-    "cameraHelp": "ブラウザーでカメラを許可するか、写真を選んでください。", "offlineRetry": "オフラインです。接続後に再試行してください。",
+    "invalidImage": "この画像を開けません", "cameraDenied": "カメラの許可が拒否されました", "cameraUnavailable": "カメラを利用できません", "physicalCameraUnavailable": "物理カメラが見つかりません",
+    "cameraHelp": "ブラウザーでカメラを許可するか、写真を選んでください。", "physicalCameraHelp": "内蔵カメラまたはプライバシーシャッターを有効にして再試行するか、写真を選んでください。", "offlineRetry": "オフラインです。接続後に再試行してください。",
     "analysisFailed": "解析に失敗しました", "serviceNotConfigured": "AI サービスが設定されていません", "rateLimited": "サービスが混み合っています。少し待って再試行してください。", "saveFailed": "画像を保存できませんでした"
   },
   "aria": { "close": "閉じる", "share": "共有", "readAloud": "読み上げ", "capture": "撮影", "upload": "写真を選ぶ", "openMap": "地図を開く", "openHistory": "履歴を開く", "capturedImage": "撮影した写真" },

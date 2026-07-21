@@ -46,8 +46,8 @@
     "failureHint": "Riprova o scegli un’altra foto.", "choosePhoto": "Scegli foto", "later": "Fallo più tardi", "deciphering": "Decifrazione"
   },
   "errors": {
-    "invalidImage": "Impossibile aprire questa immagine", "cameraDenied": "Permesso della fotocamera negato", "cameraUnavailable": "Fotocamera non disponibile",
-    "cameraHelp": "Consenti l’accesso alla fotocamera nel browser o scegli una foto.", "offlineRetry": "Sei offline. Riprova dopo esserti riconnesso.",
+    "invalidImage": "Impossibile aprire questa immagine", "cameraDenied": "Permesso della fotocamera negato", "cameraUnavailable": "Fotocamera non disponibile", "physicalCameraUnavailable": "Nessuna fotocamera fisica rilevata",
+    "cameraHelp": "Consenti l’accesso alla fotocamera nel browser o scegli una foto.", "physicalCameraHelp": "Attiva la fotocamera integrata o apri l’otturatore privacy, poi riprova. Puoi anche scegliere una foto.", "offlineRetry": "Sei offline. Riprova dopo esserti riconnesso.",
     "analysisFailed": "Analisi non riuscita", "serviceNotConfigured": "Il servizio IA non è configurato", "rateLimited": "Il servizio è occupato. Riprova tra poco.", "saveFailed": "Impossibile salvare l’immagine"
   },
   "aria": { "close": "Chiudi", "share": "Condividi", "readAloud": "Leggi ad alta voce", "capture": "Scatta foto", "upload": "Scegli foto", "openMap": "Apri mappa", "openHistory": "Apri cronologia", "capturedImage": "Foto acquisita" },

@@ -46,8 +46,8 @@
     "failureHint": "可以重试，或选择另一张照片。", "choosePhoto": "选择照片", "later": "稍后处理", "deciphering": "正在解读"
   },
   "errors": {
-    "invalidImage": "无法打开这张图片", "cameraDenied": "相机权限已被拒绝", "cameraUnavailable": "相机不可用",
-    "cameraHelp": "请在浏览器中允许相机权限，或改为选择照片。", "offlineRetry": "当前离线，请联网后重试。",
+    "invalidImage": "无法打开这张图片", "cameraDenied": "相机权限已被拒绝", "cameraUnavailable": "相机不可用", "physicalCameraUnavailable": "未检测到物理摄像头",
+    "cameraHelp": "请在浏览器中允许相机权限，或改为选择照片。", "physicalCameraHelp": "请开启电脑内置摄像头或打开隐私挡板后重试，也可以直接选择照片。", "offlineRetry": "当前离线，请联网后重试。",
     "analysisFailed": "解读失败", "serviceNotConfigured": "AI 服务尚未配置", "rateLimited": "服务繁忙，请稍后重试。", "saveFailed": "图片无法保存"
   },
   "aria": { "close": "关闭", "share": "分享", "readAloud": "朗读", "capture": "拍照", "upload": "选择照片", "openMap": "打开地图", "openHistory": "打开历史", "capturedImage": "已拍摄的照片" },

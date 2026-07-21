@@ -17,6 +17,7 @@ import { CropView } from './components/CropView';
 import { IconCamera, IconHistory, IconSettings, IconSparkles, IconMap, IconChevronUp, IconPhoto } from './components/Icons';
 import { useSettingsStore } from './store/useSettingsStore';
 import { useHistoryStore } from './store/useHistoryStore';
+import { openPreferredCamera, PhysicalCameraUnavailableError } from './services/cameraService';
 
 const HistoryView = lazy(() => import('./components/HistoryView').then((module) => ({ default: module.HistoryView })));
 const SettingsView = lazy(() => import('./components/SettingsView').then((module) => ({ default: module.SettingsView })));
@@ -46,7 +47,7 @@ const App: React.FC = () => {
   const activeAnalysisIdRef = useRef<string | null>(null);
   const capturedLocationRef = useRef<Promise<LocationSnapshot> | undefined>(undefined);
   const [isCameraReady, setIsCameraReady] = useState(false);
-  const [cameraError, setCameraError] = useState<'denied' | 'unavailable' | null>(null);
+  const [cameraError, setCameraError] = useState<'denied' | 'unavailable' | 'noPhysical' | null>(null);
 
   // Stores
   const { theme, language, fontSize, saveToGallery, reduceMotion, locationEnabled } = useSettingsStore();
@@ -107,19 +108,19 @@ const App: React.FC = () => {
     // Keep camera active if we haven't captured yet, or if we are not in cropping/analyzing/drawer modes
     const shouldCameraBeActive = !isHomeOpen && viewState === ViewState.CAMERA && !capturedImage;
 
+    let cancelled = false;
+
     const manageCamera = async () => {
         if (shouldCameraBeActive) {
             // Start Camera
             if (!streamRef.current) {
                 try {
                     setCameraError(null);
-                    const stream = await navigator.mediaDevices.getUserMedia({ 
-                        video: { 
-                            facingMode: 'environment',
-                            width: { ideal: 1920 },
-                            height: { ideal: 1080 } 
-                        } 
-                    });
+                    const stream = await openPreferredCamera(navigator.mediaDevices);
+                    if (cancelled) {
+                        stream.getTracks().forEach((track) => track.stop());
+                        return;
+                    }
                     streamRef.current = stream;
                     
                     if (videoRef.current) {
@@ -131,9 +132,17 @@ const App: React.FC = () => {
                         };
                     }
                 } catch (err) {
+                    if (cancelled) return;
                     const denied = err instanceof DOMException && err.name === 'NotAllowedError';
-                    setCameraError(denied ? 'denied' : 'unavailable');
-                    showNotification(t(denied ? 'errors.cameraDenied' : 'errors.cameraUnavailable'));
+                    const noPhysical = err instanceof PhysicalCameraUnavailableError;
+                    const errorType = denied ? 'denied' : noPhysical ? 'noPhysical' : 'unavailable';
+                    const messageKey = denied
+                      ? 'errors.cameraDenied'
+                      : noPhysical
+                        ? 'errors.physicalCameraUnavailable'
+                        : 'errors.cameraUnavailable';
+                    setCameraError(errorType);
+                    showNotification(t(messageKey));
                 }
             } else {
                 // If stream exists but was potentially paused (though we stop it usually)
@@ -159,8 +168,12 @@ const App: React.FC = () => {
 
     // Cleanup on component unmount
     return () => {
+       cancelled = true;
        if (streamRef.current) {
            streamRef.current.getTracks().forEach(track => track.stop());
+           streamRef.current = null;
+           setIsCameraReady(false);
+           if (videoRef.current) videoRef.current.srcObject = null;
        }
     };
   }, [capturedImage, isHomeOpen, t, viewState]);
@@ -534,8 +547,16 @@ const App: React.FC = () => {
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                      {cameraError && (
                        <div className="pointer-events-auto mx-8 max-w-sm rounded-3xl border border-white/15 bg-black/75 p-6 text-center text-white backdrop-blur-xl">
-                         <h2 className="text-lg font-medium">{t(cameraError === 'denied' ? 'errors.cameraDenied' : 'errors.cameraUnavailable')}</h2>
-                         <p className="mt-2 text-sm text-white/65">{t('errors.cameraHelp')}</p>
+                         <h2 className="text-lg font-medium">{t(
+                           cameraError === 'denied'
+                             ? 'errors.cameraDenied'
+                             : cameraError === 'noPhysical'
+                               ? 'errors.physicalCameraUnavailable'
+                               : 'errors.cameraUnavailable',
+                         )}</h2>
+                         <p className="mt-2 text-sm text-white/65">{t(
+                           cameraError === 'noPhysical' ? 'errors.physicalCameraHelp' : 'errors.cameraHelp',
+                         )}</p>
                          <button type="button" onClick={() => fileInputRef.current?.click()} className="mt-4 rounded-full bg-white px-5 py-3 font-medium text-black">
                            {t('scan.choosePhoto')}
                          </button>

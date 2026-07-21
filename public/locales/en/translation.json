@@ -46,8 +46,8 @@
     "failureHint": "Try again or choose a different photo.", "choosePhoto": "Choose photo", "later": "Do this later", "deciphering": "Deciphering"
   },
   "errors": {
-    "invalidImage": "This image could not be opened", "cameraDenied": "Camera permission was denied", "cameraUnavailable": "Camera is unavailable",
-    "cameraHelp": "Allow camera access in your browser, or choose a photo instead.", "offlineRetry": "You are offline. Retry after reconnecting.",
+    "invalidImage": "This image could not be opened", "cameraDenied": "Camera permission was denied", "cameraUnavailable": "Camera is unavailable", "physicalCameraUnavailable": "No physical camera was found",
+    "cameraHelp": "Allow camera access in your browser, or choose a photo instead.", "physicalCameraHelp": "Turn on your built-in camera or open its privacy shutter, then retry. You can also choose a photo.", "offlineRetry": "You are offline. Retry after reconnecting.",
     "analysisFailed": "Analysis failed", "serviceNotConfigured": "The AI service is not configured", "rateLimited": "The service is busy. Try again shortly.", "saveFailed": "The image could not be saved"
   },
   "aria": { "close": "Close", "share": "Share", "readAloud": "Read aloud", "capture": "Take photo", "upload": "Choose photo", "openMap": "Open map", "openHistory": "Open history", "capturedImage": "Captured photo" },

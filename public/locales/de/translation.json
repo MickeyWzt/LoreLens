@@ -46,8 +46,8 @@
     "failureHint": "Versuche es erneut oder wähle ein anderes Foto.", "choosePhoto": "Foto auswählen", "later": "Später erledigen", "deciphering": "Wird entschlüsselt"
   },
   "errors": {
-    "invalidImage": "Dieses Bild konnte nicht geöffnet werden", "cameraDenied": "Kamerazugriff wurde verweigert", "cameraUnavailable": "Kamera ist nicht verfügbar",
-    "cameraHelp": "Erlaube den Kamerazugriff im Browser oder wähle stattdessen ein Foto.", "offlineRetry": "Du bist offline. Versuche es nach dem Verbinden erneut.",
+    "invalidImage": "Dieses Bild konnte nicht geöffnet werden", "cameraDenied": "Kamerazugriff wurde verweigert", "cameraUnavailable": "Kamera ist nicht verfügbar", "physicalCameraUnavailable": "Keine physische Kamera gefunden",
+    "cameraHelp": "Erlaube den Kamerazugriff im Browser oder wähle stattdessen ein Foto.", "physicalCameraHelp": "Aktiviere die integrierte Kamera oder öffne die Datenschutzblende und versuche es erneut. Du kannst auch ein Foto auswählen.", "offlineRetry": "Du bist offline. Versuche es nach dem Verbinden erneut.",
     "analysisFailed": "Analyse fehlgeschlagen", "serviceNotConfigured": "Der KI-Dienst ist nicht eingerichtet", "rateLimited": "Der Dienst ist ausgelastet. Versuche es gleich noch einmal.", "saveFailed": "Das Bild konnte nicht gespeichert werden"
   },
   "aria": { "close": "Schließen", "share": "Teilen", "readAloud": "Vorlesen", "capture": "Foto aufnehmen", "upload": "Foto auswählen", "openMap": "Karte öffnen", "openHistory": "Verlauf öffnen", "capturedImage": "Aufgenommenes Foto" },

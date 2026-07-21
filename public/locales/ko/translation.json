@@ -46,8 +46,8 @@
     "failureHint": "다시 시도하거나 다른 사진을 선택하세요.", "choosePhoto": "사진 선택", "later": "나중에 하기", "deciphering": "해석 중"
   },
   "errors": {
-    "invalidImage": "이미지를 열 수 없습니다", "cameraDenied": "카메라 권한이 거부되었습니다", "cameraUnavailable": "카메라를 사용할 수 없습니다",
-    "cameraHelp": "브라우저에서 카메라 접근을 허용하거나 사진을 선택하세요.", "offlineRetry": "오프라인 상태입니다. 연결 후 다시 시도하세요.",
+    "invalidImage": "이미지를 열 수 없습니다", "cameraDenied": "카메라 권한이 거부되었습니다", "cameraUnavailable": "카메라를 사용할 수 없습니다", "physicalCameraUnavailable": "물리적 카메라를 찾을 수 없습니다",
+    "cameraHelp": "브라우저에서 카메라 접근을 허용하거나 사진을 선택하세요.", "physicalCameraHelp": "내장 카메라나 프라이버시 셔터를 켠 뒤 다시 시도하거나 사진을 선택하세요.", "offlineRetry": "오프라인 상태입니다. 연결 후 다시 시도하세요.",
     "analysisFailed": "분석 실패", "serviceNotConfigured": "AI 서비스가 설정되지 않았습니다", "rateLimited": "서비스가 혼잡합니다. 잠시 후 다시 시도하세요.", "saveFailed": "이미지를 저장할 수 없습니다"
   },
   "aria": { "close": "닫기", "share": "공유", "readAloud": "소리 내어 읽기", "capture": "사진 촬영", "upload": "사진 선택", "openMap": "지도 열기", "openHistory": "기록 열기", "capturedImage": "촬영한 사진" },

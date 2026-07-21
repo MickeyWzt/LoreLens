@@ -75,6 +75,44 @@ describe('accessible app states', () => {
     expect(screen.getAllByRole('button', { name: /choose photo/i }).length).toBeGreaterThan(0);
   });
 
+  test('a virtual-only camera list explains that no physical camera is available', async () => {
+    const stop = vi.fn();
+    const track = {
+      getSettings: () => ({ deviceId: 'obs' }),
+      stop,
+    } as unknown as MediaStreamTrack;
+    Object.defineProperty(navigator, 'mediaDevices', {
+      configurable: true,
+      value: {
+        getUserMedia: vi.fn().mockResolvedValue({
+          getTracks: () => [track],
+          getVideoTracks: () => [track],
+        }),
+        enumerateDevices: vi.fn().mockResolvedValue([{
+          deviceId: 'obs',
+          groupId: 'virtual',
+          kind: 'videoinput',
+          label: 'OBS Virtual Camera',
+          toJSON: () => ({}),
+        }]),
+      },
+    });
+    const user = userEvent.setup();
+    renderLocalized(<App />);
+    await user.click(await screen.findByRole('button', { name: /scan to decipher/i }));
+
+    await waitFor(() => expect(screen.getAllByText('No physical camera was found').length).toBeGreaterThan(0));
+    expect(screen.getByText(/privacy shutter/i)).toBeInTheDocument();
+    expect(stop).toHaveBeenCalledOnce();
+  });
+
+  test('home keeps the product mark out of the main content', () => {
+    renderLocalized(<App />);
+
+    expect(screen.queryByRole('heading', { name: 'LoreLens' })).not.toBeInTheDocument();
+    expect(screen.getByText(english.home.subtitle)).toBeInTheDocument();
+  });
+
   test('Arabic switches the document into RTL mode', () => {
     syncDocumentLanguage('ar');
     expect(document.documentElement.dir).toBe('rtl');

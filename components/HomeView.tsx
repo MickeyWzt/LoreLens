@@ -124,7 +124,6 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
         <section className="mt-auto text-white">
           <p className="text-sm font-medium tracking-wide text-white/65">{t(greetingKey)}</p>
-          <h1 className="mt-2 text-5xl font-extralight tracking-[-0.04em]">LoreLens</h1>
           <p className="mt-3 max-w-sm text-base leading-relaxed text-white/72">{t('home.subtitle')}</p>
 
           <div className="mt-7 grid grid-cols-2 gap-3">

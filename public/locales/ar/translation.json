@@ -46,8 +46,8 @@
     "failureHint": "أعد المحاولة أو اختر صورة أخرى.", "choosePhoto": "اختيار صورة", "later": "لاحقاً", "deciphering": "جارٍ الاكتشاف"
   },
   "errors": {
-    "invalidImage": "تعذّر فتح هذه الصورة", "cameraDenied": "تم رفض إذن الكاميرا", "cameraUnavailable": "الكاميرا غير متاحة",
-    "cameraHelp": "اسمح باستخدام الكاميرا في المتصفح أو اختر صورة.", "offlineRetry": "أنت غير متصل. أعد المحاولة بعد الاتصال.",
+    "invalidImage": "تعذّر فتح هذه الصورة", "cameraDenied": "تم رفض إذن الكاميرا", "cameraUnavailable": "الكاميرا غير متاحة", "physicalCameraUnavailable": "لم يتم العثور على كاميرا فعلية",
+    "cameraHelp": "اسمح باستخدام الكاميرا في المتصفح أو اختر صورة.", "physicalCameraHelp": "شغّل الكاميرا المدمجة أو افتح حاجب الخصوصية ثم أعد المحاولة. يمكنك أيضًا اختيار صورة.", "offlineRetry": "أنت غير متصل. أعد المحاولة بعد الاتصال.",
     "analysisFailed": "فشل التحليل", "serviceNotConfigured": "خدمة الذكاء الاصطناعي غير مهيأة", "rateLimited": "الخدمة مشغولة. حاول بعد قليل.", "saveFailed": "تعذر حفظ الصورة"
   },
   "aria": { "close": "إغلاق", "share": "مشاركة", "readAloud": "قراءة بصوت عالٍ", "capture": "التقاط صورة", "upload": "اختيار صورة", "openMap": "فتح الخريطة", "openHistory": "فتح السجل", "capturedImage": "الصورة الملتقطة" },
