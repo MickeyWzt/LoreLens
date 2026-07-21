@@ -4,7 +4,7 @@ import { IconCamera, IconHistory, IconSettings } from './Icons';
 import { useAppContextStore } from '../store/useAppContextStore';
 import { useHistoryStore } from '../store/useHistoryStore';
 import { useSettingsStore } from '../store/useSettingsStore';
-import { trackBackgroundDownload } from '../services/backgroundService';
+import { backgroundQueryForLocation, trackBackgroundDownload } from '../services/backgroundService';
 import { getAccentStyles } from '../utils/accent';
 import { triggerHaptic } from '../utils';
 
@@ -47,7 +47,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   useEffect(() => {
     if (locationEnabled && locationStatus !== 'ready') return;
     const activeLocation = locationEnabled ? location : undefined;
-    const query = activeLocation?.label || (activeLocation?.lat !== undefined ? 'travel city' : 'world travel');
+    const query = backgroundQueryForLocation(activeLocation?.label);
     void ensureBackground(query, bucket);
   }, [bucket, ensureBackground, location, locationEnabled, locationStatus]);
 
