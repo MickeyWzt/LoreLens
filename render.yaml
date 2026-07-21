@@ -1,0 +1,63 @@
+services:
+  - type: web
+    name: lorelens-beta
+    runtime: node
+    plan: free
+    branch: main
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeployTrigger: checksPass
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: 22.14.0
+      - key: TRUST_PROXY_HOPS
+        value: 1
+      - key: API_RATE_LIMIT_PER_MINUTE
+        value: 120
+      - key: AI_RATE_LIMIT_PER_DAY
+        value: 30
+      - key: TTS_RATE_LIMIT_PER_DAY
+        value: 100
+      - key: VISION_PROVIDER
+        value: qwen
+      - key: QWEN_API_KEY
+        sync: false
+      - key: QWEN_VISION_MODEL
+        value: qwen3.6-flash
+      - key: QWEN_BASE_URL
+        value: https://dashscope.aliyuncs.com/compatible-mode/v1
+      - key: TEXT_PROVIDER
+        value: deepseek
+      - key: DEEPSEEK_API_KEY
+        sync: false
+      - key: DEEPSEEK_TEXT_MODEL
+        value: deepseek-v4-flash
+      - key: DEEPSEEK_BASE_URL
+        value: https://dashscope.aliyuncs.com/compatible-mode/v1
+      - key: AI_TIMEOUT_MS
+        value: 30000
+      - key: MIMO_API_KEY
+        sync: false
+      - key: MIMO_TTS_MODEL
+        value: mimo-v2.5-tts
+      - key: MIMO_BASE_URL
+        value: https://api.xiaomimimo.com/v1
+      - key: MIMO_TTS_TIMEOUT_MS
+        value: 30000
+      - key: MIMO_TTS_VOICE_ZH
+        value: 茉莉
+      - key: MIMO_TTS_VOICE_EN
+        value: Mia
+      - key: QWEN_TTS_MODEL
+        value: qwen3-tts-flash
+      - key: QWEN_TTS_BASE_URL
+        value: https://dashscope.aliyuncs.com/api/v1
+      - key: QWEN_TTS_TIMEOUT_MS
+        value: 30000
+      - key: QWEN_TTS_VOICE
+        value: Cherry
+      - key: UNSPLASH_ACCESS_KEY
+        sync: false

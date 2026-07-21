@@ -19,7 +19,8 @@
     "locationEnabled": "Use location for identification", "locationEnabledDesc": "Enabled by default; precise location improves landmark matching",
     "clearHistory": "Clear history", "confirmClear": "Tap again to confirm", "itemsInStorage": "items in storage",
     "exportData": "Export", "importData": "Import", "exported": "Backup exported", "imported": "Imported {{count}} records", "importInvalid": "This backup is invalid",
-    "aiDescription": "Qwen vision · DeepSeek text · optional Gemini fallback"
+    "aiDescription": "Qwen vision · DeepSeek text · optional Gemini fallback",
+    "privacy": "Privacy", "privacyPhotos": "Photos are sent only when you choose Analyze.", "privacyLocation": "If location is enabled, it is sent with the photo to improve identification.", "privacyStorage": "History stays on this device unless you export it.", "publicBeta": "Public beta"
   },
   "result": {
     "essence": "The essence", "mirror": "Mirror insight", "philosophy": "Philosophy", "action": "Try this",

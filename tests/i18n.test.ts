@@ -29,6 +29,11 @@ describe('translations', () => {
       'location.unavailable',
       'scan.choosePhoto',
       'settings.exportData',
+      'settings.privacy',
+      'settings.privacyPhotos',
+      'settings.privacyLocation',
+      'settings.privacyStorage',
+      'settings.publicBeta',
       'crop.useFullImage',
       'history.pending',
     ]) expect(keys.has(key)).toBe(true);

@@ -2,6 +2,8 @@
 
 LoreLens 是面向全球旅行场景的文化解读 PWA。用户可以拍照或选择本地照片、调整关注区域，并获得与画面相关的文化线索、观察提示和行动建议。
 
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/MickeyWzt/LoreLens)
+
 7.14 保留了原有的沉浸式深色界面、玻璃卡片和相机体验，同时重构了扫描状态、AI 服务、定位、历史数据、离线能力、国际化、无障碍和生产服务器。
 
 ## 主要能力
@@ -54,6 +56,10 @@ Qwen 负责单张图片解读；DeepSeek 只在用户主动生成“共鸣回顾
 | 变量 | 默认值 | 用途 |
 | --- | --- | --- |
 | `PORT` | `3000` | Express/Vite 开发服务器端口 |
+| `TRUST_PROXY_HOPS` | `0` | 可信反向代理跳数；Render 部署设为 `1` |
+| `API_RATE_LIMIT_PER_MINUTE` | `120` | 每个来源 IP 的 API 每分钟请求上限 |
+| `AI_RATE_LIMIT_PER_DAY` | `30` | 每个来源 IP 的每日 AI 请求上限 |
+| `TTS_RATE_LIMIT_PER_DAY` | `100` | 每个来源 IP 的每日云端朗读请求上限 |
 | `VISION_PROVIDER` | `qwen` | 图像 Provider：`qwen` 或 `gemini` |
 | `QWEN_API_KEY` / `DASHSCOPE_API_KEY` | 空 | Qwen/DashScope 服务端密钥 |
 | `QWEN_VISION_MODEL` | `qwen-vl-max-latest` | Qwen 视觉模型 |
@@ -93,6 +99,19 @@ npm start
 
 反向代理需保留 HTTPS、`X-Request-ID` 和正常的流式请求语义。相机、定位、Service Worker 和剪贴板等能力在非 localhost 环境通常要求 HTTPS。
 
+## Render 公开测试版
+
+仓库根目录的 `render.yaml` 定义了完整的 Node Web Service。点击上方 **Deploy to Render**，在创建 Blueprint 时填写四个 Secret：
+
+- `QWEN_API_KEY`
+- `DEEPSEEK_API_KEY`
+- `MIMO_API_KEY`
+- `UNSPLASH_ACCESS_KEY`
+
+Render 会执行 `npm ci --include=dev && npm run build`，随后以 `npm start` 启动，并使用 `/api/health` 进行健康检查。生产环境启用一层可信代理、每分钟 API 限流以及 AI/TTS 每日额度；修改额度只需调整 Render 环境变量。
+
+免费 Render Web Service 适合公开测试，但闲置后会休眠。正式推广时应改为常驻实例，并在 AI 服务商后台配置余额提醒与消费上限。
+
 ## API
 
 | 方法与路径 | 说明 |
@@ -126,6 +145,7 @@ npm start
 - 定位缓存键：`lorelens_location_v2`
 - 背景缓存前缀：`lorelens_background_v2:`
 - AI Key 不会写入浏览器、本地历史、导出文件或日志。
+- 照片只在用户主动开始分析时发送；开启定位后，位置会随照片发送以提高识别准确率。
 - 离线照片不会自动上传；联网后必须由用户点击“重试”。
 - JSON 导出可能包含用户选择保存的压缩照片和地点，因此应按私人备份处理。
 
@@ -157,7 +177,7 @@ tests/                 Vitest、RTL 和 API 集成测试
 ## 验收基线
 
 - TypeScript 检查通过
-- 22 个测试文件、83 项测试通过
+- 23 个测试文件、87 项测试通过
 - 生产主入口 chunk 约 280 KB，地图、历史和设置按需加载
 - `npm audit --audit-level=high` 无 high/critical 漏洞
 - 已在 390×844、430×932 和 1440×900 的真实 Chromium 浏览器中验证核心流程

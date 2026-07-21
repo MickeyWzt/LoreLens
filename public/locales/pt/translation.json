@@ -19,7 +19,8 @@
     "locationEnabled": "Usar localização na identificação", "locationEnabledDesc": "Ativada por padrão; a localização precisa melhora a correspondência de pontos turísticos",
     "clearHistory": "Limpar histórico", "confirmClear": "Toque novamente para confirmar", "itemsInStorage": "itens armazenados",
     "exportData": "Exportar", "importData": "Importar", "exported": "Backup exportado", "imported": "{{count}} registros importados", "importInvalid": "Este backup é inválido",
-    "aiDescription": "Visão Qwen · texto DeepSeek · Gemini opcional como reserva"
+    "aiDescription": "Visão Qwen · texto DeepSeek · Gemini opcional como reserva",
+    "privacy": "Privacidade", "privacyPhotos": "As fotos só são enviadas quando você escolhe Analisar.", "privacyLocation": "Se ativada, a localização é enviada com a foto para melhorar a identificação.", "privacyStorage": "O histórico fica neste dispositivo, a menos que você o exporte.", "publicBeta": "Beta pública"
   },
   "result": {
     "essence": "A essência", "mirror": "Reflexo cultural", "philosophy": "Filosofia", "action": "Experimente",

@@ -53,6 +53,35 @@ describe('server API', () => {
     expect(decipher).toHaveBeenCalledTimes(1);
   });
 
+  test('returns a structured error after the public beta AI quota is exhausted', async () => {
+    const module = await loadApp();
+    expect(module).not.toBeNull();
+    if (!module) return;
+
+    const decipher = vi.fn().mockResolvedValue({
+      title: 'Tower',
+      essence: 'A landmark.',
+      mirrorInsight: 'Location adds context.',
+      philosophy: 'Evidence should converge.',
+      quickAction: 'Look for signs.',
+    });
+    const app = module.createApiApp({
+      ai: { decipher, recap: vi.fn() },
+      background: { getBackground: vi.fn(), trackDownload: vi.fn() },
+      capabilities: { vision: true, text: false, background: false },
+      rateLimits: { apiPerMinute: 100, aiPerDay: 1, ttsPerDay: 100 },
+    });
+    const body = { base64Image: 'data:image/jpeg;base64,YQ==', language: 'en' };
+
+    expect((await request(app).post('/api/ai/decipher').send(body)).status).toBe(200);
+    const limited = await request(app).post('/api/ai/decipher').send(body);
+
+    expect(limited.status).toBe(429);
+    expect(limited.body.error).toMatchObject({ code: 'RATE_LIMITED', retryable: true });
+    expect(limited.body.error.requestId).toEqual(expect.any(String));
+    expect(decipher).toHaveBeenCalledTimes(1);
+  });
+
   test('preserves the full location snapshot sent with a photo', async () => {
     const module = await loadApp();
     expect(module).not.toBeNull();

@@ -19,7 +19,8 @@
     "locationEnabled": "식별에 위치 사용", "locationEnabledDesc": "기본으로 켜져 있으며 정확한 위치는 명소 판별에 도움이 됩니다",
     "clearHistory": "기록 지우기", "confirmClear": "확인하려면 한 번 더 누르세요", "itemsInStorage": "개 항목 저장됨",
     "exportData": "내보내기", "importData": "가져오기", "exported": "백업을 내보냈습니다", "imported": "{{count}}개 기록을 가져왔습니다", "importInvalid": "올바르지 않은 백업입니다",
-    "aiDescription": "Qwen 이미지 인식 · DeepSeek 텍스트 · 선택적 Gemini 대체"
+    "aiDescription": "Qwen 이미지 인식 · DeepSeek 텍스트 · 선택적 Gemini 대체",
+    "privacy": "개인정보", "privacyPhotos": "분석을 선택할 때만 사진이 전송됩니다.", "privacyLocation": "위치를 켜면 식별 정확도를 높이기 위해 사진과 함께 전송됩니다.", "privacyStorage": "내보내지 않는 한 기록은 이 기기에 보관됩니다.", "publicBeta": "공개 베타"
   },
   "result": {
     "essence": "핵심", "mirror": "문화적 비추어 보기", "philosophy": "철학", "action": "이렇게 해보세요",

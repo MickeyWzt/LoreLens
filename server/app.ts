@@ -51,6 +51,12 @@ interface ApiDependencies {
     background: boolean;
     ipLocation?: boolean;
   };
+  trustProxyHops?: number;
+  rateLimits?: {
+    apiPerMinute: number;
+    aiPerDay: number;
+    ttsPerDay: number;
+  };
   developmentMode?: boolean;
 }
 
@@ -81,6 +87,9 @@ function sendError(
 export function createApiApp(dependencies: ApiDependencies) {
   const app = express();
   app.disable('x-powered-by');
+  if (dependencies.trustProxyHops && dependencies.trustProxyHops > 0) {
+    app.set('trust proxy', dependencies.trustProxyHops);
+  }
   app.use(helmet({
     crossOriginResourcePolicy: { policy: 'cross-origin' },
     contentSecurityPolicy: dependencies.developmentMode ? false : {
@@ -130,11 +139,34 @@ export function createApiApp(dependencies: ApiDependencies) {
     next();
   });
   app.use(express.json({ limit: '10mb' }));
+  const rateLimits = dependencies.rateLimits || {
+    apiPerMinute: 120,
+    aiPerDay: 30,
+    ttsPerDay: 100,
+  };
+  const limited = (message: string) => (_request: Request, response: Response) => {
+    sendError(response, 429, 'RATE_LIMITED', message, true);
+  };
   app.use('/api', rateLimit({
     windowMs: 60_000,
-    limit: 60,
+    limit: rateLimits.apiPerMinute,
     standardHeaders: 'draft-8',
     legacyHeaders: false,
+    handler: limited('Too many requests. Please try again shortly.'),
+  }));
+  app.use('/api/ai', rateLimit({
+    windowMs: 24 * 60 * 60 * 1_000,
+    limit: rateLimits.aiPerDay,
+    standardHeaders: 'draft-8',
+    legacyHeaders: false,
+    handler: limited('The public beta daily analysis limit has been reached.'),
+  }));
+  app.use('/api/tts', rateLimit({
+    windowMs: 24 * 60 * 60 * 1_000,
+    limit: rateLimits.ttsPerDay,
+    standardHeaders: 'draft-8',
+    legacyHeaders: false,
+    handler: limited('The public beta daily narration limit has been reached.'),
   }));
 
   app.get('/api/health', (_request, response) => {
