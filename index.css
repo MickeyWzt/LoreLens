@@ -28,6 +28,8 @@ body,
 
 body {
   margin: 0;
+  font-optical-sizing: auto;
+  font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
@@ -88,12 +90,40 @@ button,
   transform: scale(0.975);
 }
 
-.ll-screen-enter {
-  animation: ll-screen-enter 320ms var(--ll-ease-out) both;
+.ll-sheet-material {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 -24px 80px rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(32px) saturate(155%);
+  -webkit-backdrop-filter: blur(32px) saturate(155%);
+  will-change: transform, opacity;
+}
+
+.ll-drag-handle {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .ll-sheet-enter {
-  animation: ll-sheet-enter 300ms var(--ll-ease-drawer) both;
+  animation: ll-sheet-enter 240ms var(--ll-ease-drawer) both;
+}
+
+.ll-image-enter {
+  animation: ll-image-enter 220ms var(--ll-ease-out) both;
+}
+
+.ll-panel-enter {
+  animation: ll-panel-enter 180ms var(--ll-ease-out) both;
+}
+
+.ll-modal-backdrop-enter {
+  animation: ll-opacity-enter 160ms var(--ll-ease-out) both;
+}
+
+.ll-modal-enter {
+  animation: ll-modal-enter 220ms var(--ll-ease-out) both;
+  transform-origin: center;
 }
 
 .leaflet-container {
@@ -115,14 +145,29 @@ button,
   letter-spacing: 0.02em;
 }
 
-@keyframes ll-screen-enter {
-  from { opacity: 0; transform: translateY(8px); }
+@keyframes ll-image-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes ll-panel-enter {
+  from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes ll-sheet-enter {
   from { opacity: 0; transform: translateY(3%); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ll-modal-enter {
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes ll-opacity-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 :focus-visible {
@@ -139,7 +184,8 @@ button,
 
 @media (prefers-reduced-transparency: reduce) {
   .ll-material,
-  .ll-icon-button {
+  .ll-icon-button,
+  .ll-sheet-material {
     background: rgba(12, 12, 11, 0.94);
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
@@ -148,7 +194,8 @@ button,
 
 @media (prefers-contrast: more) {
   .ll-material,
-  .ll-icon-button {
+  .ll-icon-button,
+  .ll-sheet-material {
     border-color: rgba(255, 255, 255, 0.48);
     background: rgba(0, 0, 0, 0.92);
   }
@@ -162,6 +209,18 @@ button,
     transition-duration: 120ms !important;
     transition-property: opacity, color, background-color !important;
   }
+
+  .ll-image-enter,
+  .ll-panel-enter,
+  .ll-sheet-enter,
+  .ll-modal-backdrop-enter,
+  .ll-modal-enter {
+    animation-name: ll-opacity-enter !important;
+  }
+
+  .ll-sheet-material {
+    will-change: auto;
+  }
 }
 
 .reduce-motion *, .reduce-motion *::before, .reduce-motion *::after {
@@ -169,4 +228,16 @@ button,
   animation-iteration-count: 1 !important;
   transition-duration: 120ms !important;
   transition-property: opacity, color, background-color !important;
+}
+
+.reduce-motion .ll-image-enter,
+.reduce-motion .ll-panel-enter,
+.reduce-motion .ll-sheet-enter,
+.reduce-motion .ll-modal-backdrop-enter,
+.reduce-motion .ll-modal-enter {
+  animation-name: ll-opacity-enter !important;
+}
+
+.reduce-motion .ll-sheet-material {
+  will-change: auto;
 }

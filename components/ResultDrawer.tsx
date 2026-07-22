@@ -1,5 +1,7 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { LazyMotion, useDragControls, useReducedMotion, type PanInfo, type TargetAndTransition } from 'motion/react';
+import * as m from 'motion/react-m';
 import { useTranslation } from 'react-i18next';
 import { DecipherResult } from '../types';
 import { triggerHaptic } from '../utils';
@@ -14,6 +16,27 @@ interface ResultDrawerProps {
   onShowNotification?: (msg: string) => void;
 }
 
+const loadMotionFeatures = () => import('../motionFeatures').then((module) => module.default);
+
+const projectMomentum = (velocity: number, decelerationRate = 0.99) => (
+  (velocity / 1000) * decelerationRate / (1 - decelerationRate)
+);
+
+export const shouldDismissResultDrawer = ({
+  offsetY,
+  velocityY,
+  drawerHeight,
+}: {
+  offsetY: number;
+  velocityY: number;
+  drawerHeight: number;
+}) => {
+  if (offsetY <= 0 && velocityY <= 0) return false;
+  const projectedY = Math.max(0, offsetY) + Math.max(0, projectMomentum(velocityY));
+  const threshold = Math.min(160, Math.max(96, drawerHeight * 0.18));
+  return projectedY >= threshold;
+};
+
 export const ResultDrawer: React.FC<ResultDrawerProps> = ({ 
     result, 
     isOpen, 
@@ -21,9 +44,19 @@ export const ResultDrawer: React.FC<ResultDrawerProps> = ({
     onShowNotification
 }) => {
   const { t } = useTranslation();
-  const { theme, readAloudEnabled: showAudioPlayer, language } = useSettingsStore();
+  const { theme, readAloudEnabled: showAudioPlayer, language, reduceMotion } = useSettingsStore();
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoadingAudio, setIsLoadingAudio] = useState(false);
+  const [isDismissing, setIsDismissing] = useState(false);
+  const [animationTarget, setAnimationTarget] = useState<TargetAndTransition>({
+    y: 0,
+    opacity: 1,
+    transition: { type: 'spring', bounce: 0, duration: 0.32 },
+  });
+  const drawerRef = useRef<HTMLDivElement>(null);
+  const dragControls = useDragControls();
+  const prefersReducedMotion = useReducedMotion();
+  const shouldReduceMotion = reduceMotion || prefersReducedMotion;
   const stopAudio = () => {
     cancelSpeech();
     setIsPlaying(false);
@@ -34,10 +67,51 @@ export const ResultDrawer: React.FC<ResultDrawerProps> = ({
     if (!isOpen) {
       stopAudio();
     } else {
+      setIsDismissing(false);
+      setAnimationTarget({
+        y: 0,
+        opacity: 1,
+        transition: shouldReduceMotion
+          ? { duration: 0.14, ease: 'easeOut' }
+          : { type: 'spring', bounce: 0, duration: 0.32 },
+      });
       triggerHaptic(50);
     }
     return () => cancelSpeech();
-  }, [isOpen]);
+  }, [isOpen, shouldReduceMotion]);
+
+  const dismissDrawer = (velocity = 0, hasMomentum = false) => {
+    setIsDismissing(true);
+    if (shouldReduceMotion) {
+      setAnimationTarget({ opacity: 0, transition: { duration: 0.14, ease: 'easeOut' } });
+    } else {
+      const dismissalY = Math.max(window.innerHeight, drawerRef.current?.offsetHeight || 0);
+      setAnimationTarget({
+        y: dismissalY,
+        opacity: 0.9,
+        transition: {
+          type: 'spring',
+          bounce: hasMomentum ? 0.18 : 0,
+          duration: 0.32,
+          velocity,
+        },
+      });
+    }
+  };
+
+  const handleDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const drawerHeight = drawerRef.current?.getBoundingClientRect().height || window.innerHeight;
+    if (shouldDismissResultDrawer({ offsetY: info.offset.y, velocityY: info.velocity.y, drawerHeight })) {
+      dismissDrawer(info.velocity.y, true);
+      return;
+    }
+
+    setAnimationTarget({
+      y: 0,
+      opacity: 1,
+      transition: { type: 'spring', bounce: 0, duration: 0.32, velocity: info.velocity.y },
+    });
+  };
 
   const handlePlayAudio = async () => {
     if (!result) return;
@@ -86,7 +160,7 @@ export const ResultDrawer: React.FC<ResultDrawerProps> = ({
   const isDark = theme === 'dark';
   
   // Dynamic Styles
-  const cardBg = isDark ? 'bg-[#151513] border-white/12' : 'bg-[#f2efe6] border-black/10';
+  const cardBg = isDark ? 'bg-[#151513]/94 border-white/14' : 'bg-[#f2efe6]/94 border-black/12';
   const textMain = isDark ? 'text-[#f4f0e6]' : 'text-[#171714]';
   const textSub = isDark ? 'text-white/66' : 'text-black/66';
   const textMuted = isDark ? 'text-white/42' : 'text-black/44';
@@ -99,31 +173,55 @@ export const ResultDrawer: React.FC<ResultDrawerProps> = ({
   const actionText = isDark ? 'text-[#f2c4a8]' : 'text-[#69331e]';
 
   return (
-    <div 
+    <LazyMotion features={loadMotionFeatures} strict>
+    <m.div
+      ref={drawerRef}
       role="dialog"
-      aria-modal={isOpen}
-      aria-hidden={!isOpen}
+      aria-modal="true"
       aria-labelledby="lorelens-result-title"
-      className="ll-sheet-enter fixed inset-x-0 bottom-0 z-40"
+      className="fixed inset-x-0 bottom-0 z-40"
+      initial={shouldReduceMotion ? { opacity: 0 } : { y: '100%', opacity: 0.92 }}
+      animate={animationTarget}
+      drag={shouldReduceMotion || isDismissing ? false : 'y'}
+      dragControls={dragControls}
+      dragListener={false}
+      dragConstraints={{ top: 0, bottom: 0 }}
+      dragElastic={{ top: 0, bottom: 0.28 }}
+      dragMomentum={false}
+      onDragEnd={handleDragEnd}
+      onAnimationComplete={() => {
+        if (!isDismissing) return;
+        triggerHaptic(24);
+        onClose();
+      }}
     >
       <div className="relative mx-auto w-full max-w-lg">
-        {/* Drawer Handle */}
         <div 
             className="absolute -top-14 inset-x-0 flex justify-center"
         >
             <button 
                 aria-label={t('aria.close')}
-                onClick={onClose}
+                onClick={() => dismissDrawer()}
                 className="ll-icon-button h-11 w-11 rounded-2xl text-white"
             >
                 <IconChevronDown className="w-6 h-6" />
             </button>
         </div>
 
-        {/* Card Content */}
-        <div className={`h-[88dvh] overflow-y-auto overflow-x-hidden rounded-t-[2rem] border-t shadow-[0_-22px_70px_rgba(0,0,0,0.42)] no-scrollbar ${cardBg}`}>
-            <div className="relative space-y-7 px-6 pb-[max(3rem,env(safe-area-inset-bottom))] pt-4 sm:px-8">
-                <div className={`mx-auto mb-2 h-1 w-10 rounded-full ${isDark ? 'bg-white/18' : 'bg-black/16'}`} aria-hidden="true" />
+        <div className={`ll-sheet-material relative h-[88dvh] overflow-hidden rounded-t-[2rem] border-t ${cardBg}`}>
+            <div
+                data-result-drawer-handle
+                className="ll-drag-handle absolute inset-x-0 top-0 z-10 flex h-9 cursor-grab items-center justify-center active:cursor-grabbing"
+                onPointerDown={(event) => {
+                  if (!shouldReduceMotion) dragControls.start(event);
+                }}
+                aria-hidden="true"
+            >
+                <div className={`h-1 w-10 rounded-full ${isDark ? 'bg-white/22' : 'bg-black/20'}`} />
+            </div>
+
+            <div className="no-scrollbar h-full overflow-y-auto overflow-x-hidden overscroll-contain">
+              <div className="relative space-y-7 px-6 pb-[max(3rem,env(safe-area-inset-bottom))] pt-10 sm:px-8">
                 
                 {/* Header: Title & Actions */}
                 <div className="flex items-start justify-between gap-5">
@@ -214,9 +312,11 @@ export const ResultDrawer: React.FC<ResultDrawerProps> = ({
                     </div>
                 </div>
                 
+              </div>
             </div>
         </div>
       </div>
-    </div>
+    </m.div>
+    </LazyMotion>
   );
 };

@@ -406,11 +406,11 @@ const App: React.FC = () => {
       <div
         aria-hidden={viewState !== ViewState.CAMERA}
         inert={viewState !== ViewState.CAMERA}
-        className={`absolute inset-0 transition-opacity duration-200 ${viewState === ViewState.CAMERA ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+        className={`absolute inset-0 transition-opacity duration-200 [transition-timing-function:var(--ll-ease-out)] ${viewState === ViewState.CAMERA ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
       >
         
         {/* Aesthetic Background when Camera is Off (Saves Battery) */}
-        <div className={`ll-grain absolute inset-0 bg-[radial-gradient(circle_at_65%_20%,rgba(191,116,70,0.16),transparent_35%),linear-gradient(160deg,#24221e,#090909_58%,#11100e)] transition-opacity duration-200 ${!capturedImage && (!isCameraReady || isHomeOpen) ? 'opacity-100' : 'opacity-0'}`}>
+        <div className={`ll-grain absolute inset-0 bg-[radial-gradient(circle_at_65%_20%,rgba(191,116,70,0.16),transparent_35%),linear-gradient(160deg,#24221e,#090909_58%,#11100e)] transition-opacity duration-200 [transition-timing-function:var(--ll-ease-out)] ${!capturedImage && (!isCameraReady || isHomeOpen) ? 'opacity-100' : 'opacity-0'}`}>
         </div>
 
         {capturedImage && !isCropping ? (
@@ -421,7 +421,7 @@ const App: React.FC = () => {
                 autoPlay 
                 playsInline 
                 muted 
-                className={`h-full w-full scale-[1.01] object-cover transition-opacity duration-200 ${isCameraReady && !isHomeOpen && !isCropping ? 'opacity-100' : 'opacity-0'}`}
+                className={`h-full w-full scale-[1.01] object-cover transition-opacity duration-200 [transition-timing-function:var(--ll-ease-out)] ${isCameraReady && !isHomeOpen && !isCropping ? 'opacity-100' : 'opacity-0'}`}
              />
         )}
         
@@ -579,11 +579,11 @@ const App: React.FC = () => {
 
         {(capturedImage && !isCropping || isDrawerOpen) && (
             <>
-                <div className="absolute top-12 start-6 z-50 animate-fade-in-up">
+                <div className="ll-panel-enter absolute start-6 top-12 z-50">
                     <button 
                         aria-label={t('aria.close')}
                         onClick={resetCamera}
-                        className="p-3 rounded-full bg-black/50 backdrop-blur-md text-white border border-white/10 shadow-lg active:scale-90 transition-transform"
+                        className="ll-icon-button h-11 w-11 rounded-2xl text-white"
                     >
                         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
@@ -592,8 +592,14 @@ const App: React.FC = () => {
                 </div>
                 
                 {/* Re-open Drawer Button - Shows when drawer is closed but we have a result */}
-                {capturedImage && !isDrawerOpen && !isAnalyzing && (
-                    <div className="absolute bottom-10 inset-x-0 flex justify-center z-30 animate-fade-in-up">
+                {capturedImage && !isAnalyzing && (
+                    <div
+                        aria-hidden={isDrawerOpen}
+                        inert={isDrawerOpen}
+                        className={`absolute inset-x-0 bottom-10 z-30 flex justify-center transition-[opacity,transform] duration-200 [transition-timing-function:var(--ll-ease-out)] ${
+                            isDrawerOpen ? 'pointer-events-none translate-y-2 opacity-0' : 'translate-y-0 opacity-100'
+                        }`}
+                    >
                         <button 
                             aria-label={t('result.essence')}
                             onClick={() => setIsDrawerOpen(true)}
@@ -609,7 +615,7 @@ const App: React.FC = () => {
 
       {/* 2. Home Layer - Transitions away when !isHomeOpen */}
       {viewState === ViewState.CAMERA && (
-          <div className={`absolute inset-0 z-20 transition-[opacity,transform] duration-[280ms] [transition-timing-function:var(--ll-ease-out)] ${isHomeOpen ? 'translate-y-0 opacity-100' : 'pointer-events-none -translate-y-2 opacity-0'}`}>
+          <div className={`absolute inset-0 z-20 transition-[opacity,transform] duration-200 [transition-timing-function:var(--ll-ease-out)] ${isHomeOpen ? 'translate-y-0 opacity-100' : 'pointer-events-none -translate-y-2 opacity-0'}`}>
               <HomeView 
                 onScanStart={startScan}
                 onOpenHistory={openHistory}
@@ -619,9 +625,9 @@ const App: React.FC = () => {
       )}
 
       {/* Result Drawer */}
-      <ResultDrawer 
-        result={currentResult} 
-        isOpen={isDrawerOpen} 
+      <ResultDrawer
+        result={currentResult}
+        isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
         onShowNotification={showNotification}
       />

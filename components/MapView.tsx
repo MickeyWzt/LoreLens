@@ -156,7 +156,7 @@ export const MapView: React.FC<MapViewProps> = ({ onClose }) => {
   )) || (currentLocation?.lat !== undefined && currentLocation.lng !== undefined);
 
   return (
-    <div role="region" aria-label={t('map.title')} className="absolute inset-0 z-30 flex flex-col bg-[#0b0b0a] ll-screen-enter">
+    <div role="region" aria-label={t('map.title')} className="absolute inset-0 z-30 flex flex-col bg-[#0b0b0a]">
         {/* Header - Z-index increased to 2000 to sit above Leaflet controls */}
         <div className={`ll-material absolute inset-x-4 top-[max(1rem,env(safe-area-inset-top))] z-[2000] flex items-center justify-between rounded-2xl px-4 py-3 ${isDark ? '' : '!border-black/10 !bg-[#f2efe6]/88'}`}>
             <h1 className={`font-serif text-2xl tracking-[-0.03em] ${isDark ? 'text-[#f4f0e6]' : 'text-[#171714]'}`}>{t('map.title')}</h1>

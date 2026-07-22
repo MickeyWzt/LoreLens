@@ -12,7 +12,7 @@ import { syncDocumentLanguage } from '../i18n';
 import App from '../App';
 import { HistoryView } from '../components/HistoryView';
 import { SettingsView } from '../components/SettingsView';
-import { ResultDrawer } from '../components/ResultDrawer';
+import { ResultDrawer, shouldDismissResultDrawer } from '../components/ResultDrawer';
 import { useHistoryStore } from '../store/useHistoryStore';
 import { useSettingsStore } from '../store/useSettingsStore';
 
@@ -194,5 +194,28 @@ describe('accessible app states', () => {
     />);
 
     expect(screen.queryByRole('dialog', { hidden: true })).not.toBeInTheDocument();
+  });
+
+  test('result drawer dismissal follows downward distance and momentum', () => {
+    expect(shouldDismissResultDrawer({ offsetY: 150, velocityY: 0, drawerHeight: 700 })).toBe(true);
+    expect(shouldDismissResultDrawer({ offsetY: 48, velocityY: 1200, drawerHeight: 700 })).toBe(true);
+    expect(shouldDismissResultDrawer({ offsetY: 48, velocityY: -1200, drawerHeight: 700 })).toBe(false);
+  });
+
+  test('an open result drawer exposes a dedicated direct-manipulation handle', () => {
+    const { container } = renderLocalized(<ResultDrawer
+      isOpen
+      onClose={() => undefined}
+      result={{
+        title: 'Gate',
+        essence: 'Threshold',
+        mirrorInsight: 'Pause',
+        philosophy: 'Attention matters',
+        quickAction: 'Look again',
+      }}
+    />);
+
+    expect(screen.getByRole('dialog', { name: 'Gate' })).toBeInTheDocument();
+    expect(container.querySelector('[data-result-drawer-handle]')).toBeInTheDocument();
   });
 });

@@ -94,7 +94,7 @@ export const CropView: React.FC<CropViewProps> = ({ imageSrc, onConfirm, onCance
   ];
 
   return (
-    <section className="absolute inset-0 z-50 flex flex-col bg-[#0b0b0a] text-white ll-screen-enter">
+    <section className="absolute inset-0 z-50 flex flex-col bg-[#0b0b0a] text-white">
       <header className="absolute inset-x-0 top-0 z-20 flex items-center justify-between bg-gradient-to-b from-black/88 to-transparent px-5 pb-12 pt-[max(1rem,env(safe-area-inset-top))]">
         <button type="button" onClick={onCancel} className="ll-icon-button ll-pressable rounded-xl px-4 py-2.5 text-sm font-semibold">
           {t('crop.retake')}

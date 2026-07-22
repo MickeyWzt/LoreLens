@@ -91,7 +91,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
         <img
           src={background.imageUrl}
           alt=""
-          className={`absolute inset-0 h-full w-full object-cover saturate-[0.82] ${reduceMotion ? '' : 'animate-fade-in'}`}
+          className={`absolute inset-0 h-full w-full object-cover saturate-[0.82] ${reduceMotion ? '' : 'll-image-enter'}`}
         />
       )}
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,4,3,0.18)_0%,rgba(4,4,3,0.2)_30%,rgba(4,4,3,0.82)_76%,rgba(4,4,3,0.98)_100%)]" />
@@ -123,7 +123,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
           </div>
         </header>
 
-        <section className={`mt-auto text-white ${reduceMotion ? '' : 'll-screen-enter'}`}>
+        <section className="mt-auto text-white">
           <div className="mb-4 flex items-center gap-3">
             <span className="h-px w-8 bg-white/55" aria-hidden="true" />
             <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-white/58">{t('home.localInsight')}</p>

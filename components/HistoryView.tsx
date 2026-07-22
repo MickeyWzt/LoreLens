@@ -162,7 +162,7 @@ const AxisMap = ({ items, onSelect, isDark }: { items: HistoryItem[], onSelect: 
 
 export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onShowNotification }) => {
   const { t } = useTranslation();
-  const { theme, language, accentColor, reduceMotion } = useSettingsStore();
+  const { theme, language, accentColor } = useSettingsStore();
   const { history, records, setHistory, updateRecord } = useHistoryStore();
   const isDark = theme === 'dark';
 
@@ -261,9 +261,6 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
 
   // Styles
   const accent = getAccentStyles(accentColor, isDark);
-  const animFadeIn = reduceMotion ? '' : 'animate-fade-in';
-  const animFadeInUp = reduceMotion ? '' : 'animate-fade-in-up';
-  
   const bgClass = isDark ? 'bg-[#0b0b0a] text-[#f4f0e6]' : 'bg-[#f2efe6] text-[#171714]';
   const headerBgClass = isDark ? 'bg-[#0b0b0a]/92 border-white/12' : 'bg-[#f2efe6]/92 border-black/12';
   const itemBgClass = isDark ? 'bg-[#151513] border-white/10 active:bg-[#1b1b18]' : 'bg-white/55 border-black/10 active:bg-white/80';
@@ -272,19 +269,19 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
   const iconBtnClass = isDark ? 'bg-white/10 hover:bg-white/20' : 'bg-gray-100 hover:bg-gray-200 text-gray-600';
 
   return (
-    <div role="region" aria-label={t('history.title')} className={`absolute inset-0 z-30 flex flex-col ll-screen-enter ${bgClass}`}>
+    <div role="region" aria-label={t('history.title')} className={`absolute inset-0 z-30 flex flex-col ${bgClass}`}>
         
         {/* Header */}
         <div className={`sticky top-0 z-10 border-b px-5 pb-4 pt-[max(1rem,env(safe-area-inset-top))] backdrop-blur-xl ${headerBgClass}`}>
           <div className="mx-auto flex max-w-lg flex-col items-stretch gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
             {isEditMode ? (
                 <div className="flex items-center gap-2">
-                    <span className={`font-serif text-2xl tracking-[-0.02em] ${animFadeIn}`}>
+                    <span className="font-serif text-2xl tracking-[-0.02em]">
                         {t('history.selected', { count: selectedIds.length })}
                     </span>
                 </div>
             ) : (
-                <div className={`min-w-0 ${animFadeInUp}`}>
+                <div className="min-w-0">
                   <p className={`font-mono text-[9px] uppercase tracking-[0.2em] ${subTextClass}`}>LoreLens · 7.14</p>
                   <h1 className="mt-0.5 font-serif text-3xl leading-none tracking-[-0.03em]">{t('history.title')}</h1>
                 </div>
@@ -374,13 +371,13 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
                 </div>
             ))}
             {history.length === 0 && actionableRecords.length === 0 ? (
-                <div className={`flex h-[60vh] flex-col items-center justify-center text-center ${subTextClass} ${animFadeInUp}`}>
+                <div className={`flex h-[60vh] flex-col items-center justify-center text-center ${subTextClass}`}>
                     <span className="mb-5 h-px w-10 bg-current opacity-50" aria-hidden="true" />
                     <p className="font-serif text-3xl text-current">{t('history.empty')}</p>
                     <p className="mt-3 max-w-xs text-sm leading-relaxed opacity-65">{t('history.emptySub')}</p>
                 </div>
             ) : (
-                history.map((item, index) => {
+                history.map((item) => {
                     const isSelected = selectedIds.includes(item.id);
                     const sourceRecord = records.find((record) => record.id === item.id);
                     return (
@@ -402,19 +399,18 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
                                 if (isEditMode) toggleSelectItem(item.id);
                                 else onSelect(item);
                             }}
-                            className={`ll-pressable flex cursor-pointer gap-4 rounded-[1.4rem] border p-3.5 transition-[transform,background-color,border-color] duration-150 ${animFadeInUp} ${itemBgClass} ${
+                            className={`ll-pressable flex cursor-pointer gap-4 rounded-[1.4rem] border p-3.5 transition-[transform,background-color,border-color] duration-150 ${itemBgClass} ${
                                 isEditMode && isSelected 
                                     ? (isDark ? 'border-indigo-500/50 bg-indigo-500/5' : 'border-indigo-300 bg-indigo-50/40') 
                                     : ''
                             }`}
-                            style={{ animationDelay: `${Math.min(index, 6) * 45}ms` }}
                         >
                             {/* Checkbox (only in Edit Mode) */}
                             {isEditMode && (
-                                <div className="flex items-center justify-center shrink-0 pe-1 animate-fade-in">
+                                <div className="flex shrink-0 items-center justify-center pe-1">
                                     <div className={`flex h-6 w-6 items-center justify-center rounded-full border-2 transition-[background-color,border-color] duration-150 ${
                                         isSelected 
-                                            ? 'bg-indigo-500 border-indigo-500 text-white animate-scale-in' 
+                                            ? 'bg-indigo-500 border-indigo-500 text-white'
                                             : (isDark ? 'border-white/20 bg-white/5' : 'border-gray-300 bg-white')
                                     }`}>
                                         {isSelected && (
@@ -456,10 +452,13 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
         </div>
 
         {/* Bulk Delete Sticky Bar at Bottom */}
-        {isEditMode && (
-            <div className={`border-t p-4 flex justify-between items-center z-20 backdrop-blur-md sticky bottom-0 left-0 right-0 ${
-                isDark ? 'bg-black/95 border-white/10 text-white' : 'bg-white/95 border-gray-200 text-gray-900'
-            } animate-fade-in-up`}>
+        <div
+            aria-hidden={!isEditMode}
+            inert={!isEditMode}
+            className={`absolute inset-x-0 bottom-0 z-20 flex items-center justify-between border-t p-4 backdrop-blur-md transition-[opacity,transform] duration-200 [transition-timing-function:var(--ll-ease-out)] ${
+                isDark ? 'border-white/10 bg-black/95 text-white' : 'border-gray-200 bg-white/95 text-gray-900'
+            } ${isEditMode ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-full opacity-0'}`}
+        >
                 <div className="text-sm">
                     <span className={subTextClass}>
                         {t('history.selected', { count: selectedIds.length })}
@@ -479,20 +478,19 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
                     </svg>
                     <span>{t('history.deleteSelected')}</span>
                 </button>
-            </div>
-        )}
+        </div>
 
         {/* Daily Recap Modal / Overlay */}
         {showRecap && (
             // CRITICAL FIX: Use simple fixed overlay with overflow-y-auto. 
             // Avoid complex flex-centering on the scroll container itself.
-            <div className="fixed inset-0 z-50 overflow-y-auto bg-black/95 backdrop-blur-xl animate-fade-in">
+            <div className="ll-modal-backdrop-enter fixed inset-0 z-50 overflow-y-auto bg-black/95 backdrop-blur-xl">
                  
                  {/* Close Button - Fixed relative to viewport so it is always accessible */}
                  <button 
                     aria-label={t('aria.close')}
                     onClick={() => setShowRecap(false)}
-                    className="fixed top-6 end-6 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 active:scale-90 z-[60] border border-white/5 backdrop-blur-md"
+                    className="ll-pressable fixed end-6 top-6 z-[60] flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/10 text-white backdrop-blur-md transition-[transform,background-color] duration-150 hover:bg-white/20"
                  >
                     <IconChevronDown className="w-6 h-6" />
                  </button>
@@ -503,18 +501,17 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
                      {/* Loading State */}
                      {isGenerating && (
                          <div className="flex flex-col items-center justify-center gap-8">
-                             <div className="relative w-24 h-24">
-                                 <div className="absolute inset-0 border-t-2 border-indigo-500 rounded-full animate-spin"></div>
-                                 <div className="absolute inset-2 border-e-2 border-purple-500 rounded-full animate-spin reverse"></div>
-                                 <div className="absolute inset-4 border-b-2 border-pink-500 rounded-full animate-spin"></div>
+                             <div className="relative flex h-24 w-24 items-center justify-center rounded-full border border-white/10 bg-white/5">
+                                 <div className="absolute inset-2 animate-[spin_1.1s_linear_infinite] rounded-full border border-transparent border-t-indigo-500" />
+                                 <IconJournal className="h-6 w-6 text-indigo-400" />
                              </div>
-                             <p className={`text-sm tracking-[0.2em] animate-pulse font-mono uppercase ${isDark ? 'text-gray-400' : 'text-gray-200'}`}>{t('history.writing')}</p>
+                             <p className={`font-mono text-sm uppercase tracking-[0.2em] ${isDark ? 'text-gray-400' : 'text-gray-200'}`}>{t('history.writing')}</p>
                          </div>
                      )}
 
                      {/* Recap Card - Width constrained, height natural */}
                      {!isGenerating && recapData && (
-                         <div className={`w-full max-w-lg relative animate-fade-in-up flex flex-col sm:rounded-[2rem] rounded-3xl shadow-2xl overflow-hidden ${isDark ? 'bg-[#0a0a0a] text-white' : 'bg-[#fffbf0] text-gray-900'}`}>
+                         <div className={`ll-modal-enter relative flex w-full max-w-lg flex-col overflow-hidden rounded-3xl shadow-2xl sm:rounded-[2rem] ${isDark ? 'bg-[#0a0a0a] text-white' : 'bg-[#fffbf0] text-gray-900'}`}>
                              
                              {/* Abstract Header Background */}
                              <div className="absolute top-0 inset-x-0 h-64 overflow-hidden pointer-events-none">

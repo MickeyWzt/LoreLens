@@ -96,7 +96,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
   ];
 
   return (
-    <div role="region" aria-label={t('settings.title')} className={`absolute inset-0 z-50 flex h-full flex-col ll-screen-enter ${bgClass} ${textClass}`}>
+    <div role="region" aria-label={t('settings.title')} className={`absolute inset-0 z-50 flex h-full flex-col ${bgClass} ${textClass}`}>
       {/* Header - Fixed */}
       <div className={`shrink-0 border-b px-5 pb-4 pt-[max(1rem,env(safe-area-inset-top))] ${borderClass}`}>
         <div className="mx-auto flex max-w-lg items-center gap-4">
