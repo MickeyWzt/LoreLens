@@ -28,7 +28,7 @@
   },
   "history": {
     "title": "My discoveries", "empty": "No discoveries yet", "emptySub": "Capture something that catches your eye",
-    "recapButton": "Resonance review", "dailyJournal": "The axis map", "writing": "Calculating resonance…", "noItemsToday": "No discoveries today",
+    "recapButton": "Review", "dailyJournal": "The axis map", "writing": "Calculating resonance…", "noItemsToday": "No discoveries today",
     "curiosityScore": "Resonance score", "mood": "Mood", "manage": "Edit", "deleteSelected": "Delete selected", "cancel": "Cancel",
     "selectAll": "Select all", "deselectAll": "Deselect all", "pending": "Saved for later", "failed": "Analysis failed",
     "pendingHint": "Your image stays on this device until you retry", "retrySuccess": "Analysis completed",

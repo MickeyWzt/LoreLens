@@ -276,7 +276,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
         
         {/* Header */}
         <div className={`sticky top-0 z-10 border-b px-5 pb-4 pt-[max(1rem,env(safe-area-inset-top))] backdrop-blur-xl ${headerBgClass}`}>
-          <div className="mx-auto flex max-w-lg items-center justify-between gap-3">
+          <div className="mx-auto flex max-w-lg flex-col items-stretch gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
             {isEditMode ? (
                 <div className="flex items-center gap-2">
                     <span className={`font-serif text-2xl tracking-[-0.02em] ${animFadeIn}`}>
@@ -284,18 +284,18 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
                     </span>
                 </div>
             ) : (
-                <div className={animFadeInUp}>
+                <div className={`min-w-0 ${animFadeInUp}`}>
                   <p className={`font-mono text-[9px] uppercase tracking-[0.2em] ${subTextClass}`}>LoreLens · 7.14</p>
                   <h1 className="mt-0.5 font-serif text-3xl leading-none tracking-[-0.03em]">{t('history.title')}</h1>
                 </div>
             )}
             
-            <div className="flex items-center gap-2">
+            <div className="flex w-full items-stretch justify-end gap-2 sm:w-auto sm:shrink-0 sm:items-center">
                 {isEditMode ? (
                     <>
                         <button 
                             onClick={toggleSelectAll}
-                            className={`ll-pressable rounded-xl border px-3 py-2 font-mono text-[10px] tracking-wide transition-transform duration-150 ${
+                            className={`ll-pressable flex min-w-0 flex-1 items-center justify-center rounded-xl border px-3 py-2 font-mono text-[10px] tracking-wide transition-transform duration-150 sm:flex-none ${
                                 selectedIds.length === history.length && history.length > 0
                                     ? accent.btnActive
                                     : (isDark ? 'bg-white/5 border-white/10 hover:bg-white/10' : 'bg-white border-gray-200 hover:bg-gray-50')
@@ -308,7 +308,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
                                 setIsEditMode(false);
                                 setSelectedIds([]);
                             }}
-                            className={`ll-pressable rounded-xl border px-3 py-2 text-xs font-semibold transition-transform duration-150 ${
+                            className={`ll-pressable shrink-0 rounded-xl border px-3 py-2 text-xs font-semibold transition-transform duration-150 ${
                                 isDark ? 'bg-white/5 border-white/10 hover:bg-white/10' : 'bg-white border-gray-200 hover:bg-gray-100'
                             }`}
                         >
@@ -321,17 +321,17 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
                             <>
                                 <button 
                                     onClick={handleRecapClick}
-                                    className={`ll-pressable flex items-center gap-2 rounded-xl border px-3 py-2 transition-transform duration-150 ${accent.lightBg} ${accent.text} ${accent.border}`}
+                                    className={`ll-pressable flex min-w-0 flex-1 items-center justify-center gap-2 rounded-xl border px-3 py-2 transition-transform duration-150 sm:flex-none ${accent.lightBg} ${accent.text} ${accent.border}`}
                                 >
-                                    <IconJournal className="w-4 h-4" />
-                                    <span className="text-sm font-medium">{t('history.recapButton')}</span>
+                                    <IconJournal className="h-4 w-4 shrink-0" />
+                                    <span className="text-center text-sm font-medium leading-tight">{t('history.recapButton')}</span>
                                 </button>
                                 <button 
                                     onClick={() => {
                                         setIsEditMode(true);
                                         setSelectedIds([]);
                                     }}
-                                    className={`ll-pressable rounded-xl border px-3 py-2 text-sm font-semibold transition-transform duration-150 ${
+                                    className={`ll-pressable shrink-0 rounded-xl border px-3 py-2 text-sm font-semibold transition-transform duration-150 ${
                                         isDark ? 'bg-white/10 border-white/10 hover:bg-white/20' : 'bg-white border-gray-200 hover:bg-gray-100'
                                     }`}
                                 >
@@ -342,7 +342,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ onSelect, onClose, onS
                         <button 
                             aria-label={t('aria.close')}
                             onClick={onClose} 
-                            className={`ll-pressable flex h-10 w-10 items-center justify-center rounded-xl border transition-transform duration-150 ${isDark ? 'border-white/12' : 'border-black/10'} ${iconBtnClass}`}
+                            className={`ll-pressable flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border transition-transform duration-150 ${isDark ? 'border-white/12' : 'border-black/10'} ${iconBtnClass}`}
                         >
                             <IconChevronDown className="w-6 h-6" />
                         </button>

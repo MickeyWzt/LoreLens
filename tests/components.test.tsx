@@ -10,8 +10,10 @@ import { createInstance } from 'i18next';
 import { I18nextProvider } from 'react-i18next';
 import { syncDocumentLanguage } from '../i18n';
 import App from '../App';
+import { HistoryView } from '../components/HistoryView';
 import { SettingsView } from '../components/SettingsView';
 import { ResultDrawer } from '../components/ResultDrawer';
+import { useHistoryStore } from '../store/useHistoryStore';
 import { useSettingsStore } from '../store/useSettingsStore';
 
 const english = JSON.parse(fs.readFileSync(
@@ -27,6 +29,7 @@ describe('accessible app states', () => {
     localStorage.clear();
     await testI18n.init({ lng: 'en', fallbackLng: 'en', resources: { en: { translation: english } } });
     useSettingsStore.setState({ language: 'en', readAloudEnabled: false });
+    useHistoryStore.setState({ history: [], records: [] });
   });
 
   const renderLocalized = (element: ReactElement) => render(
@@ -141,6 +144,34 @@ describe('accessible app states', () => {
 
     expect(await screen.findByRole('region', { name: english.history.title })).toBeInTheDocument();
     expect(document.activeElement).toBe(document.body);
+  });
+
+  test('history actions stack below the title on mobile and use the compact Review label', async () => {
+    const user = userEvent.setup();
+    useHistoryStore.setState({
+      history: [{
+        id: 'mobile-layout-record',
+        timestamp: Date.now(),
+        title: 'Neon Lime K-Mouse',
+        essence: 'A vivid object',
+        mirrorInsight: 'Notice color',
+        philosophy: 'Attention reveals character',
+        quickAction: 'Look again',
+      }],
+      records: [],
+    });
+
+    renderLocalized(<HistoryView onSelect={() => undefined} onClose={() => undefined} />);
+
+    const heading = screen.getByRole('heading', { name: english.history.title });
+    expect(heading.parentElement?.parentElement).toHaveClass('flex-col', 'sm:flex-row');
+
+    const review = screen.getByRole('button', { name: 'Review' });
+    expect(review).toHaveClass('flex-1', 'sm:flex-none');
+    expect(review.parentElement).toHaveClass('w-full', 'sm:w-auto');
+
+    await user.click(screen.getByRole('button', { name: english.history.manage }));
+    expect(screen.getByRole('button', { name: english.history.selectAll })).toHaveClass('flex-1', 'sm:flex-none');
   });
 
   test('Arabic switches the document into RTL mode', () => {
