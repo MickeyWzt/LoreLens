@@ -19,6 +19,14 @@ describe('speech service', () => {
   beforeEach(() => {
     vi.resetModules();
     vi.stubGlobal('SpeechSynthesisUtterance', MockUtterance);
+    vi.stubGlobal('Audio', class {
+      onended: (() => void) | null = null;
+      onerror: (() => void) | null = null;
+      pause = vi.fn();
+      load = vi.fn();
+      removeAttribute = vi.fn();
+      play = vi.fn(async () => undefined);
+    });
     Object.defineProperty(window, 'speechSynthesis', {
       configurable: true,
       value: { cancel: vi.fn(), getVoices: vi.fn(() => []), speak: browserSpeak },
@@ -50,6 +58,43 @@ describe('speech service', () => {
     await speakText('Welcome to the old city.', 'en');
 
     expect(fetch).toHaveBeenCalledWith('/api/tts/speech', expect.objectContaining({ method: 'POST' }));
+    expect(browserSpeak).not.toHaveBeenCalled();
+  });
+
+  test('unlocks one audio element before waiting for cloud speech on iOS', async () => {
+    const events: string[] = [];
+    vi.stubGlobal('fetch', vi.fn(async () => {
+      events.push('fetch');
+      return {
+        ok: true,
+        blob: vi.fn().mockResolvedValue(new Blob(['RIFF'], { type: 'audio/wav' })),
+      };
+    }));
+    const instances: MockAudio[] = [];
+    class MockAudio {
+      onended: (() => void) | null = null;
+      onerror: (() => void) | null = null;
+      pause = vi.fn();
+      load = vi.fn();
+      removeAttribute = vi.fn();
+      play = vi.fn(async () => {
+        const phase = events.includes('fetch') ? 'cloud-play' : 'unlock-play';
+        events.push(phase);
+        if (phase === 'cloud-play') queueMicrotask(() => this.onended?.());
+      });
+
+      constructor() {
+        instances.push(this);
+      }
+    }
+    vi.stubGlobal('Audio', MockAudio);
+
+    const { speakText } = await import('../services/speechService');
+    await speakText('欢迎来到海淀。', 'zh');
+
+    expect(events.slice(0, 2)).toEqual(['unlock-play', 'fetch']);
+    expect(instances).toHaveLength(1);
+    expect(instances[0].play).toHaveBeenCalledTimes(2);
     expect(browserSpeak).not.toHaveBeenCalled();
   });
 

@@ -23,6 +23,40 @@ let activeRequest: AbortController | null = null;
 let activeObjectUrl: string | null = null;
 let settleCancellation: (() => void) | null = null;
 
+function createSilentWavBlob(): Blob {
+  const sampleRate = 8_000;
+  const sampleCount = 80;
+  const bytes = new Uint8Array(44 + sampleCount);
+  const view = new DataView(bytes.buffer);
+  const writeAscii = (offset: number, value: string) => {
+    for (let index = 0; index < value.length; index += 1) {
+      bytes[offset + index] = value.charCodeAt(index);
+    }
+  };
+
+  writeAscii(0, 'RIFF');
+  view.setUint32(4, 36 + sampleCount, true);
+  writeAscii(8, 'WAVE');
+  writeAscii(12, 'fmt ');
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, 1, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate, true);
+  view.setUint16(32, 1, true);
+  view.setUint16(34, 8, true);
+  writeAscii(36, 'data');
+  view.setUint32(40, sampleCount, true);
+  bytes.fill(128, 44);
+  return new Blob([bytes], { type: 'audio/wav' });
+}
+
+function replaceActiveObjectUrl(blob: Blob): string {
+  if (activeObjectUrl) URL.revokeObjectURL(activeObjectUrl);
+  activeObjectUrl = URL.createObjectURL(blob);
+  return activeObjectUrl;
+}
+
 function releaseCloudAudio(): void {
   activeAudio = null;
   activeRequest = null;
@@ -78,6 +112,14 @@ function speakWithBrowser(text: string, language: AppLanguage): Promise<void> {
 }
 
 async function speakWithCloud(text: string, language: AppLanguage): Promise<void> {
+  const audio = new Audio();
+  activeAudio = audio;
+  audio.preload = 'auto';
+  audio.src = replaceActiveObjectUrl(createSilentWavBlob());
+  await audio.play();
+  if (activeAudio !== audio) throw new DOMException('Speech was cancelled', 'AbortError');
+  audio.pause();
+
   const controller = new AbortController();
   activeRequest = controller;
   const response = await fetch('/api/tts/speech', {
@@ -91,9 +133,9 @@ async function speakWithCloud(text: string, language: AppLanguage): Promise<void
 
   const audioBlob = await response.blob();
   if (!audioBlob.size) throw new Error('Cloud read aloud returned empty audio');
-  activeObjectUrl = URL.createObjectURL(audioBlob);
-  const audio = new Audio(activeObjectUrl);
-  activeAudio = audio;
+  if (activeAudio !== audio) throw new DOMException('Speech was cancelled', 'AbortError');
+  audio.src = replaceActiveObjectUrl(audioBlob);
+  audio.load();
 
   await new Promise<void>((resolve, reject) => {
     let settled = false;
