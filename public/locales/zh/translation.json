@@ -13,7 +13,8 @@
   },
   "settings": {
     "title": "设置", "language": "语言", "appearance": "外观", "preferences": "偏好", "data": "数据",
-    "midnight": "深夜黑", "porcelain": "瓷白", "accentColor": "强调色", "indigo": "靛蓝", "teal": "青绿", "amber": "琥珀", "violet": "紫罗兰",
+    "midnight": "深夜黑", "porcelain": "瓷白", "accentColor": "配色主题", "indigo": "靛蓝", "teal": "青绿", "amber": "琥珀", "violet": "紫罗兰",
+    "paletteArchive": "原版典藏", "paletteOlive": "橄榄花园", "paletteCoast": "晴朗海岸", "paletteSunset": "海洋落日", "paletteHarbor": "深海",
     "reduceMotion": "减少动态效果", "reduceMotionDesc": "简化页面过渡和动画", "fontSmall": "小号文字", "fontMedium": "中号文字", "fontLarge": "大号文字",
     "saveGallery": "将裁剪照片保存到相册", "readAloud": "启用朗读", "readAloudDesc": "使用自然语音朗读结果。",
     "locationEnabled": "使用定位辅助识别", "locationEnabledDesc": "默认开启；精确定位可提升地标匹配准确率",

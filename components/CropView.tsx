@@ -156,7 +156,7 @@ export const CropView: React.FC<CropViewProps> = ({ imageSrc, onConfirm, onCance
                   type="button"
                   aria-label={t('crop.resizeHandle')}
                   onPointerDown={(event) => startDrag(event, handle)}
-                  className={`absolute z-10 h-9 w-9 touch-none rounded-xl border border-white/80 bg-[#c87648] shadow-lg ${className}`}
+                  className={`absolute z-10 h-9 w-9 touch-none rounded-xl border border-white/80 bg-[var(--ll-accent)] shadow-lg ${className}`}
                 />
               ))}
             </div>
@@ -166,7 +166,7 @@ export const CropView: React.FC<CropViewProps> = ({ imageSrc, onConfirm, onCance
 
       <footer className="absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-black via-black/90 to-transparent px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-16 text-center">
         <p className="mb-3 font-mono text-[9px] uppercase tracking-[0.14em] text-white/52">{t('crop.hint')}</p>
-        <button type="button" onClick={performCrop} className="ll-primary-action w-full rounded-[1.2rem] bg-[#f2efe6] px-8 py-4 text-base font-bold text-[#0b0b0a]">
+        <button type="button" onClick={performCrop} className="ll-primary-action w-full rounded-[1.2rem] bg-[var(--ll-accent)] px-8 py-4 text-base font-bold text-[var(--ll-on-accent)]">
           {t('crop.analyze')}
         </button>
       </footer>

@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { AppTheme, AppFontSize, AppLanguage, AppAccentColor } from '../types';
+import { normalizePaletteId } from '../utils/palettes';
 
 export const SETTINGS_KEY = 'lorelens_settings_v2';
 const LEGACY_SETTINGS_KEY = 'context_lens_settings_zustand';
@@ -12,6 +13,7 @@ export function migrateSettingsState(persistedState: unknown): Record<string, un
     ...rest,
     readAloudEnabled: Boolean(old.readAloudEnabled ?? old.highResAudio ?? false),
     locationEnabled: old.locationEnabled !== false,
+    accentColor: normalizePaletteId(old.accentColor),
   };
 }
 
@@ -67,7 +69,7 @@ export const useSettingsStore = create<SettingsState>()(
       theme: 'dark',
       fontSize: 'medium',
       language: 'en',
-      accentColor: 'indigo',
+      accentColor: 'archive',
       reduceMotion: false,
       locationEnabled: true,
       
@@ -82,7 +84,7 @@ export const useSettingsStore = create<SettingsState>()(
     }),
     {
       name: SETTINGS_KEY,
-      version: 2,
+      version: 3,
       storage: createJSONStorage(settingsStorage),
       migrate: (persistedState: unknown) => {
         return migrateSettingsState(persistedState) as unknown as SettingsState;

@@ -1,11 +1,12 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AppTheme, AppFontSize, AppLanguage, AppAccentColor } from '../types';
+import { AppLanguage } from '../types';
 import { useSettingsStore } from '../store/useSettingsStore';
 import { useHistoryStore } from '../store/useHistoryStore';
 import { getAccentStyles } from '../utils/accent';
 import { exportRecords } from '../domain/records';
+import { COLOR_PALETTES, getPaletteThemeColors } from '../utils/palettes';
 
 interface SettingsViewProps {
   onBack: () => void;
@@ -75,11 +76,13 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
   };
 
   // Theme-based class helpers
-  const bgClass = isDark ? 'bg-[#0b0b0a]' : 'bg-[#f2efe6]';
-  const textClass = isDark ? 'text-[#f4f0e6]' : 'text-[#171714]';
-  const subTextClass = isDark ? 'text-white/42' : 'text-black/45';
-  const borderClass = isDark ? 'border-white/12' : 'border-black/12';
-  const surfaceClass = isDark ? 'bg-[#151513]' : 'bg-white/52';
+  const bgClass = 'bg-[var(--ll-canvas)]';
+  const textClass = 'text-[var(--ll-text)]';
+  const subTextClass = 'text-[var(--ll-text-muted)]';
+  const borderClass = 'border-[var(--ll-border)]';
+  const surfaceClass = 'bg-[var(--ll-surface)]';
+  const lightPreview = getPaletteThemeColors(accentColor, 'light');
+  const darkPreview = getPaletteThemeColors(accentColor, 'dark');
 
   const languages: {code: AppLanguage, label: string}[] = [
       { code: 'en', label: 'English' },
@@ -142,57 +145,50 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
                         onClick={() => setTheme('dark')} 
                         className={`ll-pressable flex min-h-24 flex-col items-start justify-between gap-3 rounded-[1.35rem] border p-4 text-start transition-[transform,background-color,border-color] duration-150 ${theme === 'dark' ? `${accent.border} ${accent.lightBg} ${accent.text}` : `${borderClass} ${surfaceClass} ${subTextClass}`}`}
                     >
-                        <div className={`h-7 w-7 rounded-lg bg-[#11110f] border ${theme === 'dark' ? 'border-current' : 'border-white/15'} shadow-sm`}></div>
+                        <div aria-hidden="true" className="flex h-8 w-full overflow-hidden rounded-lg border border-black/10 shadow-sm">
+                            <span className="w-1/2" style={{ backgroundColor: darkPreview.canvas }} />
+                            <span className="w-1/3" style={{ backgroundColor: darkPreview.surface }} />
+                            <span className="flex-1" style={{ backgroundColor: darkPreview.accent }} />
+                        </div>
                         <span className={`text-sm font-medium ${theme === 'dark' ? 'font-bold' : ''}`}>{t('settings.midnight')}</span>
                     </button>
                     <button 
                         onClick={() => setTheme('light')} 
                         className={`ll-pressable flex min-h-24 flex-col items-start justify-between gap-3 rounded-[1.35rem] border p-4 text-start transition-[transform,background-color,border-color] duration-150 ${theme === 'light' ? `${accent.border} ${accent.lightBg} ${accent.text}` : `${borderClass} ${surfaceClass} ${subTextClass}`}`}
                     >
-                        <div className={`h-7 w-7 rounded-lg bg-[#f2efe6] border ${theme === 'light' ? 'border-current' : 'border-black/10'} shadow-sm`}></div>
+                        <div aria-hidden="true" className="flex h-8 w-full overflow-hidden rounded-lg border border-black/10 shadow-sm">
+                            <span className="w-1/2" style={{ backgroundColor: lightPreview.canvas }} />
+                            <span className="w-1/3" style={{ backgroundColor: lightPreview.surface }} />
+                            <span className="flex-1" style={{ backgroundColor: lightPreview.accent }} />
+                        </div>
                         <span className={`text-sm font-medium ${theme === 'light' ? 'font-bold' : ''}`}>{t('settings.porcelain')}</span>
                     </button>
                 </div>
 
-                {/* Accent Color Picker */}
+                {/* Full palette picker */}
                 <div className={`rounded-[1.35rem] border p-4 ${borderClass} ${surfaceClass}`}>
                     <span className={`mb-4 block text-xs font-semibold ${subTextClass}`}>{t('settings.accentColor')}</span>
-                    <div className="flex justify-between gap-4">
-                        {(['indigo', 'teal', 'amber', 'violet'] as const).map((color) => {
-                            const isSelected = accentColor === color;
-                            const colorDotMap = {
-                                indigo: 'bg-indigo-500 border-indigo-600',
-                                teal: 'bg-teal-500 border-teal-600',
-                                amber: 'bg-amber-500 border-amber-600',
-                                violet: 'bg-violet-500 border-violet-600'
-                            };
-
-                            const ringColorClass = isDark
-                                ? {
-                                      indigo: 'ring-indigo-400 ring-offset-black',
-                                      teal: 'ring-teal-400 ring-offset-black',
-                                      amber: 'ring-amber-400 ring-offset-black',
-                                      violet: 'ring-violet-400 ring-offset-black',
-                                  }[color]
-                                : {
-                                      indigo: 'ring-indigo-500 ring-offset-white',
-                                      teal: 'ring-teal-500 ring-offset-white',
-                                      amber: 'ring-amber-500 ring-offset-white',
-                                      violet: 'ring-violet-500 ring-offset-white',
-                                  }[color];
-
+                    <div className="grid grid-cols-2 gap-2">
+                        {COLOR_PALETTES.map((palette) => {
+                            const isSelected = accentColor === palette.id;
                             return (
                                 <button
-                                    key={color}
-                                    onClick={() => setAccentColor(color)}
-                                    className={`ll-pressable relative flex h-9 w-9 items-center justify-center rounded-xl border transition-[transform,opacity] duration-150 shadow-sm ${colorDotMap[color]} ${isSelected ? `ring-2 ring-offset-2 ${ringColorClass}` : 'opacity-55'}`}
-                                    title={t(`settings.${color}`)}
+                                    key={palette.id}
+                                    type="button"
+                                    aria-pressed={isSelected}
+                                    onClick={() => setAccentColor(palette.id)}
+                                    className={`ll-pressable min-w-0 rounded-[1rem] border p-2.5 text-start transition-[transform,background-color,border-color] duration-150 ${isSelected ? `${accent.border} ${accent.lightBg}` : borderClass}`}
+                                    title={palette.sourceName}
                                 >
-                                    {isSelected && (
-                                        <svg className="absolute w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3.5} d="M5 13l4 4L19 7" />
-                                        </svg>
-                                    )}
+                                    <span aria-hidden="true" className="flex h-7 overflow-hidden rounded-lg border border-black/10 shadow-sm">
+                                        {palette.swatches.map((swatch) => (
+                                            <span key={swatch} className="flex-1" style={{ backgroundColor: swatch }} />
+                                        ))}
+                                    </span>
+                                    <span className="mt-2 flex items-center justify-between gap-2 px-0.5 text-xs font-semibold">
+                                        <span className="truncate">{t(palette.nameKey)}</span>
+                                        {isSelected && <span aria-hidden="true" className={accent.text}>✓</span>}
+                                    </span>
                                 </button>
                             );
                         })}
@@ -208,7 +204,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
                     >
                         Aa
                     </button>
-                    <div className={`w-px h-6 ${isDark ? 'bg-gray-800' : 'bg-gray-200'}`}></div>
+                    <div className="h-6 w-px bg-[var(--ll-border)]"></div>
                     <button
                         aria-label={t('settings.fontMedium')}
                         onClick={() => setFontSize('medium')}
@@ -216,7 +212,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
                     >
                         Aa
                     </button>
-                    <div className={`w-px h-6 ${isDark ? 'bg-gray-800' : 'bg-gray-200'}`}></div>
+                    <div className="h-6 w-px bg-[var(--ll-border)]"></div>
                     <button
                         aria-label={t('settings.fontLarge')}
                         onClick={() => setFontSize('large')}
@@ -244,7 +240,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
                         <span className="text-lg font-light">{t('settings.locationEnabled')}</span>
                         <span className={`text-xs ${subTextClass}`}>{t('settings.locationEnabledDesc')}</span>
                     </div>
-                    <div className={`relative h-6 w-12 shrink-0 rounded-full transition-colors duration-200 ${locationEnabled ? accent.bg : isDark ? 'bg-gray-700' : 'bg-gray-300'}`}>
+                    <div className={`relative h-6 w-12 shrink-0 rounded-full transition-colors duration-200 ${locationEnabled ? accent.bg : 'bg-[var(--ll-border-strong)]'}`}>
                         <div className={`absolute start-1 top-1 h-4 w-4 rounded-full bg-white shadow transition-transform duration-150 [transition-timing-function:var(--ll-ease-out)] ${locationEnabled ? 'translate-x-6 rtl:-translate-x-6' : ''}`}></div>
                     </div>
                 </button>
@@ -259,7 +255,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
                 >
                     <span className="min-w-0 pe-4 text-lg font-light">{t('settings.saveGallery')}</span>
                     <div 
-                        className={`relative h-6 w-12 shrink-0 rounded-full transition-colors duration-200 ${saveToGallery ? accent.bg : isDark ? 'bg-gray-700' : 'bg-gray-300'}`}
+                        className={`relative h-6 w-12 shrink-0 rounded-full transition-colors duration-200 ${saveToGallery ? accent.bg : 'bg-[var(--ll-border-strong)]'}`}
                     >
                         <div className={`absolute start-1 top-1 h-4 w-4 rounded-full bg-white shadow transition-transform duration-150 [transition-timing-function:var(--ll-ease-out)] ${saveToGallery ? 'translate-x-6 rtl:-translate-x-6' : ''}`}></div>
                     </div>
@@ -278,7 +274,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
                         <span className={`text-xs ${subTextClass}`}>{t('settings.readAloudDesc')}</span>
                     </div>
                     <div 
-                    className={`relative h-6 w-12 shrink-0 rounded-full transition-colors duration-200 ${readAloudEnabled ? accent.bg : isDark ? 'bg-gray-700' : 'bg-gray-300'}`}
+                    className={`relative h-6 w-12 shrink-0 rounded-full transition-colors duration-200 ${readAloudEnabled ? accent.bg : 'bg-[var(--ll-border-strong)]'}`}
                     >
                         <div className={`absolute start-1 top-1 h-4 w-4 rounded-full bg-white shadow transition-transform duration-150 [transition-timing-function:var(--ll-ease-out)] ${readAloudEnabled ? 'translate-x-6 rtl:-translate-x-6' : ''}`}></div>
                     </div>
@@ -297,7 +293,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onBack }) => {
                         <span className={`text-xs ${subTextClass}`}>{t('settings.reduceMotionDesc')}</span>
                     </div>
                     <div 
-                        className={`relative h-6 w-12 shrink-0 rounded-full transition-colors duration-200 ${reduceMotion ? accent.bg : isDark ? 'bg-gray-700' : 'bg-gray-300'}`}
+                        className={`relative h-6 w-12 shrink-0 rounded-full transition-colors duration-200 ${reduceMotion ? accent.bg : 'bg-[var(--ll-border-strong)]'}`}
                     >
                         <div className={`absolute start-1 top-1 h-4 w-4 rounded-full bg-white shadow transition-transform duration-150 [transition-timing-function:var(--ll-ease-out)] ${reduceMotion ? 'translate-x-6 rtl:-translate-x-6' : ''}`}></div>
                     </div>

@@ -85,8 +85,8 @@ export const HomeView: React.FC<HomeViewProps> = ({
   };
 
   return (
-    <main className={`ll-grain relative h-full overflow-hidden ${isDark ? 'bg-[#0b0b0a] text-white' : 'bg-stone-100 text-stone-950'}`}>
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_18%,rgba(199,114,66,0.24),transparent_40%),linear-gradient(155deg,#22211d,#0b0b0a_62%,#171611)]" />
+    <main className="ll-grain relative h-full overflow-hidden bg-[#0b0b0a] text-white">
+      <div className="absolute inset-0" style={{ backgroundImage: 'var(--ll-home-fallback)' }} />
       {background?.imageUrl && (
         <img
           src={background.imageUrl}
@@ -99,7 +99,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
       <div className="relative z-10 mx-auto flex h-full w-full max-w-lg flex-col px-5 pb-[max(1.1rem,env(safe-area-inset-bottom))] pt-[max(1.25rem,env(safe-area-inset-top))] sm:px-7">
         <header className="flex items-center justify-between">
-          <div className="ll-material min-w-0 max-w-[68%] rounded-2xl px-3.5 py-2.5">
+          <div className="ll-photo-material min-w-0 max-w-[68%] rounded-2xl px-3.5 py-2.5">
             <p className="truncate text-[13px] font-semibold leading-tight text-white">{locationLabel}</p>
             <p className="mt-1 font-mono text-[9px] uppercase tracking-[0.16em] text-white/52">{precisionLabel}</p>
           </div>
@@ -137,7 +137,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
             {t('home.insight')}
           </blockquote>
 
-          <div className="ll-material mt-6 overflow-hidden rounded-[1.65rem] p-2">
+          <div className="ll-photo-material mt-6 overflow-hidden rounded-[1.65rem] p-2">
             <div className="flex items-center px-3 pb-2.5 pt-1.5">
               <div className="flex flex-1 items-baseline gap-2 border-e border-white/14 pe-4">
                 <p className="font-mono text-xl font-medium text-[#f4f0e6]">{completed.length}</p>
@@ -152,7 +152,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
             <button
               type="button"
               onClick={() => { triggerHaptic(); onScanStart(); }}
-              className="ll-primary-action flex w-full items-center justify-between rounded-[1.2rem] bg-[#f2efe6] py-2.5 pe-4 ps-2.5 text-[#0b0b0a]"
+              className="ll-primary-action flex w-full items-center justify-between rounded-[1.2rem] bg-[var(--ll-text)] py-2.5 pe-4 ps-2.5 text-[var(--ll-canvas)]"
             >
               <span className={`flex h-11 w-11 items-center justify-center rounded-[0.9rem] text-white ${accent.bg}`}>
                 <IconCamera className="h-5 w-5" />

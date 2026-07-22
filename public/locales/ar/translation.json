@@ -13,7 +13,8 @@
   },
   "settings": {
     "title": "الإعدادات", "language": "اللغة", "appearance": "المظهر", "preferences": "التفضيلات", "data": "البيانات",
-    "midnight": "منتصف الليل", "porcelain": "الخزف", "accentColor": "لون التمييز", "indigo": "نيلي", "teal": "فيروزي", "amber": "كهرماني", "violet": "بنفسجي",
+    "midnight": "منتصف الليل", "porcelain": "الخزف", "accentColor": "لوحة الألوان", "indigo": "نيلي", "teal": "فيروزي", "amber": "كهرماني", "violet": "بنفسجي",
+    "paletteArchive": "الأرشيف", "paletteOlive": "بستان الزيتون", "paletteCoast": "الساحل المشمس", "paletteSunset": "غروب المحيط", "paletteHarbor": "أعماق البحر",
     "reduceMotion": "تقليل الحركة", "reduceMotionDesc": "تبسيط الانتقالات والرسوم المتحركة", "fontSmall": "نص صغير", "fontMedium": "نص متوسط", "fontLarge": "نص كبير",
     "saveGallery": "حفظ الصور المقصوصة في المعرض", "readAloud": "تفعيل القراءة بصوت عالٍ", "readAloudDesc": "يقرأ النتائج بصوت طبيعي.",
     "locationEnabled": "استخدام الموقع للمساعدة في التعرّف", "locationEnabledDesc": "مفعّل افتراضيًا؛ الموقع الدقيق يحسّن مطابقة المعالم",

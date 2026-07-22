@@ -44,7 +44,7 @@ export const ResultDrawer: React.FC<ResultDrawerProps> = ({
     onShowNotification
 }) => {
   const { t } = useTranslation();
-  const { theme, readAloudEnabled: showAudioPlayer, language, reduceMotion } = useSettingsStore();
+  const { readAloudEnabled: showAudioPlayer, language, reduceMotion } = useSettingsStore();
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoadingAudio, setIsLoadingAudio] = useState(false);
   const [isDismissing, setIsDismissing] = useState(false);
@@ -157,20 +157,18 @@ export const ResultDrawer: React.FC<ResultDrawerProps> = ({
   };
 
   if (!result || !isOpen) return null;
-  const isDark = theme === 'dark';
-  
   // Dynamic Styles
-  const cardBg = isDark ? 'bg-[#151513]/94 border-white/14' : 'bg-[#f2efe6]/94 border-black/12';
-  const textMain = isDark ? 'text-[#f4f0e6]' : 'text-[#171714]';
-  const textSub = isDark ? 'text-white/66' : 'text-black/66';
-  const textMuted = isDark ? 'text-white/42' : 'text-black/44';
-  const iconBtn = isDark ? 'border-white/12 bg-white/7 text-white' : 'border-black/10 bg-black/5 text-[#171714]';
+  const cardBg = 'bg-[var(--ll-surface-strong)] border-[var(--ll-border)]';
+  const textMain = 'text-[var(--ll-text)]';
+  const textSub = 'text-[var(--ll-text-sub)]';
+  const textMuted = 'text-[var(--ll-text-muted)]';
+  const iconBtn = 'border-[var(--ll-border)] bg-[var(--ll-surface-soft)] text-[var(--ll-text)]';
   
   // Section Styles
-  const mirrorBg = isDark ? 'bg-[#f2efe6] border-white/70' : 'bg-[#171714] border-black';
-  const mirrorText = isDark ? 'text-[#171714]' : 'text-[#f4f0e6]';
-  const actionBg = isDark ? 'bg-[#211d19] border-[#c87648]/35' : 'bg-[#e8e2d5] border-[#b8643b]/25';
-  const actionText = isDark ? 'text-[#f2c4a8]' : 'text-[#69331e]';
+  const mirrorBg = 'bg-[var(--ll-text)] border-[var(--ll-text)]';
+  const mirrorText = 'text-[var(--ll-canvas)]';
+  const actionBg = 'bg-[var(--ll-accent-soft)] border-[var(--ll-accent-border)]';
+  const actionText = 'text-[var(--ll-accent)]';
 
   return (
     <LazyMotion features={loadMotionFeatures} strict>
@@ -217,7 +215,7 @@ export const ResultDrawer: React.FC<ResultDrawerProps> = ({
                 }}
                 aria-hidden="true"
             >
-                <div className={`h-1 w-10 rounded-full ${isDark ? 'bg-white/22' : 'bg-black/20'}`} />
+                <div className="h-1 w-10 rounded-full bg-[var(--ll-border-strong)]" />
             </div>
 
             <div className="no-scrollbar h-full overflow-y-auto overflow-x-hidden overscroll-contain">
@@ -238,8 +236,8 @@ export const ResultDrawer: React.FC<ResultDrawerProps> = ({
                                 onClick={handlePlayAudio}
                                 disabled={isLoadingAudio}
                                 className={`ll-pressable flex h-10 w-10 items-center justify-center rounded-xl border transition-[transform,background-color] duration-150 ${
-                                    isPlaying ? 'border-[#c87648] bg-[#c87648] text-white' :
-                                    isLoadingAudio ? 'border-[#c87648]/30 bg-[#c87648]/15 text-[#c87648]' :
+                                    isPlaying ? 'border-[var(--ll-accent)] bg-[var(--ll-accent)] text-[var(--ll-on-accent)]' :
+                                    isLoadingAudio ? 'border-[var(--ll-accent-border)] bg-[var(--ll-accent-soft)] text-[var(--ll-accent)]' :
                                     iconBtn
                                 }`}
                             >
@@ -261,7 +259,7 @@ export const ResultDrawer: React.FC<ResultDrawerProps> = ({
                 </div>
 
                 {/* The Essence */}
-                <div className={`border-y py-5 ${isDark ? 'border-white/12' : 'border-black/12'}`}>
+                <div className="border-y border-[var(--ll-border)] py-5">
                     <p className={`text-[19px] font-semibold leading-relaxed tracking-[-0.015em] ${textMain}`}>
                         {result.essence}
                     </p>

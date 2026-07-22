@@ -28,7 +28,7 @@ describe('accessible app states', () => {
     cleanup();
     localStorage.clear();
     await testI18n.init({ lng: 'en', fallbackLng: 'en', resources: { en: { translation: english } } });
-    useSettingsStore.setState({ language: 'en', readAloudEnabled: false });
+    useSettingsStore.setState({ language: 'en', readAloudEnabled: false, theme: 'dark', accentColor: 'archive' });
     useHistoryStore.setState({ history: [], records: [] });
   });
 
@@ -144,6 +144,19 @@ describe('accessible app states', () => {
 
     expect(await screen.findByRole('region', { name: english.history.title })).toBeInTheDocument();
     expect(document.activeElement).toBe(document.body);
+  });
+
+  test('palette previews switch the complete color story', async () => {
+    const user = userEvent.setup();
+    renderLocalized(<SettingsView onBack={() => undefined} />);
+
+    const sunset = screen.getByRole('button', { name: 'Ocean sunset' });
+    expect(sunset).toHaveAttribute('aria-pressed', 'false');
+    await user.click(sunset);
+
+    expect(useSettingsStore.getState().accentColor).toBe('sunset');
+    expect(sunset).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getAllByRole('button', { pressed: false })).toHaveLength(4);
   });
 
   test('history actions stack below the title on mobile and use the compact Review label', async () => {

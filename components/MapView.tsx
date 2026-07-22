@@ -10,6 +10,7 @@ import { IconChevronDown } from './Icons';
 import { useSettingsStore } from '../store/useSettingsStore';
 import { useHistoryStore } from '../store/useHistoryStore';
 import { useAppContextStore } from '../store/useAppContextStore';
+import { getPaletteThemeColors } from '../utils/palettes';
 
 interface MapViewProps {
   onClose: () => void;
@@ -17,12 +18,13 @@ interface MapViewProps {
 
 export const MapView: React.FC<MapViewProps> = ({ onClose }) => {
   const { t } = useTranslation();
-  const { theme, language } = useSettingsStore();
+  const { theme, language, accentColor } = useSettingsStore();
   const { records } = useHistoryStore();
   const currentLocation = useAppContextStore((state) => state.location);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
   const isDark = theme === 'dark';
+  const palette = getPaletteThemeColors(accentColor, theme);
 
   useEffect(() => {
     if (!mapContainerRef.current) return;
@@ -87,7 +89,7 @@ export const MapView: React.FC<MapViewProps> = ({ onClose }) => {
         }
         return L.divIcon({
             className: 'custom-pin',
-            html: `<div style="width: 24px; height: 24px; border-radius: 50%; background: #4F46E5; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.5);"></div>`,
+            html: `<div style="width: 24px; height: 24px; border-radius: 50%; background: ${palette.accent}; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.5);"></div>`,
             iconSize: [24, 24],
             iconAnchor: [12, 12],
             popupAnchor: [0, -12]
@@ -131,7 +133,7 @@ export const MapView: React.FC<MapViewProps> = ({ onClose }) => {
         radius: 8,
         color: '#fff',
         weight: 3,
-        fillColor: '#6366f1',
+        fillColor: palette.accent,
         fillOpacity: 1,
       }).addTo(map).bindTooltip(t('map.currentLocation'));
     }
@@ -149,21 +151,21 @@ export const MapView: React.FC<MapViewProps> = ({ onClose }) => {
             mapInstanceRef.current = null;
         }
     };
-  }, [currentLocation, language, records, theme, t]);
+  }, [accentColor, currentLocation, language, records, theme, t]);
 
   const hasMapData = records.some((record) => (
     record.location?.lat !== undefined && record.location.lng !== undefined
   )) || (currentLocation?.lat !== undefined && currentLocation.lng !== undefined);
 
   return (
-    <div role="region" aria-label={t('map.title')} className="absolute inset-0 z-30 flex flex-col bg-[#0b0b0a]">
+    <div role="region" aria-label={t('map.title')} className="absolute inset-0 z-30 flex flex-col bg-[var(--ll-canvas)]">
         {/* Header - Z-index increased to 2000 to sit above Leaflet controls */}
-        <div className={`ll-material absolute inset-x-4 top-[max(1rem,env(safe-area-inset-top))] z-[2000] flex items-center justify-between rounded-2xl px-4 py-3 ${isDark ? '' : '!border-black/10 !bg-[#f2efe6]/88'}`}>
-            <h1 className={`font-serif text-2xl tracking-[-0.03em] ${isDark ? 'text-[#f4f0e6]' : 'text-[#171714]'}`}>{t('map.title')}</h1>
+        <div className="ll-material absolute inset-x-4 top-[max(1rem,env(safe-area-inset-top))] z-[2000] flex items-center justify-between rounded-2xl px-4 py-3">
+            <h1 className="font-serif text-2xl tracking-[-0.03em] text-[var(--ll-text)]">{t('map.title')}</h1>
             <button 
                 aria-label={t('aria.close')}
                 onClick={onClose} 
-                className={`ll-pressable flex h-10 w-10 items-center justify-center rounded-xl border transition-transform duration-150 ${isDark ? 'border-white/12 bg-white/7 text-white' : 'border-black/10 bg-black/5 text-[#171714]'}`}
+                className="ll-pressable flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--ll-border)] bg-[var(--ll-surface-soft)] text-[var(--ll-text)] transition-transform duration-150"
             >
                 <IconChevronDown className="w-6 h-6" />
             </button>
@@ -171,7 +173,7 @@ export const MapView: React.FC<MapViewProps> = ({ onClose }) => {
         
         <div ref={mapContainerRef} className="w-full h-full" />
         {!hasMapData && (
-          <div className="ll-material pointer-events-none absolute inset-x-5 bottom-[max(1.25rem,env(safe-area-inset-bottom))] z-[1000] rounded-2xl p-4 text-center text-sm font-medium text-white">
+          <div className="ll-material pointer-events-none absolute inset-x-5 bottom-[max(1.25rem,env(safe-area-inset-bottom))] z-[1000] rounded-2xl p-4 text-center text-sm font-medium text-[var(--ll-text)]">
             {t('map.empty')}
           </div>
         )}

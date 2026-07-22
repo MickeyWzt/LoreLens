@@ -1,5 +1,5 @@
 
-import React, { useState, useRef, useEffect, useCallback, useReducer, lazy, Suspense } from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect, useCallback, useReducer, lazy, Suspense } from 'react';
 import { decipherImage } from './services/aiService';
 import { HistoryItem, ViewState, type ApiError, type AnalysisRecordV2, type LocationSnapshot } from './types';
 import { triggerHaptic, compressHistoryImage } from './utils';
@@ -18,6 +18,7 @@ import { IconCamera, IconHistory, IconSettings, IconSparkles, IconMap, IconChevr
 import { useSettingsStore } from './store/useSettingsStore';
 import { useHistoryStore } from './store/useHistoryStore';
 import { openPreferredCamera, PhysicalCameraUnavailableError } from './services/cameraService';
+import { applyPaletteTheme } from './utils/palettes';
 
 const HistoryView = lazy(() => import('./components/HistoryView').then((module) => ({ default: module.HistoryView })));
 const SettingsView = lazy(() => import('./components/SettingsView').then((module) => ({ default: module.SettingsView })));
@@ -50,7 +51,7 @@ const App: React.FC = () => {
   const [cameraError, setCameraError] = useState<'denied' | 'unavailable' | 'noPhysical' | null>(null);
 
   // Stores
-  const { theme, language, fontSize, saveToGallery, reduceMotion, locationEnabled } = useSettingsStore();
+  const { theme, language, fontSize, saveToGallery, accentColor, reduceMotion, locationEnabled } = useSettingsStore();
   const { history, records, addRecord, updateRecord, loadHistory } = useHistoryStore();
   const ensureLocation = useAppContextStore((state) => state.ensureLocation);
   const refreshLocation = useAppContextStore((state) => state.refreshLocation);
@@ -101,6 +102,10 @@ const App: React.FC = () => {
   useEffect(() => {
     document.documentElement.classList.toggle('reduce-motion', reduceMotion);
   }, [reduceMotion]);
+
+  useLayoutEffect(() => {
+    applyPaletteTheme(document.documentElement, accentColor, theme);
+  }, [accentColor, theme]);
 
   // Optimized Camera Lifecycle Management
   // Only activate camera when NOT in Home View (to save battery/heat)
@@ -384,7 +389,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className={`relative h-[100dvh] w-full overflow-hidden font-sans transition-colors duration-200 ${theme === 'dark' ? 'bg-[#0b0b0a] text-white' : 'bg-[#f2efe6] text-[#171714]'}`}>
+    <div className="relative h-[100dvh] w-full overflow-hidden bg-[var(--ll-canvas)] font-sans text-[var(--ll-text)] transition-colors duration-200">
       <input
         ref={fileInputRef}
         type="file"
@@ -396,7 +401,7 @@ const App: React.FC = () => {
       
       {/* Toast Notification */}
       <div role="status" aria-live="polite" className={`fixed inset-x-0 top-[max(1rem,env(safe-area-inset-top))] z-[100] flex justify-center px-5 transition-[opacity,transform] duration-200 [transition-timing-function:var(--ll-ease-out)] ${notification ? 'translate-y-0 opacity-100' : 'pointer-events-none -translate-y-2 opacity-0'}`}>
-          <div className={`ll-material flex items-center gap-3 rounded-2xl px-4 py-3 text-[13px] font-semibold ${theme === 'dark' ? 'text-white' : 'text-white'}`}>
+          <div className="ll-photo-material flex items-center gap-3 rounded-2xl px-4 py-3 text-[13px] font-semibold text-white">
               <span className="h-1.5 w-1.5 rounded-full bg-[#e69b62]"></span>
               {notification}
           </div>
@@ -439,8 +444,8 @@ const App: React.FC = () => {
             <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/72 backdrop-blur-md">
                 <div className="relative flex flex-col items-center">
                     <div className="relative flex h-28 w-28 items-center justify-center rounded-full border border-white/14 bg-black/28 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
-                        <div className="absolute inset-2 animate-[spin_1.8s_linear_infinite] rounded-full border border-transparent border-t-[#e69b62]" />
-                        <IconSparkles className="h-7 w-7 text-[#f2efe6]" />
+                        <div className="absolute inset-2 animate-[spin_1.8s_linear_infinite] rounded-full border border-transparent border-t-[var(--ll-accent)]" />
+                        <IconSparkles className="h-7 w-7 text-[var(--ll-accent)]" />
                     </div>
                     <p className="mt-5 font-mono text-[10px] font-medium uppercase tracking-[0.24em] text-white/66">{t('scan.deciphering')}</p>
                 </div>
@@ -449,7 +454,7 @@ const App: React.FC = () => {
 
         {(scan.stage === 'error' || scan.stage === 'pending') && capturedImage && (
             <div className="absolute inset-0 z-50 flex items-end bg-black/55 p-6 pb-[max(2rem,env(safe-area-inset-bottom))] backdrop-blur-sm">
-                <div className="ll-material ll-sheet-enter mx-auto w-full max-w-md rounded-[1.75rem] p-6 text-white">
+                <div className="ll-photo-material ll-sheet-enter mx-auto w-full max-w-md rounded-[1.75rem] p-6 text-white">
                     <h2 className="font-serif text-2xl leading-tight">
                         {scan.stage === 'pending' ? t('scan.savedForLater') : t('scan.analysisFailed')}
                     </h2>
@@ -460,7 +465,7 @@ const App: React.FC = () => {
                         <button
                             type="button"
                             onClick={() => void processImage(capturedImage)}
-                            className="ll-pressable rounded-xl bg-[#f2efe6] px-4 py-3 font-semibold text-[#0b0b0a] transition-transform duration-150"
+                            className="ll-pressable rounded-xl bg-[var(--ll-accent)] px-4 py-3 font-semibold text-[var(--ll-on-accent)] transition-transform duration-150"
                         >
                             {t('common.retry')}
                         </button>
@@ -502,7 +507,7 @@ const App: React.FC = () => {
                 </div>
 
                 <div className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black via-black/56 to-transparent px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-28">
-                  <div className="ll-material mx-auto flex max-w-sm items-center justify-between rounded-[1.8rem] px-3 py-2.5">
+                  <div className="ll-photo-material mx-auto flex max-w-sm items-center justify-between rounded-[1.8rem] px-3 py-2.5">
                     {/* Gallery / Upload Button (New) */}
                     <button 
                         aria-label={t('aria.upload')}
@@ -544,7 +549,7 @@ const App: React.FC = () => {
                 {/* Reticle / Focus Frame */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                      {cameraError && (
-                       <div className="ll-material ll-sheet-enter pointer-events-auto mx-7 max-w-sm rounded-[1.75rem] p-6 text-center text-white">
+                       <div className="ll-photo-material ll-sheet-enter pointer-events-auto mx-7 max-w-sm rounded-[1.75rem] p-6 text-center text-white">
                          <h2 className="font-serif text-2xl leading-tight">{t(
                            cameraError === 'denied'
                              ? 'errors.cameraDenied'
@@ -555,7 +560,7 @@ const App: React.FC = () => {
                          <p className="mt-2 text-sm text-white/65">{t(
                            cameraError === 'noPhysical' ? 'errors.physicalCameraHelp' : 'errors.cameraHelp',
                          )}</p>
-                         <button type="button" onClick={() => fileInputRef.current?.click()} className="ll-primary-action mt-5 rounded-xl bg-[#f2efe6] px-5 py-3 font-semibold text-[#0b0b0a]">
+                          <button type="button" onClick={() => fileInputRef.current?.click()} className="ll-primary-action mt-5 rounded-xl bg-[var(--ll-accent)] px-5 py-3 font-semibold text-[var(--ll-on-accent)]">
                            {t('scan.choosePhoto')}
                          </button>
                        </div>

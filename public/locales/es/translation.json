@@ -13,7 +13,8 @@
   },
   "settings": {
     "title": "Ajustes", "language": "Idioma", "appearance": "Apariencia", "preferences": "Preferencias", "data": "Datos",
-    "midnight": "Medianoche", "porcelain": "Porcelana", "accentColor": "Color de acento", "indigo": "Índigo", "teal": "Verde azulado", "amber": "Ámbar", "violet": "Violeta",
+    "midnight": "Medianoche", "porcelain": "Porcelana", "accentColor": "Paleta de colores", "indigo": "Índigo", "teal": "Verde azulado", "amber": "Ámbar", "violet": "Violeta",
+    "paletteArchive": "Archivo", "paletteOlive": "Olivar", "paletteCoast": "Costa soleada", "paletteSunset": "Atardecer oceánico", "paletteHarbor": "Mar profundo",
     "reduceMotion": "Reducir movimiento", "reduceMotionDesc": "Simplifica transiciones y animaciones", "fontSmall": "Texto pequeño", "fontMedium": "Texto mediano", "fontLarge": "Texto grande",
     "saveGallery": "Guardar recortes en la galería", "readAloud": "Activar lectura en voz alta", "readAloudDesc": "Lee los resultados con una voz natural.",
     "locationEnabled": "Usar ubicación para identificar", "locationEnabledDesc": "Activado por defecto; la ubicación precisa mejora la coincidencia de lugares",

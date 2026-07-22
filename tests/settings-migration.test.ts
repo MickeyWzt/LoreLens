@@ -27,4 +27,13 @@ describe('settings migration', () => {
       locationEnabled: true,
     });
   });
+
+  test('maps legacy accent colors onto full palettes', async () => {
+    const module = await loadSettings();
+    expect(module).not.toBeNull();
+    if (!module) return;
+
+    expect(module.migrateSettingsState({ accentColor: 'teal' })).toMatchObject({ accentColor: 'coast' });
+    expect(module.migrateSettingsState({ accentColor: 'unknown' })).toMatchObject({ accentColor: 'archive' });
+  });
 });

@@ -13,7 +13,8 @@
   },
   "settings": {
     "title": "Настройки", "language": "Язык", "appearance": "Оформление", "preferences": "Предпочтения", "data": "Данные",
-    "midnight": "Полночь", "porcelain": "Фарфор", "accentColor": "Акцентный цвет", "indigo": "Индиго", "teal": "Бирюзовый", "amber": "Янтарный", "violet": "Фиолетовый",
+    "midnight": "Полночь", "porcelain": "Фарфор", "accentColor": "Цветовая палитра", "indigo": "Индиго", "teal": "Бирюзовый", "amber": "Янтарный", "violet": "Фиолетовый",
+    "paletteArchive": "Архив", "paletteOlive": "Оливковая роща", "paletteCoast": "Солнечный берег", "paletteSunset": "Морской закат", "paletteHarbor": "Глубокое море",
     "reduceMotion": "Уменьшить движение", "reduceMotionDesc": "Упрощает переходы и анимацию", "fontSmall": "Мелкий текст", "fontMedium": "Средний текст", "fontLarge": "Крупный текст",
     "saveGallery": "Сохранять обрезанные фото", "readAloud": "Включить чтение вслух", "readAloudDesc": "Озвучивает результаты естественным голосом.",
     "locationEnabled": "Использовать геолокацию для распознавания", "locationEnabledDesc": "Включено по умолчанию; точная позиция улучшает определение мест",

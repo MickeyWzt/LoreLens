@@ -13,7 +13,8 @@
   },
   "settings": {
     "title": "설정", "language": "언어", "appearance": "화면", "preferences": "환경설정", "data": "데이터",
-    "midnight": "미드나이트", "porcelain": "포슬린", "accentColor": "강조 색상", "indigo": "인디고", "teal": "틸", "amber": "앰버", "violet": "바이올렛",
+    "midnight": "미드나이트", "porcelain": "포슬린", "accentColor": "컬러 팔레트", "indigo": "인디고", "teal": "틸", "amber": "앰버", "violet": "바이올렛",
+    "paletteArchive": "아카이브", "paletteOlive": "올리브 정원", "paletteCoast": "햇살 해안", "paletteSunset": "바다 노을", "paletteHarbor": "심해",
     "reduceMotion": "동작 줄이기", "reduceMotionDesc": "전환과 애니메이션을 단순하게 표시", "fontSmall": "작은 글자", "fontMedium": "보통 글자", "fontLarge": "큰 글자",
     "saveGallery": "자른 사진을 갤러리에 저장", "readAloud": "소리 내어 읽기 사용", "readAloudDesc": "자연스러운 음성으로 결과를 읽어 줍니다.",
     "locationEnabled": "식별에 위치 사용", "locationEnabledDesc": "기본으로 켜져 있으며 정확한 위치는 명소 판별에 도움이 됩니다",

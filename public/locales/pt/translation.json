@@ -13,7 +13,8 @@
   },
   "settings": {
     "title": "Configurações", "language": "Idioma", "appearance": "Aparência", "preferences": "Preferências", "data": "Dados",
-    "midnight": "Meia-noite", "porcelain": "Porcelana", "accentColor": "Cor de destaque", "indigo": "Índigo", "teal": "Verde-azulado", "amber": "Âmbar", "violet": "Violeta",
+    "midnight": "Meia-noite", "porcelain": "Porcelana", "accentColor": "Paleta de cores", "indigo": "Índigo", "teal": "Verde-azulado", "amber": "Âmbar", "violet": "Violeta",
+    "paletteArchive": "Arquivo", "paletteOlive": "Olival", "paletteCoast": "Costa ensolarada", "paletteSunset": "Pôr do sol no mar", "paletteHarbor": "Mar profundo",
     "reduceMotion": "Reduzir movimento", "reduceMotionDesc": "Simplificar transições e animações", "fontSmall": "Texto pequeno", "fontMedium": "Texto médio", "fontLarge": "Texto grande",
     "saveGallery": "Salvar recortes na galeria", "readAloud": "Ativar leitura em voz alta", "readAloudDesc": "Lê os resultados com uma voz natural.",
     "locationEnabled": "Usar localização na identificação", "locationEnabledDesc": "Ativada por padrão; a localização precisa melhora a correspondência de pontos turísticos",
