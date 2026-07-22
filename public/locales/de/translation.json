@@ -14,7 +14,7 @@
   "settings": {
     "title": "Einstellungen", "language": "Sprache", "appearance": "Darstellung", "preferences": "Präferenzen", "data": "Daten",
     "midnight": "Mitternacht", "porcelain": "Porzellan", "accentColor": "Farbpalette", "indigo": "Indigo", "teal": "Petrol", "amber": "Bernstein", "violet": "Violett",
-    "paletteArchive": "Archiv", "paletteOlive": "Olivenhain", "paletteCoast": "Sonnenküste", "paletteSunset": "Meeresabend", "paletteHarbor": "Tiefsee",
+    "paletteArchive": "Archiv", "paletteOlive": "Olivenhain", "paletteCoast": "Sonnenküste", "paletteSunset": "Meeresabend", "paletteHarbor": "Tiefsee", "paletteEarth": "Sanfte Erde",
     "reduceMotion": "Bewegungen reduzieren", "reduceMotionDesc": "Übergänge und Animationen vereinfachen", "fontSmall": "Kleine Schrift", "fontMedium": "Mittlere Schrift", "fontLarge": "Große Schrift",
     "saveGallery": "Ausschnitte in der Galerie speichern", "readAloud": "Vorlesen aktivieren", "readAloudDesc": "Liest Ergebnisse mit einer natürlichen Stimme vor.",
     "locationEnabled": "Standort zur Erkennung verwenden", "locationEnabledDesc": "Standardmäßig aktiviert; ein genauer Standort verbessert die Zuordnung von Sehenswürdigkeiten",

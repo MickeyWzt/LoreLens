@@ -156,7 +156,7 @@ describe('accessible app states', () => {
 
     expect(useSettingsStore.getState().accentColor).toBe('sunset');
     expect(sunset).toHaveAttribute('aria-pressed', 'true');
-    expect(screen.getAllByRole('button', { pressed: false })).toHaveLength(4);
+    expect(screen.getAllByRole('button', { pressed: false })).toHaveLength(5);
   });
 
   test('history actions stack below the title on mobile and use the compact Review label', async () => {

@@ -25,13 +25,13 @@ export const COLOR_PALETTES: readonly PalettePreset[] = [
     id: 'archive',
     nameKey: 'settings.paletteArchive',
     sourceName: 'LoreLens Archive',
-    swatches: ['#0B0B0A', '#171714', '#F2EFE6', '#C87648', '#6366F1'],
+    swatches: ['#0B0B0A', '#171714', '#F2EFE6', '#C87648', '#496473'],
     light: {
-      canvas: '#F2EFE6', surface: '#FFFDF8', text: '#171714', accent: '#4F46E5',
+      canvas: '#F2EFE6', surface: '#FFFDF8', text: '#171714', accent: '#496473',
       onAccent: '#FFFFFF', secondary: '#C87648', highlight: '#D2CEC2',
     },
     dark: {
-      canvas: '#0B0B0A', surface: '#151513', text: '#F4F0E6', accent: '#818CF8',
+      canvas: '#0B0B0A', surface: '#151513', text: '#F4F0E6', accent: '#AFC4CC',
       onAccent: '#0B0B0A', secondary: '#C87648', highlight: '#D2CEC2',
     },
   },
@@ -93,6 +93,21 @@ export const COLOR_PALETTES: readonly PalettePreset[] = [
     dark: {
       canvas: '#0D1B2A', surface: '#1B263B', text: '#E0E1DD', accent: '#778DA9',
       onAccent: '#0D1B2A', secondary: '#415A77', highlight: '#E0E1DD',
+    },
+  },
+  {
+    id: 'earth',
+    nameKey: 'settings.paletteEarth',
+    sourceName: 'Earthy Tones',
+    sourceUrl: 'https://coolors.co/edafb8-f7e1d7-dedbd2-b0c4b1-4a5759',
+    swatches: ['#EDAFB8', '#F7E1D7', '#DEDBD2', '#B0C4B1', '#4A5759'],
+    light: {
+      canvas: '#F7E1D7', surface: '#FFF8F4', text: '#4A5759', accent: '#4A5759',
+      onAccent: '#FFF8F4', secondary: '#EDAFB8', highlight: '#B0C4B1',
+    },
+    dark: {
+      canvas: '#303B3D', surface: '#4A5759', text: '#F7E1D7', accent: '#EDAFB8',
+      onAccent: '#303B3D', secondary: '#B0C4B1', highlight: '#DEDBD2',
     },
   },
 ] as const;

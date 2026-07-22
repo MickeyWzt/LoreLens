@@ -17,9 +17,9 @@ const contrast = (foreground: string, background: string) => {
 };
 
 describe('color palettes', () => {
-  test('offers five unique palettes with light and dark variants', () => {
-    expect(COLOR_PALETTES).toHaveLength(5);
-    expect(new Set(COLOR_PALETTES.map((palette) => palette.id)).size).toBe(5);
+  test('offers six unique palettes with light and dark variants', () => {
+    expect(COLOR_PALETTES).toHaveLength(6);
+    expect(new Set(COLOR_PALETTES.map((palette) => palette.id)).size).toBe(6);
     for (const palette of COLOR_PALETTES) {
       expect(palette.swatches).toHaveLength(5);
       expect(palette.light.canvas).toMatch(/^#[0-9A-F]{6}$/);

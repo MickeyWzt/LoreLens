@@ -12,7 +12,7 @@
   --ll-canvas: #0b0b0a;
   --ll-surface-solid: #151513;
   --ll-text: #f4f0e6;
-  --ll-accent: #818cf8;
+  --ll-accent: #afc4cc;
   --ll-on-accent: #0b0b0a;
   --ll-secondary: #c87648;
   --ll-highlight: #d2cec2;
@@ -77,13 +77,14 @@ button,
 }
 
 .ll-photo-material {
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(12, 12, 11, 0.56);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: linear-gradient(145deg, rgba(28, 28, 25, 0.7), rgba(7, 7, 6, 0.54));
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.09),
-    0 18px 60px rgba(0, 0, 0, 0.24);
-  backdrop-filter: blur(24px) saturate(135%);
-  -webkit-backdrop-filter: blur(24px) saturate(135%);
+    inset 0 1px 0 rgba(255, 255, 255, 0.13),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+    0 18px 60px rgba(0, 0, 0, 0.26);
+  backdrop-filter: blur(28px) saturate(150%);
+  -webkit-backdrop-filter: blur(28px) saturate(150%);
 }
 
 .ll-icon-button {
@@ -112,6 +113,15 @@ button,
 
 .ll-primary-action:active {
   transform: scale(0.975);
+}
+
+.ll-photo-primary-action {
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: linear-gradient(180deg, rgba(255, 253, 248, 0.97), rgba(239, 236, 228, 0.94));
+  color: #171714;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.94),
+    0 12px 32px rgba(0, 0, 0, 0.3);
 }
 
 .ll-sheet-material {
@@ -220,6 +230,10 @@ button,
   .ll-icon-button {
     background: rgba(0, 0, 0, 0.94);
   }
+
+  .ll-photo-primary-action {
+    background: #f4f0e6;
+  }
 }
 
 @media (prefers-contrast: more) {
@@ -235,6 +249,12 @@ button,
   .ll-icon-button {
     border-color: rgba(255, 255, 255, 0.48);
     background: rgba(0, 0, 0, 0.92);
+  }
+
+  .ll-photo-primary-action {
+    border-color: #ffffff;
+    background: #ffffff;
+    color: #0b0b0a;
   }
 }
 

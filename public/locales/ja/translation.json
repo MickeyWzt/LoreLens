@@ -14,7 +14,7 @@
   "settings": {
     "title": "設定", "language": "言語", "appearance": "外観", "preferences": "環境設定", "data": "データ",
     "midnight": "ミッドナイト", "porcelain": "ポーセリン", "accentColor": "カラーパレット", "indigo": "インディゴ", "teal": "ティール", "amber": "アンバー", "violet": "バイオレット",
-    "paletteArchive": "アーカイブ", "paletteOlive": "オリーブの庭", "paletteCoast": "陽光の海岸", "paletteSunset": "海辺の夕暮れ", "paletteHarbor": "深海",
+    "paletteArchive": "アーカイブ", "paletteOlive": "オリーブの庭", "paletteCoast": "陽光の海岸", "paletteSunset": "海辺の夕暮れ", "paletteHarbor": "深海", "paletteEarth": "やわらかな大地",
     "reduceMotion": "動きを減らす", "reduceMotionDesc": "画面遷移とアニメーションを簡略化します", "fontSmall": "小さい文字", "fontMedium": "標準の文字", "fontLarge": "大きい文字",
     "saveGallery": "切り抜きをギャラリーに保存", "readAloud": "読み上げを有効にする", "readAloudDesc": "自然な音声で結果を読み上げます。",
     "locationEnabled": "位置情報を識別に使用", "locationEnabledDesc": "初期設定で有効。正確な位置情報でランドマーク照合を改善します",

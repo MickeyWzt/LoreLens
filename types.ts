@@ -29,4 +29,4 @@ export enum ViewState {
 export type AppTheme = 'dark' | 'light';
 export type AppFontSize = 'small' | 'medium' | 'large';
 export type AppLanguage = 'en' | 'zh' | 'ja' | 'ko' | 'es' | 'fr' | 'de' | 'it' | 'pt' | 'ru' | 'ar';
-export type AppAccentColor = 'archive' | 'olive' | 'coast' | 'sunset' | 'harbor';
+export type AppAccentColor = 'archive' | 'olive' | 'coast' | 'sunset' | 'harbor' | 'earth';

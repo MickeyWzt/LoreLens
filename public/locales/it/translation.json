@@ -14,7 +14,7 @@
   "settings": {
     "title": "Impostazioni", "language": "Lingua", "appearance": "Aspetto", "preferences": "Preferenze", "data": "Dati",
     "midnight": "Mezzanotte", "porcelain": "Porcellana", "accentColor": "Tavolozza colori", "indigo": "Indaco", "teal": "Verde acqua", "amber": "Ambra", "violet": "Viola",
-    "paletteArchive": "Archivio", "paletteOlive": "Uliveto", "paletteCoast": "Costa soleggiata", "paletteSunset": "Tramonto sul mare", "paletteHarbor": "Mare profondo",
+    "paletteArchive": "Archivio", "paletteOlive": "Uliveto", "paletteCoast": "Costa soleggiata", "paletteSunset": "Tramonto sul mare", "paletteHarbor": "Mare profondo", "paletteEarth": "Terra morbida",
     "reduceMotion": "Riduci movimento", "reduceMotionDesc": "Semplifica transizioni e animazioni", "fontSmall": "Testo piccolo", "fontMedium": "Testo medio", "fontLarge": "Testo grande",
     "saveGallery": "Salva i ritagli nella galleria", "readAloud": "Attiva lettura ad alta voce", "readAloudDesc": "Legge i risultati con una voce naturale.",
     "locationEnabled": "Usa la posizione per il riconoscimento", "locationEnabledDesc": "Attiva per impostazione predefinita; una posizione precisa migliora l’abbinamento dei luoghi",

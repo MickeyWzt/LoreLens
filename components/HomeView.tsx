@@ -5,7 +5,6 @@ import { useAppContextStore } from '../store/useAppContextStore';
 import { useHistoryStore } from '../store/useHistoryStore';
 import { useSettingsStore } from '../store/useSettingsStore';
 import { backgroundQueriesForLocation, trackBackgroundDownload } from '../services/backgroundService';
-import { getAccentStyles } from '../utils/accent';
 import { triggerHaptic } from '../utils';
 
 interface HomeViewProps {
@@ -29,7 +28,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   onOpenSettings,
 }) => {
   const { t } = useTranslation();
-  const { theme, language, accentColor, reduceMotion, locationEnabled } = useSettingsStore();
+  const { reduceMotion, locationEnabled } = useSettingsStore();
   const { records } = useHistoryStore();
   const {
     location,
@@ -37,8 +36,6 @@ export const HomeView: React.FC<HomeViewProps> = ({
     background,
     ensureBackground,
   } = useAppContextStore();
-  const isDark = theme === 'dark';
-  const accent = getAccentStyles(accentColor, isDark);
   const bucket = useMemo(timeBucket, []);
   const today = new Date().setHours(0, 0, 0, 0);
   const completed = records.filter((record) => record.status === 'complete');
@@ -152,13 +149,13 @@ export const HomeView: React.FC<HomeViewProps> = ({
             <button
               type="button"
               onClick={() => { triggerHaptic(); onScanStart(); }}
-              className="ll-primary-action flex w-full items-center justify-between rounded-[1.2rem] bg-[var(--ll-text)] py-2.5 pe-4 ps-2.5 text-[var(--ll-canvas)]"
+              className="ll-primary-action ll-photo-primary-action flex w-full items-center justify-between rounded-[1.2rem] py-2.5 pe-4 ps-2.5"
             >
-              <span className={`flex h-11 w-11 items-center justify-center rounded-[0.9rem] text-white ${accent.bg}`}>
+              <span className="flex h-11 w-11 items-center justify-center rounded-[0.9rem] bg-[var(--ll-accent)] text-[var(--ll-on-accent)]">
                 <IconCamera className="h-5 w-5" />
               </span>
               <span className="text-[15px] font-bold tracking-[-0.01em]">{t('home.scan')}</span>
-              <span className="font-mono text-sm text-black/38" aria-hidden="true">↗</span>
+              <span className="font-mono text-sm text-[#171714]/38" aria-hidden="true">↗</span>
             </button>
           </div>
 

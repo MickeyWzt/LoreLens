@@ -14,7 +14,7 @@
   "settings": {
     "title": "Settings", "language": "Language", "appearance": "Appearance", "preferences": "Preferences", "data": "Data",
     "midnight": "Midnight", "porcelain": "Porcelain", "accentColor": "Color palette", "indigo": "Indigo", "teal": "Teal", "amber": "Amber", "violet": "Violet",
-    "paletteArchive": "Archive", "paletteOlive": "Olive grove", "paletteCoast": "Sunny coast", "paletteSunset": "Ocean sunset", "paletteHarbor": "Deep sea",
+    "paletteArchive": "Archive", "paletteOlive": "Olive grove", "paletteCoast": "Sunny coast", "paletteSunset": "Ocean sunset", "paletteHarbor": "Deep sea", "paletteEarth": "Soft earth",
     "reduceMotion": "Reduce motion", "reduceMotionDesc": "Simplify transitions and animations", "fontSmall": "Small text", "fontMedium": "Medium text", "fontLarge": "Large text",
     "saveGallery": "Save crops to gallery", "readAloud": "Enable read aloud", "readAloudDesc": "Read results aloud with a natural voice.",
     "locationEnabled": "Use location for identification", "locationEnabledDesc": "Enabled by default; precise location improves landmark matching",

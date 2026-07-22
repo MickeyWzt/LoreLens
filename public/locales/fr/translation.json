@@ -14,7 +14,7 @@
   "settings": {
     "title": "Réglages", "language": "Langue", "appearance": "Apparence", "preferences": "Préférences", "data": "Données",
     "midnight": "Minuit", "porcelain": "Porcelaine", "accentColor": "Palette de couleurs", "indigo": "Indigo", "teal": "Sarcelle", "amber": "Ambre", "violet": "Violet",
-    "paletteArchive": "Archives", "paletteOlive": "Oliveraie", "paletteCoast": "Côte ensoleillée", "paletteSunset": "Coucher de soleil", "paletteHarbor": "Grand bleu",
+    "paletteArchive": "Archives", "paletteOlive": "Oliveraie", "paletteCoast": "Côte ensoleillée", "paletteSunset": "Coucher de soleil", "paletteHarbor": "Grand bleu", "paletteEarth": "Terre douce",
     "reduceMotion": "Réduire les animations", "reduceMotionDesc": "Simplifie les transitions et les animations", "fontSmall": "Petit texte", "fontMedium": "Texte moyen", "fontLarge": "Grand texte",
     "saveGallery": "Enregistrer les recadrages", "readAloud": "Activer la lecture à voix haute", "readAloudDesc": "Lit les résultats avec une voix naturelle.",
     "locationEnabled": "Utiliser la position pour identifier", "locationEnabledDesc": "Activé par défaut ; une position précise améliore l’identification des lieux",
