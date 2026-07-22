@@ -112,6 +112,7 @@ export function createApiApp(dependencies: ApiDependencies) {
           'https://c.basemaps.cartocdn.com',
           'https://d.basemaps.cartocdn.com',
         ],
+        mediaSrc: ["'self'", 'blob:'],
       },
     },
   }));
