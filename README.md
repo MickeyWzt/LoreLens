@@ -1,5 +1,15 @@
 # LoreLens 7.14
 
+> Point. Scan. Understand. LoreLens is a camera-first cultural interpreter for curious travelers.
+
+[**Try the public beta →**](https://lorelens-beta.onrender.com) · [Share feedback](https://github.com/MickeyWzt/LoreLens/issues)
+
+![LoreLens public beta demo](docs/assets/lorelens-demo.gif)
+
+Choose a detail, crop the area you care about, and let LoreLens turn the scene into cultural context, visual clues, and a more thoughtful way to explore it. The public beta supports 11 interface languages and keeps saved discoveries in your browser unless you export them.
+
+> **Beta note:** The current Render service may need time to wake after being idle, and AI analysis can take tens of seconds. The demo compresses the real analysis wait by 8×.
+
 LoreLens 是面向全球旅行场景的文化解读 PWA。用户可以拍照或选择本地照片、调整关注区域，并获得与画面相关的文化线索、观察提示和行动建议。
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/MickeyWzt/LoreLens)
@@ -177,7 +187,7 @@ tests/                 Vitest、RTL 和 API 集成测试
 ## 验收基线
 
 - TypeScript 检查通过
-- 24 个测试文件、92 项测试通过
-- 生产主入口 chunk 约 280 KB，地图、历史和设置按需加载
+- 26 个测试文件、106 项测试通过
+- 生产主入口 chunk 约 291 KB，地图、历史和设置按需加载
 - `npm audit --audit-level=high` 无 high/critical 漏洞
 - 已在 390×844、430×932 和 1440×900 的真实 Chromium 浏览器中验证核心流程
