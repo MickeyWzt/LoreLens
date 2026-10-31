@@ -26,7 +26,7 @@ services:
       - key: QWEN_API_KEY
         sync: false
       - key: QWEN_VISION_MODEL
-        value: qwen3.6-flash
+        value: qwen3.8-flash
       - key: QWEN_BASE_URL
         value: https://dashscope.aliyuncs.com/compatible-mode/v1
       - key: TEXT_PROVIDER

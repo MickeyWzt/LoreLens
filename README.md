@@ -72,7 +72,7 @@ Qwen 负责单张图片解读；DeepSeek 只在用户主动生成“共鸣回顾
 | `TTS_RATE_LIMIT_PER_DAY` | `100` | 每个来源 IP 的每日云端朗读请求上限 |
 | `VISION_PROVIDER` | `qwen` | 图像 Provider：`qwen` 或 `gemini` |
 | `QWEN_API_KEY` / `DASHSCOPE_API_KEY` | 空 | Qwen/DashScope 服务端密钥 |
-| `QWEN_VISION_MODEL` | `qwen-vl-max-latest` | Qwen 视觉模型 |
+| `QWEN_VISION_MODEL` | `qwen3.8-flash` | Qwen 视觉模型 |
 | `QWEN_BASE_URL` | DashScope compatible-mode v1 | OpenAI 兼容 Base URL |
 | `QWEN_TTS_API_KEY` | 复用 `QWEN_API_KEY` | 可选独立千问 TTS 密钥 |
 | `QWEN_TTS_MODEL` | `qwen3-tts-flash` | 日、韩、西、法、德、意、葡、俄语云端朗读模型 |

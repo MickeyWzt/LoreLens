@@ -61,7 +61,7 @@ function visionConfig(provider: VisionProviderName, env: NodeJS.ProcessEnv) {
   return {
     provider,
     apiKey: env.QWEN_API_KEY || env.DASHSCOPE_API_KEY,
-    model: env.QWEN_VISION_MODEL || 'qwen-vl-max-latest',
+    model: env.QWEN_VISION_MODEL || 'qwen3.8-flash',
     baseUrl: env.QWEN_BASE_URL || 'https://dashscope.aliyuncs.com/compatible-mode/v1',
   };
 }
