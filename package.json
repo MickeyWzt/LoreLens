@@ -20,7 +20,7 @@
     "dotenv": "^17.4.2",
     "express-rate-limit": "^8.5.2",
     "helmet": "^8.3.0",
-    "i18next": "^26.2.0",
+    "i18next": "^26.3.4",
     "i18next-browser-languagedetector": "^8.2.1",
     "i18next-http-backend": "^4.0.0",
     "leaflet": "1.9.4",
